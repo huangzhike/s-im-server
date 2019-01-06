@@ -16,7 +16,7 @@ public class EventExecutor implements Runnable {
 
     public void putNettyEvent(Event event) {
         if (this.eventQueue.size() <= 10000) {
-            this.eventQueue.add(event);
+            this.eventQueue.offer(event);
         }
     }
 

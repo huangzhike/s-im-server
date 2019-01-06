@@ -12,7 +12,4 @@ public class XService {
     @Autowired
     private RecordDao recordDao;
 
-
-
-
 }

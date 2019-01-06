@@ -66,10 +66,10 @@
 
 
         <!-- redis数据库 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
+        <!--</dependency>-->
 
 
         <dependency>
@@ -84,15 +84,10 @@
 
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-spring</artifactId>
-
-        </dependency>
 
         <dependency>
-            <groupId>org.crazycake</groupId>
-            <artifactId>shiro-redis</artifactId>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
 
         </dependency>
 
@@ -104,7 +99,22 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
 
+        </dependency>
+
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+
+        </dependency>
 
 
         <dependency>
@@ -128,9 +138,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>mmp.im.ApiApplication</mainClass>
-                </configuration>
+
             </plugin>
         </plugins>
     </build>

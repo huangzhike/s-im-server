@@ -10,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -23,19 +22,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync
 @EnableScheduling
-public class ApiApplication extends SpringBootServletInitializer implements CommandLineRunner {
+public class AuthApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiApplication.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 
-    @Override // 打包
-    protected SpringApplicationBuilder configure(
-            SpringApplicationBuilder builder) {
-        return builder.sources(this.getClass());
-    }
 
     @Override
     public void run(String... args) throws Exception {
