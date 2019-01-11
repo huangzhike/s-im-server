@@ -1,10 +1,14 @@
 package mmp.im.auth.configuration;
 
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import mmp.im.auth.web.converter.DateToStringConverter;
 import mmp.im.auth.web.converter.StringToDateConverter;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
@@ -17,6 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.ShardedJedisPool;
 
 import java.util.HashSet;
 import java.util.Properties;
@@ -38,17 +45,6 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler(staticAccessPath).addResourceLocations("file:" + path);
     }
 
-
-    @Bean
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(200);
-        executor.setQueueCapacity(10);
-        executor.initialize();
-        return executor;
-    }
-
     @Bean
     public PageHelper pageHelper() {
         PageHelper pageHelper = new PageHelper();
@@ -60,6 +56,8 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
         pageHelper.setProperties(properties);
         return pageHelper;
     }
+
+
 
     // 跨域
     @Bean
@@ -88,5 +86,18 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
         return conversionService.getObject();
     }
 
+    @Bean
+    public HttpMessageConverters fastJsonHttpMessageConverters() {
 
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+
+        return new HttpMessageConverters(fastConverter);
+
+    }
 }

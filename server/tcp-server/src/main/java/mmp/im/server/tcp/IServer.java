@@ -1,4 +1,4 @@
-package mmp.im.gate.server;
+package mmp.im.server.tcp;
 
 public interface IServer {
 

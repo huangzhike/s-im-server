@@ -14,6 +14,7 @@
         <module>logic</module>
         <module>auth</module>
         <module>client</module>
+        <module>server</module>
     </modules>
 
     <parent>

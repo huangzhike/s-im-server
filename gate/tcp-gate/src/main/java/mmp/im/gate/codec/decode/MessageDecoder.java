@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import mmp.im.protocol.Acknowledge;
+import mmp.im.protocol.MessageBody;
 import mmp.im.protocol.ProtocolHeader;
 
 import java.nio.ByteBuffer;
@@ -85,7 +86,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
     private Object decodeBody(byte protocolType, byte[] array) throws Exception {
         Object object = null;
         if (protocolType == ProtocolHeader.ProtocolType.MESSAGE.getType()) {
-            object = MessageBody.Friend.parseFrom(array);
+            object = MessageBody.Msg.parseFrom(array);
         } else if (protocolType == ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType()) {
             // ACK
             ByteBuffer buffer = ByteBuffer.allocate(8);

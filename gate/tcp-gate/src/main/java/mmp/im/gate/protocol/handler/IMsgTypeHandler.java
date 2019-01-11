@@ -7,5 +7,5 @@ public interface IMsgTypeHandler {
 
     String getName();
 
-    void process(ChannelHandlerContext channelHandlerContext,  Object object);
+    void process(ChannelHandlerContext channelHandlerContext, Object object);
 }

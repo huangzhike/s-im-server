@@ -36,20 +36,7 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
         LOG.warn("Spring Boot 启动完成");
     }
 
-    @Bean
-    public HttpMessageConverters fastJsonHttpMessageConverters() {
 
-        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-
-        fastConverter.setFastJsonConfig(fastJsonConfig);
-
-        return new HttpMessageConverters(fastConverter);
-
-    }
 
 }
 

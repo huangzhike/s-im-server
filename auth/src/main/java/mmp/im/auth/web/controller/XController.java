@@ -1,5 +1,7 @@
 package mmp.im.auth.web.controller;
 
+import mmp.im.auth.model.Response;
+import mmp.im.auth.model.User;
 import mmp.im.auth.service.XService;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,6 +39,26 @@ public class XController {
 
 
         return null;
+    }
+
+    @PostMapping("login")
+    @ResponseBody
+    public Object login(User user) {
+
+        User u = xService.getUser(user);
+
+        if (u != null) {
+            return Response.success().setData("token");
+        }
+
+        return Response.fail();
+    }
+
+    @PostMapping("logout")
+    @ResponseBody
+    public Object logout(User user) {
+
+        return Response.success();
     }
 
 

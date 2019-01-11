@@ -1,4 +1,4 @@
-package mmp.im.gate.server;
+package mmp.im.server.tcp;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollEventLoopGroup;

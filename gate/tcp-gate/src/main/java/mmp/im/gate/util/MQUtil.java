@@ -88,6 +88,7 @@ public class MQUtil {
                     @Override
                     public void handleRecoveryStarted(Recoverable recoverable) {
                     }
+
                     @Override
                     public void handleRecovery(Recoverable recoverable) {
                         start();

@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import mmp.im.protocol.MessageBody;
 import mmp.im.protocol.ProtocolHeader;
 
 
@@ -26,7 +27,7 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
     private byte[] encodeHeader(MessageLite msg, short bodyLength) {
         byte protocolType = 0x0f;
 
-        if (msg instanceof MessageBody.Friend) {
+        if (msg instanceof MessageBody.Msg) {
             protocolType = ProtocolHeader.ProtocolType.MESSAGE.getType();
         }
 

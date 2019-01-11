@@ -14,6 +14,7 @@ import java.net.SocketAddress;
 public class EventHandler extends ChannelDuplexHandler {
 
     private EventExecutor eventExecutor;
+
     public EventHandler(IEventListener listener) {
 
         this.eventExecutor = new EventExecutor(listener);

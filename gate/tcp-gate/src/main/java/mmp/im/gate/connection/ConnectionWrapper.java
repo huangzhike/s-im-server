@@ -12,9 +12,9 @@ public class ConnectionWrapper {
     public static AttributeKey<String> GATEWAY_ID = AttributeKey.valueOf("GATEWAY_ID");
     public static AttributeKey<String> USER_ID = AttributeKey.valueOf("GATEWAY_ID");
 
-    ConnectionWrapper(ChannelHandlerContext channelHandlerContext){
-        this.channelHandlerContext=channelHandlerContext;
-        this.userId=channelHandlerContext.attr(USER_ID).get();
+    ConnectionWrapper(ChannelHandlerContext channelHandlerContext) {
+        this.channelHandlerContext = channelHandlerContext;
+        this.userId = channelHandlerContext.attr(USER_ID).get();
     }
 
 
