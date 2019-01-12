@@ -4,26 +4,30 @@ package mmp.im.protocol;
 
 import "google/protobuf/any.proto"; // 继承 使用Any必须要导入Any.proto
 
-option java_outer_classname = "MessageBody";
+option java_outer_classname = "ClientMessageBody";
 
-message Msg {
+message ClientMessage {
 
     int64 seq = 1;
     string from = 2;
     string to = 3;
 
     // uint32 type = 4;
-    MsgType type = 4;
+    MessageType type = 4;
 
     // bytes data = 5;
     google.protobuf.Any data = 5;
 
-    enum MsgType {
-        MESSAGE = 0;
+    enum MessageType {
+        Msg = 0;
         FRIEND = 1;
         GROUP = 2;
+        LOGIN = 3;
     }
-
+    message Login {
+        string token = 1;
+        string userId = 2;
+    }
     message Friend {
         string name = 1;
     }

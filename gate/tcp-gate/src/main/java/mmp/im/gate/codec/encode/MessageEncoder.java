@@ -6,8 +6,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import mmp.im.protocol.MessageBody;
-import mmp.im.protocol.ProtocolHeader;
+
+import mmp.im.protocol.*;
 
 
 @ChannelHandler.Sharable
@@ -27,8 +27,14 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
     private byte[] encodeHeader(MessageLite msg, short bodyLength) {
         byte protocolType = 0x0f;
 
-        if (msg instanceof MessageBody.Msg) {
+        if (msg instanceof ClientMessageBody.ClientMessage) {
             protocolType = ProtocolHeader.ProtocolType.MESSAGE.getType();
+        } else if (msg instanceof AcknowledgeBody.Acknowledge) {
+            protocolType = ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType();
+        } else if (msg instanceof HeartbeatBody.Heartbeat) {
+            protocolType = ProtocolHeader.ProtocolType.HEART_BEAT.getType();
+        } else if (msg instanceof ServerMessageBody.ServerMessage) {
+            protocolType = ProtocolHeader.ProtocolType.SERVER.getType();
         }
 
         byte[] header = new byte[ProtocolHeader.HEAD_LENGTH];

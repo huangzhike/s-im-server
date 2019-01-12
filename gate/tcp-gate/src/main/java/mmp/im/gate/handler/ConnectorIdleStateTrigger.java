@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import mmp.im.protocol.Heartbeat;
+import mmp.im.protocol.HeartbeatBody;
 
 
 /**
@@ -19,7 +19,7 @@ public class ConnectorIdleStateTrigger extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
-                ctx.writeAndFlush(Heartbeat.build());
+                ctx.writeAndFlush(HeartbeatBody.Heartbeat.newBuilder().build());
             }
         } else {
             super.userEventTriggered(ctx, evt);

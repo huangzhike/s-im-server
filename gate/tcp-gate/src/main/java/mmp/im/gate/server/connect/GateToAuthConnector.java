@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TCPConnector extends AbstractTCPConnector {
+public class GateToAuthConnector extends AbstractTCPConnector {
 
 
     @Override

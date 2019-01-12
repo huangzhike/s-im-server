@@ -1,28 +1,29 @@
-package mmp.im.gate.protocol.parser;
+package mmp.im.gate.protocol.parser.clientMessage;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.protocol.handler.IMsgTypeHandler;
+import mmp.im.gate.protocol.handler.IMessageTypeHandler;
+import mmp.im.gate.protocol.parser.IProtocolParser;
 import mmp.im.gate.util.PackageUtil;
-import mmp.im.protocol.MessageBody;
+import mmp.im.protocol.ClientMessageBody;
 import mmp.im.protocol.ProtocolHeader;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TCPProtocolParser implements IProtocolParser {
+public class ClientMessageParser implements IProtocolParser {
 
     private Map<String, Object> msgTypeHandlers;
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classes = PackageUtil.getSubClasses("mmp.im.gate.protocol", IMsgTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.clientMessage", IMessageTypeHandler.class);
 
-        classes.forEach(v -> {
+        classList.forEach(v -> {
             try {
-                IMsgTypeHandler e = (IMsgTypeHandler) v.newInstance();
-                this.msgTypeHandlers.put(e.getName(), e);
+                IMessageTypeHandler e = (IMessageTypeHandler) v.newInstance();
+                this.msgTypeHandlers.put(e.getHandlerName(), e);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -36,17 +37,18 @@ public class TCPProtocolParser implements IProtocolParser {
         return ProtocolHeader.ProtocolType.MESSAGE.getType();
     }
 
-    public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
+    public void parse(ChannelHandlerContext channelHandlerContext,  byte[]  bytes) {
 
-        MessageBody.Msg msg = null;
+        ClientMessageBody.ClientMessage msg = null;
+
         try {
-            msg = MessageBody.Msg.parseFrom(bytes);
+            msg = ClientMessageBody.ClientMessage.parseFrom(bytes);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
         if (msg != null) {
             String type = String.valueOf(msg.getType().getNumber());
-            IMsgTypeHandler handler = (IMsgTypeHandler) this.getMsgTypeHandlers().get(type);
+            IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(type);
             if (handler != null) {
                 handler.process(channelHandlerContext, msg);
             }
@@ -55,7 +57,7 @@ public class TCPProtocolParser implements IProtocolParser {
 
     }
 
-    public Map<String, Object> getMsgTypeHandlers() {
+    private Map<String, Object> getMsgTypeHandlers() {
         return this.msgTypeHandlers;
     }
 

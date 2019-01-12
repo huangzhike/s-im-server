@@ -1,14 +1,11 @@
 package mmp.im.gate.codec.decode;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import mmp.im.protocol.Acknowledge;
-import mmp.im.protocol.MessageBody;
+import mmp.im.protocol.ParserPacket;
 import mmp.im.protocol.ProtocolHeader;
 
-import java.nio.ByteBuffer;
 import java.util.List;
 
 
@@ -36,7 +33,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
             byte high = in.readByte();
             byte low = in.readByte();
 
-            short bodyLength = (byte) ((low & 0xff) | ((high & 0xff) << 8));
+            short bodyLength = (short) ((low & 0xff) | ((high & 0xff) << 8));
 
 
             // 如果可读长度小于body长度，恢复读指针，退出
@@ -65,39 +62,20 @@ public class MessageDecoder extends ByteToMessageDecoder {
                 offset = 0;
             }
 
-            ByteBuf message = Unpooled.buffer(ProtocolHeader.HEAD_LENGTH - 4 - 2 + bodyLength);
+            // ByteBuf clientMessage = Unpooled.buffer(bodyLength);
+            // clientMessage.writeBytes(array);
+            // out.add(clientMessage.array());
 
-            // 参考 https://www.jianshu.com/p/8e407689c15a
+            byte[] bytes = new byte[bodyLength];
 
-            // message.writeInt(flag);
-            message.writeByte(protocolType);
-            // message.writeShort(bodyLength);
-            message.writeBytes(array);
-            // // 要不要搞个对象池
-            // Message message = new Message();
-            //
-            // // 反序列化
-            // Object result = decodeBody(protocolType, array);
-            // message.setBody(result);
-            out.add(message.array());
+            in.readBytes(bytes);
+
+
+            out.add(new ParserPacket().setProtocolType(protocolType).setBody(bytes));
+
+
         }
     }
 
-    private Object decodeBody(byte protocolType, byte[] array) throws Exception {
-        Object object = null;
-        if (protocolType == ProtocolHeader.ProtocolType.MESSAGE.getType()) {
-            object = MessageBody.Msg.parseFrom(array);
-        } else if (protocolType == ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType()) {
-            // ACK
-            ByteBuffer buffer = ByteBuffer.allocate(8);
-            buffer.put(array, 0, array.length);
-            buffer.flip();
-
-            object = new Acknowledge(buffer.getLong());
-        } else if (protocolType == ProtocolHeader.ProtocolType.HEART_BEAT.getType()) {
-            // 心跳
-        }
-        return object; // or throw exception
-    }
 
 }

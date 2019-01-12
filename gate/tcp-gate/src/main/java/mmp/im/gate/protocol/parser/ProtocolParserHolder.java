@@ -12,33 +12,33 @@ public class ProtocolParserHolder {
     private static HashMap<Integer, Object> parsers;
 
     private static HashMap getParsers() {
+        /*
+         * DCL
+         * */
         if (parsers == null) {
-            init();
+
+            synchronized (ProtocolParserHolder.class) {
+                if (parsers == null) {
+                    parsers = new HashMap<>();
+                    List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.parser", IProtocolParser.class);
+                    Iterator iterator = classList.iterator();
+
+                    while (iterator.hasNext()) {
+                        Class c = (Class) iterator.next();
+                        try {
+                            IProtocolParser e = (IProtocolParser) c.newInstance();
+                            parsers.put(e.getProtocolKind(), e);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
         }
         return parsers;
     }
 
-    /*
-     * DCL
-     * */
-    private static synchronized void init() {
-        if (parsers == null) {
-            parsers = new HashMap<>();
-            List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol", IProtocolParser.class);
-            Iterator iterator = classList.iterator();
-
-            while (iterator.hasNext()) {
-                Class c = (Class) iterator.next();
-                try {
-                    IProtocolParser e = (IProtocolParser) c.newInstance();
-                    parsers.put(e.getProtocolKind(), e);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    }
 
     public static IProtocolParser get(int protocolKind) {
         return (IProtocolParser) getParsers().get(protocolKind);

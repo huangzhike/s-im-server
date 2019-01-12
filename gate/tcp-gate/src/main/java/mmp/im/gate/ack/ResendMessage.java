@@ -4,7 +4,7 @@ import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 
 
-public class MessageToAck {
+public class ResendMessage {
 
     private final long id;
 
@@ -13,7 +13,7 @@ public class MessageToAck {
     private final Channel channel;
     private long timestamp = System.currentTimeMillis();
 
-    public MessageToAck(MessageLite msg, Channel channel, long id) {
+    public ResendMessage(MessageLite msg, Channel channel, long id) {
         this.msg = msg;
         this.channel = channel;
 

@@ -15,7 +15,7 @@ import mmp.im.server.tcp.accept.AbstractTCPAcceptor;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class TCPAcceptor extends AbstractTCPAcceptor {
+public class ClientToGateAcceptor extends AbstractTCPAcceptor {
 
 
     @Override
