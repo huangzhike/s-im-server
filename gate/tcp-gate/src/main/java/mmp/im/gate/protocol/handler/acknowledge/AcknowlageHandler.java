@@ -8,11 +8,13 @@ import mmp.im.protocol.ProtocolHeader;
 
 public class AcknowlageHandler implements IMessageTypeHandler {
 
+    @Override
     public String getHandlerName() {
 
         return String.valueOf(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
     }
 
+    @Override
     public void process(ChannelHandlerContext channel, Object object) {
         Acknowledge acknowledge = (Acknowledge) object;
         try {

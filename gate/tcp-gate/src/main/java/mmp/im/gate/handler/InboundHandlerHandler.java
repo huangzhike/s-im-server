@@ -29,11 +29,13 @@ public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
 
         if (protocolParser != null) {
-
             protocolParser.parse(ctx, parserPacket.getBody());
+        } else {
+            channel.close();
+            LOG.warn("无法识别，通道关闭");
         }
 
-        channel.writeAndFlush(null).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+        // channel.writeAndFlush(null).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
 
     }
 

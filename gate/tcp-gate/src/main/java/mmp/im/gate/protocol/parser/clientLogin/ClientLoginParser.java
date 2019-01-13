@@ -1,25 +1,24 @@
-package mmp.im.gate.protocol.parser.acknowledge;
+package mmp.im.gate.protocol.parser.clientLogin;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.config.AttributeKeyHolder;
 import mmp.im.gate.protocol.handler.IMessageTypeHandler;
 import mmp.im.gate.protocol.parser.IProtocolParser;
 import mmp.im.gate.util.PackageUtil;
-import mmp.im.protocol.AcknowledgeBody;
+import mmp.im.protocol.ClientLoginBody;
 import mmp.im.protocol.ProtocolHeader;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AcknowledgeParser implements IProtocolParser {
+public class ClientLoginParser implements IProtocolParser {
 
     private Map<String, Object> msgTypeHandlers;
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.handler.acknowledge", IMessageTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.handler.clientLogin", IMessageTypeHandler.class);
 
         classList.forEach(v -> {
             try {
@@ -36,36 +35,25 @@ public class AcknowledgeParser implements IProtocolParser {
 
     @Override
     public int getProtocolKind() {
-        return ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType();
+        return ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType();
     }
 
     @Override
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
 
-        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
-        // 没登陆就关闭
-        if (userId == null) {
-            channelHandlerContext.channel().close();
-            return;
-        }
-
-
-        AcknowledgeBody.Acknowledge acknowledge = null;
+        ClientLoginBody.ClientLogin login = null;
 
         try {
-            acknowledge = AcknowledgeBody.Acknowledge.parseFrom(bytes);
-
-
-
+            login = ClientLoginBody.ClientLogin.parseFrom(bytes);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        if (acknowledge != null) {
-            String type = String.valueOf(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
+        if (login != null) {
+            String type = String.valueOf(ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType());
             IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(type);
             if (handler != null) {
-                handler.process(channelHandlerContext, acknowledge);
+                handler.process(channelHandlerContext, login);
             }
         }
 
@@ -78,4 +66,5 @@ public class AcknowledgeParser implements IProtocolParser {
 
 
 }
+
 

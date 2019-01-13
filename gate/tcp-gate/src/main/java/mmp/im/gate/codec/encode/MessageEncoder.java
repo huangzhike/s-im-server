@@ -35,6 +35,8 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
             protocolType = ProtocolHeader.ProtocolType.HEART_BEAT.getType();
         } else if (msg instanceof ServerMessageBody.ServerMessage) {
             protocolType = ProtocolHeader.ProtocolType.SERVER.getType();
+        } else if (msg instanceof ClientLoginBody.ClientLogin) {
+            protocolType = ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType();
         }
 
         byte[] header = new byte[ProtocolHeader.HEAD_LENGTH];

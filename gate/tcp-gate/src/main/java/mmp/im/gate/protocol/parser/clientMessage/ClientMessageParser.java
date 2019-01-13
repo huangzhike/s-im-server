@@ -2,17 +2,23 @@ package mmp.im.gate.protocol.parser.clientMessage;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
+import mmp.im.gate.config.AttributeKeyHolder;
 import mmp.im.gate.protocol.handler.IMessageTypeHandler;
 import mmp.im.gate.protocol.parser.IProtocolParser;
 import mmp.im.gate.util.PackageUtil;
+import mmp.im.gate.util.mq.MQHolder;
 import mmp.im.protocol.ClientMessageBody;
 import mmp.im.protocol.ProtocolHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ClientMessageParser implements IProtocolParser {
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     private Map<String, Object> msgTypeHandlers;
 
@@ -33,16 +39,35 @@ public class ClientMessageParser implements IProtocolParser {
     }
 
 
+    @Override
     public int getProtocolKind() {
         return ProtocolHeader.ProtocolType.MESSAGE.getType();
     }
 
-    public void parse(ChannelHandlerContext channelHandlerContext,  byte[]  bytes) {
+    @Override
+    public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
+
+        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
+        // 没登陆就关闭
+        if (userId == null) {
+            channelHandlerContext.channel().close();
+            return;
+        }
 
         ClientMessageBody.ClientMessage msg = null;
 
         try {
             msg = ClientMessageBody.ClientMessage.parseFrom(bytes);
+
+
+            if (!userId.equals(msg.getFrom())) {
+                channelHandlerContext.channel().close();
+                LOG.warn("非法消息，通道关闭");
+                return;
+            }
+            // 推送到logic处理，数据库操作等
+            MQHolder.getMq().publish("", "", bytes);
+
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

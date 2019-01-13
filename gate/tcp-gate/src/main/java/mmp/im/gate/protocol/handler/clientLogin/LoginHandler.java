@@ -1,28 +1,33 @@
-package mmp.im.gate.protocol.handler.clientMessage;
+package mmp.im.gate.protocol.handler.clientLogin;
 
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.gate.cache.connection.ConnectionHolder;
 import mmp.im.gate.config.AttributeKeyHolder;
 import mmp.im.gate.protocol.handler.IMessageTypeHandler;
-import mmp.im.protocol.ClientMessageBody.ClientMessage;
+import mmp.im.protocol.ClientLoginBody.ClientLogin;
+import mmp.im.protocol.ProtocolHeader;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 public class LoginHandler implements IMessageTypeHandler {
 
+    @Override
     public String getHandlerName() {
 
-        return String.valueOf(ClientMessage.MessageType.LOGIN_VALUE);
+        return String.valueOf(ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType());
     }
 
+    @Override
     public void process(ChannelHandlerContext channelHandlerContext, Object object) {
-        ClientMessage message = (ClientMessage) object;
+        ClientLogin login = (ClientLogin) object;
         try {
-            ClientMessage.Login login = message.getData().unpack(ClientMessage.Login.class);
+
             System.out.println(login.getToken());
 
             // 从AUTH获取用户TOKEN对比
 
             channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).set(login.getUserId());
-
+            channelHandlerContext.channel().attr(AttributeKeyHolder.SEQ).set(new AtomicLong());
 
             ConnectionHolder.addConnection(login.getUserId(), channelHandlerContext);
 

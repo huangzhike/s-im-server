@@ -22,12 +22,9 @@ message ClientMessage {
         Msg = 0;
         FRIEND = 1;
         GROUP = 2;
-        LOGIN = 3;
+
     }
-    message Login {
-        string token = 1;
-        string userId = 2;
-    }
+
     message Friend {
         string name = 1;
     }
