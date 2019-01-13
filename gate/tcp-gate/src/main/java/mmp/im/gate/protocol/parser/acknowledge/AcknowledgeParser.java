@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.gate.config.AttributeKeyHolder;
 import mmp.im.gate.protocol.handler.IMessageTypeHandler;
 import mmp.im.gate.protocol.parser.IProtocolParser;
-import mmp.im.gate.util.PackageUtil;
+import mmp.im.common.util.reflect.PackageUtil;
 import mmp.im.protocol.AcknowledgeBody;
 import mmp.im.protocol.ProtocolHeader;
 

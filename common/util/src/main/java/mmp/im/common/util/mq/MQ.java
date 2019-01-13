@@ -1,4 +1,4 @@
-package mmp.im.gate.util.mq;
+package mmp.im.common.util.mq;
 
 import com.rabbitmq.client.*;
 import org.slf4j.Logger;

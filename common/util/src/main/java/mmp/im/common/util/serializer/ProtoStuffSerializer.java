@@ -1,4 +1,4 @@
-package mmp.im.gate.util.serializer;
+package mmp.im.common.util.serializer;
 
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;

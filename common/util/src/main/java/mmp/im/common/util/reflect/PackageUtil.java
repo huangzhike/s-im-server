@@ -1,4 +1,4 @@
-package mmp.im.gate.util;
+package mmp.im.common.util.reflect;
 
 import java.io.File;
 import java.io.FileInputStream;

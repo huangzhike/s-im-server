@@ -9,12 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>server</artifactId>
+    <artifactId>common</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>tcp-server</module>
-        <module>websocket-server</module>
-    </modules>
+        <module>server</module>
 
+        <module>protocol</module>
+        <module>util</module>
+
+    </modules>
 
 </project>

@@ -1,9 +1,7 @@
 package mmp.im.gate.protocol.handler.clientMessage;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.config.AttributeKeyHolder;
 import mmp.im.gate.protocol.handler.IMessageTypeHandler;
-import mmp.im.gate.util.mq.MQHolder;
 import mmp.im.protocol.ClientMessageBody;
 
 public class MessageHandler implements IMessageTypeHandler {

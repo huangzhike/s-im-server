@@ -1,4 +1,4 @@
-package mmp.im.gate.util.serializer;
+package mmp.im.common.util.serializer;
 
 
 public final class SerializerHolder {

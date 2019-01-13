@@ -1,4 +1,4 @@
-package mmp.im.gate.util;
+package mmp.im.common.util.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

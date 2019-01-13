@@ -1,4 +1,4 @@
-package mmp.im.gate.util.mq;
+package mmp.im.common.util.mq;
 
 public final class MQHolder {
 

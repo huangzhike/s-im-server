@@ -1,7 +1,7 @@
 package mmp.im.gate.protocol.parser;
 
 
-import mmp.im.gate.util.PackageUtil;
+import mmp.im.common.util.reflect.PackageUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
