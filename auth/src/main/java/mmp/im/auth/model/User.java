@@ -3,7 +3,7 @@ package mmp.im.auth.model;
 public class User {
     private String id;
     private String name;
-    private  String password;
+    private String password;
     private String token;
 
     public String getId() {

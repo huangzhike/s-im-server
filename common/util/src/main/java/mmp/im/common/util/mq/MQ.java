@@ -17,37 +17,37 @@ import java.util.concurrent.ConcurrentLinkedQueue;
     5）复用同一个连接（connection）、各自两个channel（生产者、消费者）；
     6）消费者手动ACK：业务层处理不成功可重新放回队列。
 */
-public class MQ {
+public abstract class MQ {
 
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    private Connection connection = null;
-    private Channel pubChannel = null;
+    protected final ConnectionFactory connectionFactory = new ConnectionFactory();
+    protected Connection connection = null;
+    protected Channel pubChannel = null;
 
 
     // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-    private final Timer startAgainTimer = new Timer();
+    protected final Timer startAgainTimer = new Timer();
 
     // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
-    private boolean startRunning = false;
+    protected boolean startRunning = false;
 
 
     // processor 启动或运行出错时，可以自动恢复
-    private final Timer retryProcessorTimer = new Timer();
+    protected final Timer retryProcessorTimer = new Timer();
 
     // 防止 processor 失败重试时因TimeTask的异步执行发生重复执行
-    private boolean retryProcessorRunning = false;
+    protected boolean retryProcessorRunning = false;
 
     // 发送消息失败，下次连接恢复时再发送
-    private final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
+    protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
 
 
     // 队列的生产者，将消息发送至此
-    private String publishToQueue;
+    protected String publishToQueue;
 
     // 队列的消费者，从其中读取消息
-    private String consumeFromQueue;
+    protected String consumeFromQueue;
 
 
     public MQ(String mqURI, String publishToQueue, String consumeFromQueue) {
@@ -155,33 +155,23 @@ public class MQ {
 
         while (resendQueue.size() > 0) {
             ResendElement resendElement = resendQueue.poll();
-            this.publish(resendElement.exchangeName, resendElement.routingKey, resendElement.bytes);
+            this.publish(resendElement.exchangeName, resendElement.routingKey, resendElement.msg);
         }
     }
 
     // 发布
-    public boolean publish(String exchangeName, String routingKey, byte[] bytes) {
-        boolean ok = false;
-
-        try {
-            pubChannel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, bytes);
-            ok = true;
-        } catch (Exception e) {
-            resendQueue.add(new ResendElement(exchangeName, routingKey, bytes));
-        }
-        return ok;
-    }
+    public abstract  boolean publish(String exchangeName, String routingKey, Object msg) ;
 
 
-    class ResendElement {
+    protected class ResendElement {
         public String exchangeName;
         public String routingKey;
-        public byte[] bytes;
+        public Object msg;
 
-        ResendElement(String exchangeName, String routingKey, byte[] bytes) {
+        public ResendElement(String exchangeName, String routingKey, Object msg) {
             this.exchangeName = exchangeName;
             this.routingKey = routingKey;
-            this.bytes = bytes;
+            this.msg = msg;
         }
     }
 
@@ -232,12 +222,5 @@ public class MQ {
         }
     }
 
-    protected boolean process(byte[] contentBody) {
-        try {
-            System.out.println(contentBody);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
+    protected  abstract  boolean process(byte[] contentBody) ;
 }

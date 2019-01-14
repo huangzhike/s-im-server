@@ -58,7 +58,6 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
     }
 
 
-
     // 跨域
     @Bean
     public CorsFilter corsFilter() {

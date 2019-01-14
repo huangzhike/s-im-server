@@ -5,11 +5,11 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
-import mmp.im.gate.codec.decode.MessageDecoder;
-import mmp.im.gate.codec.encode.MessageEncoder;
-import mmp.im.gate.handler.AcceptorIdleStateTrigger;
-import mmp.im.gate.handler.EventHandler;
-import mmp.im.gate.handler.InboundHandlerHandler;
+import mmp.im.server.tcp.codec.decode.MessageDecoder;
+import mmp.im.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.gate.handler.channel.AcceptorIdleStateTrigger;
+import mmp.im.server.tcp.handler.channel.EventHandler;
+import mmp.im.gate.handler.channel.InboundHandlerHandler;
 import mmp.im.server.tcp.accept.AbstractTCPAcceptor;
 
 import java.net.InetSocketAddress;

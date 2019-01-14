@@ -3,10 +3,10 @@ package mmp.im.gate.protocol.parser.clientMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.gate.config.AttributeKeyHolder;
-import mmp.im.gate.protocol.handler.IMessageTypeHandler;
-import mmp.im.gate.protocol.parser.IProtocolParser;
+import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
+import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;
-import mmp.im.common.util.mq.MQHolder;
+import mmp.im.gate.util.MQHolder;
 import mmp.im.protocol.ClientMessageBody;
 import mmp.im.protocol.ProtocolHeader;
 import org.slf4j.Logger;
@@ -66,7 +66,7 @@ public class ClientMessageParser implements IProtocolParser {
                 return;
             }
             // 推送到logic处理，数据库操作等
-            MQHolder.getMq().publish("", "", bytes);
+            MQHolder.getMq().publish("", "", msg);
 
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();

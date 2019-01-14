@@ -1,7 +1,7 @@
 package mmp.im.gate;
 
 
-import mmp.im.gate.ack.ResendMessageThread;
+import mmp.im.server.tcp.cache.ack.ResendMessageThread;
 
 public class Starter {
 

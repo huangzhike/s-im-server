@@ -37,6 +37,5 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
     }
 
 
-
 }
 

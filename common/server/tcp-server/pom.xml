@@ -12,12 +12,17 @@
     <artifactId>tcp-server</artifactId>
 
     <dependencies>
-    <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
-    <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-all</artifactId>
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
 
-    </dependency>
+        </dependency>
+        <dependency>
+            <groupId>mmp</groupId>
+            <artifactId>protocol</artifactId>
+
+        </dependency>
 
     </dependencies>
 </project>

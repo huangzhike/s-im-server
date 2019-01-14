@@ -1,8 +1,8 @@
 package mmp.im.gate.protocol.handler.acknowledge;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.ack.ResendMessageMap;
-import mmp.im.gate.protocol.handler.IMessageTypeHandler;
+import mmp.im.server.tcp.cache.ack.ResendMessageMap;
+import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
 import mmp.im.protocol.AcknowledgeBody.Acknowledge;
 import mmp.im.protocol.ProtocolHeader;
 

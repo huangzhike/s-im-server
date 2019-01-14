@@ -1,5 +1,6 @@
 package mmp.im.auth.utils;
 
+import mmp.im.common.util.serializer.IOSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -12,19 +13,18 @@ import java.util.List;
 public class RedisUtil {
 
 
-
     @Autowired
     private JedisPool jedisPool;
 
 
     @SuppressWarnings("unchecked")
-    public <T> T getMapValue(String mapkey, String key, Class<T> requiredType)  {
+    public <T> T getMapValue(String mapkey, String key, Class<T> requiredType) {
 
         try (Jedis jedis = jedisPool.getResource()) {
             List<byte[]> result = jedis.hmget(mapkey.getBytes(), key.getBytes());
             if (null != result && result.size() > 0) {
                 byte[] x = result.get(0);
-                T resultObj = SerializeUtil.deserialize(x, requiredType);
+                T resultObj = IOSerializer.deserialize(x, requiredType);
                 return resultObj;
             }
         } catch (Exception e) {
@@ -34,10 +34,10 @@ public class RedisUtil {
     }
 
 
-    public void setMapValue(String mapkey, String key, Object value)   {
+    public void setMapValue(String mapkey, String key, Object value) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            byte[] keyValue = SerializeUtil.serialize(value);
+            byte[] keyValue = IOSerializer.serialize(value);
             jedis.hset(mapkey.getBytes(), key.getBytes(), keyValue);
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class RedisUtil {
     }
 
 
-    public Object delMapValue(String mapKey, String... dkey)  {
+    public Object delMapValue(String mapKey, String... dkey) {
         Long result = null;
         try (Jedis jedis = jedisPool.getResource()) {
             byte[][] dx = new byte[dkey.length][];
@@ -62,13 +62,13 @@ public class RedisUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getList(String listKey, int start, int end, Class<T> requiredType)  {
+    public <T> List<T> getList(String listKey, int start, int end, Class<T> requiredType) {
         List<T> list = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
 
             List<byte[]> xx = jedis.lrange(listKey.getBytes(), start, end);
             for (byte[] bs : xx) {
-                T t = SerializeUtil.deserialize(bs, requiredType);
+                T t = IOSerializer.deserialize(bs, requiredType);
                 list.add(t);
             }
 
@@ -79,14 +79,14 @@ public class RedisUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getList(String listKey, Class<T> requiredType)  {
+    public <T> List<T> getList(String listKey, Class<T> requiredType) {
         List<T> list = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
 
             // 取全部
             List<byte[]> xx = jedis.lrange(listKey.getBytes(), 0, -1);
             for (byte[] bs : xx) {
-                T t = SerializeUtil.deserialize(bs, requiredType);
+                T t = IOSerializer.deserialize(bs, requiredType);
                 list.add(t);
             }
 
@@ -97,11 +97,11 @@ public class RedisUtil {
     }
 
 
-    public void addList(String listKey, Object value)  {
+    public void addList(String listKey, Object value) {
 
         try (Jedis jedis = jedisPool.getResource()) {
 
-            byte[] listItem = SerializeUtil.serialize(value);
+            byte[] listItem = IOSerializer.serialize(value);
             jedis.lpush(listKey.getBytes(), listItem);
 
         } catch (Exception e) {

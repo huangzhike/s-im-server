@@ -7,10 +7,10 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.HashedWheelTimer;
-import mmp.im.gate.codec.decode.MessageDecoder;
-import mmp.im.gate.codec.encode.MessageEncoder;
-import mmp.im.gate.handler.ConnectorIdleStateTrigger;
-import mmp.im.gate.handler.ReconnectHandler;
+import mmp.im.server.tcp.codec.decode.MessageDecoder;
+import mmp.im.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.gate.handler.channel.ConnectorIdleStateTrigger;
+import mmp.im.server.tcp.handler.channel.ReconnectHandler;
 import mmp.im.server.tcp.connect.AbstractTCPConnector;
 
 import java.util.concurrent.ThreadFactory;

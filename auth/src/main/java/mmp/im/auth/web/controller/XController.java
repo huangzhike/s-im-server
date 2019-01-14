@@ -61,6 +61,12 @@ public class XController {
         return Response.success();
     }
 
+    @PostMapping("checkToken")
+    @ResponseBody
+    public Object checkToken(User user) {
+
+        return Response.success();
+    }
 
     @GetMapping("/")
     public String index() {

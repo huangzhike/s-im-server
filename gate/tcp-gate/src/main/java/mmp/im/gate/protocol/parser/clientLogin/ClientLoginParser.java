@@ -2,8 +2,8 @@ package mmp.im.gate.protocol.parser.clientLogin;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.protocol.handler.IMessageTypeHandler;
-import mmp.im.gate.protocol.parser.IProtocolParser;
+import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
+import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;
 import mmp.im.protocol.ClientLoginBody;
 import mmp.im.protocol.ProtocolHeader;
