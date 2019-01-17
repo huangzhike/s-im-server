@@ -1,13 +1,13 @@
 package mmp.im.logic.service;
 
-import mmp.im.common.util.mq.MQ;
+import mmp.im.common.util.mq.MQConsumer;
 
 
-public class MQHandler extends MQ {
+public class MQHandler extends MQConsumer {
 
 
-    public MQHandler(String mqURI, String publishToQueue, String consumeFromQueue) {
-        super(mqURI, publishToQueue, consumeFromQueue);
+    public MQHandler(String mqURI, String consumeFromQueue) {
+        super(mqURI, consumeFromQueue);
     }
 
     @Override

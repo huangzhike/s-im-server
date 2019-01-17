@@ -53,7 +53,7 @@ public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
             LOG.warn("channelInactive... userId: " + userId + "remoteAddress: " + ctx.channel().remoteAddress());
             if (null != userId) {
                 // 移除连接
-                ConnectionHolder.removeConnection(userId);
+                ChannelHandlerContext channelHandlerContext = ConnectionHolder.removeClientConnection(userId);
             }
             // 关闭连接
             if (ctx.channel().isOpen()) {

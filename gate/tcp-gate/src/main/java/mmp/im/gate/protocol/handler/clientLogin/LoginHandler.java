@@ -54,7 +54,7 @@ public class LoginHandler implements IMessageTypeHandler {
             channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).set(login.getUserId());
             channelHandlerContext.channel().attr(AttributeKeyHolder.SEQ).set(new AtomicLong());
 
-            ConnectionHolder.addConnection(login.getUserId(), channelHandlerContext);
+            ConnectionHolder.addClientConnection(login.getUserId(), channelHandlerContext);
 
         } catch (Exception e) {
             e.printStackTrace();

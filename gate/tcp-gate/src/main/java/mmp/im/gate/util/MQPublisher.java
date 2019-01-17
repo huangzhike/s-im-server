@@ -2,21 +2,15 @@ package mmp.im.gate.util;
 
 import com.google.protobuf.MessageLite;
 import com.rabbitmq.client.MessageProperties;
-import mmp.im.common.util.mq.MQ;
+import mmp.im.common.util.mq.MQProducer;
 import mmp.im.protocol.*;
 
 import java.nio.ByteBuffer;
 
-public class MQPublisher extends MQ {
+public class MQPublisher extends MQProducer {
 
-    public MQPublisher(String mqURI, String publishToQueue, String consumeFromQueue) {
-        super(mqURI, publishToQueue, consumeFromQueue);
-    }
-
-    @Override
-    protected boolean process(byte[] contentBody) {
-
-        return true;
+    public MQPublisher(String mqURI, String publishToQueue ) {
+        super(mqURI, publishToQueue);
     }
 
     @Override

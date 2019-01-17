@@ -1,19 +1,13 @@
 package mmp.im.logic.util;
 
-import com.google.protobuf.MessageLite;
-import com.rabbitmq.client.MessageProperties;
-import mmp.im.common.util.mq.MQ;
+import mmp.im.common.util.mq.MQConsumer;
 
-public class MQProcessor extends MQ {
+public class MQProcessor extends MQConsumer {
 
-    public MQProcessor(String mqURI, String publishToQueue, String consumeFromQueue) {
-        super(mqURI, publishToQueue, consumeFromQueue);
+    public MQProcessor(String mqURI, String consumeFromQueue) {
+        super(mqURI, consumeFromQueue);
     }
 
-    @Override
-    public boolean publish(String exchangeName, String routingKey, Object msg) {
-        return true;
-    }
 
     @Override
     protected boolean process(byte[] contentBody) {

@@ -1,17 +1,15 @@
 package mmp.im.gate.util;
 
-import mmp.im.common.util.mq.MQ;
-
 public final class MQHolder {
 
     private static final MQPublisher mq;
 
     static {
-        mq = new MQPublisher("", "", "");
+        mq = new MQPublisher("", "");
         mq.start();
     }
 
-    public static MQ getMq() {
+    public static MQPublisher getMq() {
         return mq;
     }
 }

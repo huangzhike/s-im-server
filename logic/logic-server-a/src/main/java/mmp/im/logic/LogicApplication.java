@@ -1,6 +1,5 @@
 package mmp.im.logic;
 
-import mmp.im.common.util.mq.MQ;
 import mmp.im.logic.util.MQProcessor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class LogicApplication extends SpringBootServletInitializer implements Co
 
     @Override
     public void run(String... args) throws Exception {
-        MQProcessor mq = new MQProcessor("", "", "");
+        MQProcessor mq = new MQProcessor("", "");
         mq.start();
         LOG.warn("Spring Boot 启动完成");
     }
