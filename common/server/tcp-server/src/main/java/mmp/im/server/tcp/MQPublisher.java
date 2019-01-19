@@ -1,4 +1,4 @@
-package mmp.im.gate.util;
+package mmp.im.server.tcp;
 
 import com.google.protobuf.MessageLite;
 import com.rabbitmq.client.MessageProperties;
@@ -41,6 +41,8 @@ public class MQPublisher extends MQProducer {
             protocolType = ProtocolHeader.ProtocolType.SERVER.getType();
         } else if (msg instanceof ClientLoginBody.ClientLogin) {
             protocolType = ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType();
+        }else if (msg instanceof ClientLogoutBody.ClientLogout) {
+            protocolType = ProtocolHeader.ProtocolType.CLIENT_LOGOUT.getType();
         }
 
         byte[] body = msg.toByteArray();

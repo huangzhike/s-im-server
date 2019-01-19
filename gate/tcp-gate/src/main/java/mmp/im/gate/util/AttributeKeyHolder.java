@@ -1,4 +1,4 @@
-package mmp.im.gate.config;
+package mmp.im.gate.util;
 
 import io.netty.util.AttributeKey;
 

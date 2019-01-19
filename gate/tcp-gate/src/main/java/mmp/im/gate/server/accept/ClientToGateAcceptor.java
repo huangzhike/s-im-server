@@ -9,12 +9,15 @@ import mmp.im.server.tcp.codec.decode.MessageDecoder;
 import mmp.im.server.tcp.codec.encode.MessageEncoder;
 import mmp.im.gate.handler.channel.AcceptorIdleStateTrigger;
 import mmp.im.server.tcp.handler.channel.EventHandler;
-import mmp.im.gate.handler.channel.InboundHandlerHandler;
+import mmp.im.gate.handler.channel.ClientToGateHandler;
 import mmp.im.server.tcp.accept.AbstractTCPAcceptor;
+import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
+
+@Component
 public class ClientToGateAcceptor extends AbstractTCPAcceptor {
 
 
@@ -35,7 +38,7 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                                     new MessageDecoder(),
                                     new MessageEncoder(),
 
-                                    new InboundHandlerHandler(),
+                                    new ClientToGateHandler(),
                                     new EventHandler(null)
                             );
                         }

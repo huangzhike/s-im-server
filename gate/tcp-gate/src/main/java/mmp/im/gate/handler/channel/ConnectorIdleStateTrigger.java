@@ -6,11 +6,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import mmp.im.protocol.HeartbeatBody;
+import org.springframework.stereotype.Component;
 
 
-/**
- * 心跳trigger
- */
+@Component
 @ChannelHandler.Sharable
 public class ConnectorIdleStateTrigger extends ChannelInboundHandlerAdapter {
 

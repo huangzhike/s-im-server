@@ -1,17 +1,22 @@
 package mmp.im.gate.handler.channel;
 
-import io.netty.channel.*;
-import mmp.im.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.gate.config.AttributeKeyHolder;
-import mmp.im.server.tcp.protocol.parser.IProtocolParser;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import mmp.im.gate.protocol.parser.ProtocolParserHolder;
+import mmp.im.gate.util.AttributeKeyHolder;
 import mmp.im.protocol.ParserPacket;
+import mmp.im.server.tcp.cache.connection.ConnectionHolder;
+import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+
+@Component
 @ChannelHandler.Sharable
-// public class InboundHandlerHandler extends SimpleChannelInboundHandler<Object> {
-public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
+public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -21,7 +26,6 @@ public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
         Channel channel = ctx.channel();
 
         ParserPacket parserPacket = (ParserPacket) message;
-
 
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
 
@@ -49,12 +53,10 @@ public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
         try {
-            String userId = ctx.channel().attr(AttributeKeyHolder.USER_ID).get();
-            LOG.warn("channelInactive... userId: " + userId + "remoteAddress: " + ctx.channel().remoteAddress());
-            if (null != userId) {
-                // 移除连接
-                ChannelHandlerContext channelHandlerContext = ConnectionHolder.removeClientConnection(userId);
-            }
+
+            String key =ctx.channel().remoteAddress().toString();
+
+            ConnectionHolder.removeServerConnection(key);
             // 关闭连接
             if (ctx.channel().isOpen()) {
                 ctx.channel().close();
@@ -79,3 +81,4 @@ public class InboundHandlerHandler extends ChannelInboundHandlerAdapter {
     }
 
 }
+

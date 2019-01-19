@@ -1,25 +1,26 @@
-package mmp.im.gate.protocol.parser.clientLogin;
+package mmp.im.gate.protocol.parser.clientLogout;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.protocol.AcknowledgeBody;
+import mmp.im.common.util.reflect.PackageUtil;
+import mmp.im.gate.util.AttributeKeyHolder;
+import mmp.im.protocol.ClientLoginBody;
+import mmp.im.protocol.ClientLogoutBody;
+import mmp.im.protocol.ProtocolHeader;
 import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
 import mmp.im.server.tcp.protocol.parser.IProtocolParser;
-import mmp.im.common.util.reflect.PackageUtil;
-import mmp.im.protocol.ClientLoginBody;
-import mmp.im.protocol.ProtocolHeader;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClientLoginParser implements IProtocolParser {
+public class ClientLogoutParser implements IProtocolParser {
 
     private Map<String, Object> msgTypeHandlers;
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.handler.clientLogin", IMessageTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.handler.clientLogout", IMessageTypeHandler.class);
 
         classList.forEach(v -> {
             try {
@@ -36,30 +37,32 @@ public class ClientLoginParser implements IProtocolParser {
 
     @Override
     public int getProtocolKind() {
-        return ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType();
+        return ProtocolHeader.ProtocolType.CLIENT_LOGOUT.getType();
     }
 
     @Override
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
 
-        ClientLoginBody.ClientLogin login = null;
+        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
+        // 没登陆就关闭
+        if (userId == null) {
+            channelHandlerContext.channel().close();
+            return;
+        }
+
+        ClientLogoutBody.ClientLogout logout = null;
 
         try {
-            login = ClientLoginBody.ClientLogin.parseFrom(bytes);
+            logout = ClientLogoutBody.ClientLogout.parseFrom(bytes);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        if (login != null) {
-            String type = String.valueOf(ProtocolHeader.ProtocolType.CLIENT_LOGIN.getType());
+        if (logout != null) {
+            String type = String.valueOf(ProtocolHeader.ProtocolType.CLIENT_LOGOUT.getType());
             IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(type);
             if (handler != null) {
-                handler.process(channelHandlerContext, login);
-
-                // 回复确认
-                AcknowledgeBody.Acknowledge.Builder builder = AcknowledgeBody.Acknowledge.newBuilder();
-
-                channelHandlerContext.channel().writeAndFlush(builder.setAck(login.getSeq()));
+                handler.process(channelHandlerContext, logout);
             }
         }
 

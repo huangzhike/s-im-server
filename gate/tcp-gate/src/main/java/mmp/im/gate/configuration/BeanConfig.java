@@ -1,13 +1,13 @@
-package mmp.im.logic.configuration;
+package mmp.im.gate.configuration;
 
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.github.pagehelper.PageHelper;
-import mmp.im.logic.service.MQHandler;
-import mmp.im.logic.web.converter.DateToStringConverter;
-import mmp.im.logic.web.converter.StringToDateConverter;
+import mmp.im.gate.service.MQHandler;
+import mmp.im.gate.web.converter.DateToStringConverter;
+import mmp.im.gate.web.converter.StringToDateConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +37,9 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
     private String path;
 
 
+    @Value("${mq.publishToQueue}")
+    private String publishToQueue;
+
     @Value("${mq.consumeFromQueue}")
 
     private String consumeFromQueue;
@@ -54,7 +57,6 @@ public class BeanConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MQHandler mqHandler() {
         MQHandler mqHandler = new MQHandler(mqURI, consumeFromQueue);
-
         return mqHandler;
     }
 

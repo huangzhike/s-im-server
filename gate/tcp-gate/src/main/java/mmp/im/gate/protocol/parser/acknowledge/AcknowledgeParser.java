@@ -2,7 +2,7 @@ package mmp.im.gate.protocol.parser.acknowledge;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.config.AttributeKeyHolder;
+import mmp.im.gate.util.AttributeKeyHolder;
 import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
 import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;

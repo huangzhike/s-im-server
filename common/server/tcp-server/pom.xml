@@ -24,5 +24,11 @@
 
         </dependency>
 
+        <dependency>
+            <groupId>mmp</groupId>
+        <artifactId>util</artifactId>
+
+        </dependency>
+
     </dependencies>
 </project>
