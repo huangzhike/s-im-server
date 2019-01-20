@@ -2,13 +2,12 @@ package mmp.im.gate.protocol.parser.clientLogout;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
+import mmp.im.common.protocol.ClientLogoutBody;
+import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.parser.IProtocolParser;
+import mmp.im.common.server.tcp.AttributeKeyHolder;
 import mmp.im.common.util.reflect.PackageUtil;
-import mmp.im.gate.util.AttributeKeyHolder;
-import mmp.im.protocol.ClientLoginBody;
-import mmp.im.protocol.ClientLogoutBody;
-import mmp.im.protocol.ProtocolHeader;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
-import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 
 import java.util.HashMap;
 import java.util.List;

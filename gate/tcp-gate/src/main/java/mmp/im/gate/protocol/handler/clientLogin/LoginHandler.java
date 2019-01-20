@@ -3,19 +3,17 @@ package mmp.im.gate.protocol.handler.clientLogin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.ChannelHandlerContext;
+import mmp.im.common.protocol.ClientLoginBody.ClientLogin;
+import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
 import mmp.im.common.util.http.HTTPUtil;
-import mmp.im.protocol.AcknowledgeBody;
-import mmp.im.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.gate.util.AttributeKeyHolder;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
-import mmp.im.protocol.ClientLoginBody.ClientLogin;
-import mmp.im.protocol.ProtocolHeader;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class LoginHandler implements IMessageTypeHandler {
 
@@ -56,7 +54,6 @@ public class LoginHandler implements IMessageTypeHandler {
 
 
             ConnectionHolder.addClientConnection(login.getUserId(), channelHandlerContext);
-
 
 
         } catch (Exception e) {

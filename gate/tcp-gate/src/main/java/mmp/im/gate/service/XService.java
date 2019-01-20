@@ -1,8 +1,8 @@
 package mmp.im.gate.service;
 
-import mmp.im.gate.dao.UserDao;
-import mmp.im.gate.model.Group;
-import mmp.im.gate.model.User;
+import mmp.im.common.model.Group;
+import mmp.im.common.model.User;
+import mmp.im.gate.dao.GroupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class XService {
 
     @Autowired
-    private UserDao userDao;
+    private GroupDao groupDao;
 
     public User getUser(User user) {
         return user;

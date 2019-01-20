@@ -1,8 +1,8 @@
 package mmp.im.gate.protocol.parser;
 
 
+import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;
-import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 
 import java.util.HashMap;
 import java.util.Iterator;

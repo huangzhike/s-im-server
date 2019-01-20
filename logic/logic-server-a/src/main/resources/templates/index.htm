@@ -24,7 +24,6 @@
                 visible: false,
                 form: {
                     beginTime: undefined,
-
                     status: undefined,
                     currentPage: undefined,
                 },
@@ -38,7 +37,6 @@
 
         mounted: function () {
             console.error("mounted")
-
             this.loadData()
         },
         computed: {},
@@ -56,15 +54,11 @@
             },
 
             loadData() {
-                axios.get(this.baseUrl + 'listRecord/',
+                axios.get(this.baseUrl + 'list/',
                     {
                         params: {
                             'beginTime': this.form.beginTime,
                             'endTime': this.form.endTime,
-                            'callNo': this.form.callNo,
-                            'calledNo': this.form.calledNo,
-                            'status': this.form.status,
-                            'connectType': this.form.connectType,
                             'currentPage': this.currentPage
                         }
                     }, {
@@ -73,9 +67,7 @@
                         }
                     }).then((response) => {
                     this.table = response.data
-
                     this.currentPage = response.data.currentPage
-
                     // console.info(response);
                 }).catch((error) => {
                     console.error(error);

@@ -5,12 +5,12 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
-import mmp.im.server.tcp.codec.decode.MessageDecoder;
-import mmp.im.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.common.server.tcp.accept.AbstractTCPAcceptor;
+import mmp.im.common.server.tcp.codec.decode.MessageDecoder;
+import mmp.im.common.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.common.server.tcp.handler.channel.EventHandler;
 import mmp.im.gate.handler.channel.AcceptorIdleStateTrigger;
-import mmp.im.server.tcp.handler.channel.EventHandler;
 import mmp.im.gate.handler.channel.ClientToGateHandler;
-import mmp.im.server.tcp.accept.AbstractTCPAcceptor;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;

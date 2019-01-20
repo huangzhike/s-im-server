@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import mmp.im.protocol.HeartbeatBody;
+import mmp.im.common.protocol.HeartbeatBody;
 import org.springframework.stereotype.Component;
 
 

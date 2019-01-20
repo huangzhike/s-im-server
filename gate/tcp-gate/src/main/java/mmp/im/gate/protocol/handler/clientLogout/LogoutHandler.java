@@ -1,20 +1,12 @@
 package mmp.im.gate.protocol.handler.clientLogout;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.common.util.http.HTTPUtil;
-import mmp.im.gate.util.AttributeKeyHolder;
-import mmp.im.protocol.ClientLogoutBody.ClientLogout;
-import mmp.im.protocol.ProtocolHeader;
-import mmp.im.server.tcp.MessageSender;
-import mmp.im.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-
-import java.io.IOException;
+import mmp.im.common.protocol.ClientLogoutBody.ClientLogout;
+import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.MessageSender;
+import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
 
 public class LogoutHandler implements IMessageTypeHandler {
 

@@ -1,11 +1,10 @@
 package mmp.im.gate.protocol.handler.clientMessage;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.gate.model.User;
-import mmp.im.protocol.AcknowledgeBody;
-import mmp.im.protocol.ClientMessageBody;
-import mmp.im.server.tcp.MessageSender;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.model.User;
+import mmp.im.common.protocol.ClientMessageBody;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.server.tcp.MessageSender;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class GroupHandler implements IMessageTypeHandler {
             if (userList != null) {
                 userList.forEach(user -> {
                     MessageSender.sendToClient(user.getId(), message);
-                    MessageSender.sendToServer(  message);
+                    MessageSender.sendToServer(message);
                 });
             }
 

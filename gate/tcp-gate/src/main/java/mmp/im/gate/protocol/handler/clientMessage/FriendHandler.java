@@ -1,10 +1,9 @@
 package mmp.im.gate.protocol.handler.clientMessage;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.protocol.AcknowledgeBody;
-import mmp.im.protocol.ClientMessageBody;
-import mmp.im.server.tcp.MessageSender;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.ClientMessageBody;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.server.tcp.MessageSender;
 
 public class FriendHandler implements IMessageTypeHandler {
 
@@ -23,8 +22,10 @@ public class FriendHandler implements IMessageTypeHandler {
         try {
             ClientMessageBody.ClientMessage.Friend msg = message.getData().unpack(ClientMessageBody.ClientMessage.Friend.class);
             System.out.println(msg.getName());
+            // 单聊消息
             MessageSender.sendToClient(message.getTo(), message);
-            MessageSender.sendToServer( message);
+            // 其他端有登陆
+            MessageSender.sendToServer(message);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,11 +1,10 @@
 package mmp.im.gate.protocol.handler.serverMessage;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.protocol.ServerMessageBody;
-import mmp.im.server.tcp.MessageSender;
-import mmp.im.server.tcp.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.ServerMessageBody;
+import mmp.im.common.protocol.handler.IMessageTypeHandler;
 
-public class UserLogoutHandler  implements IMessageTypeHandler {
+public class UserLogoutHandler implements IMessageTypeHandler {
 
 
     @Override
@@ -23,7 +22,6 @@ public class UserLogoutHandler  implements IMessageTypeHandler {
             ServerMessageBody.ServerMessage.UserLogout msg = message.getData().unpack(ServerMessageBody.ServerMessage.UserLogout.class);
             System.out.println(msg.getName());
 
-            MessageSender.sendToServer(  message);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,11 +4,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import mmp.im.common.protocol.ParserPacket;
+import mmp.im.common.protocol.parser.IProtocolParser;
+import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
 import mmp.im.gate.protocol.parser.ProtocolParserHolder;
-import mmp.im.gate.util.AttributeKeyHolder;
-import mmp.im.protocol.ParserPacket;
-import mmp.im.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.server.tcp.protocol.parser.IProtocolParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -54,7 +53,7 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
         try {
 
-            String key =ctx.channel().remoteAddress().toString();
+            String key = ctx.channel().remoteAddress().toString();
 
             ConnectionHolder.removeServerConnection(key);
             // 关闭连接

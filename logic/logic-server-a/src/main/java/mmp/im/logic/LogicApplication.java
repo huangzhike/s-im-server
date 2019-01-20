@@ -1,9 +1,10 @@
 package mmp.im.logic;
 
-import mmp.im.logic.util.MQProcessor;
+import mmp.im.common.util.mq.MQConsumer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class LogicApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
+
+    @Autowired
+    private MQConsumer mqConsumer;
+
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
@@ -29,8 +34,7 @@ public class LogicApplication extends SpringBootServletInitializer implements Co
 
     @Override
     public void run(String... args) throws Exception {
-        MQProcessor mq = new MQProcessor("", "");
-        mq.start();
+        mqConsumer.start();
         LOG.warn("Spring Boot 启动完成");
     }
 

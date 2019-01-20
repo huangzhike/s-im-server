@@ -1,28 +1,15 @@
 package mmp.im.logic.service;
 
-import mmp.im.logic.dao.UserDao;
-import mmp.im.logic.model.Group;
-import mmp.im.logic.model.User;
+import mmp.im.logic.dao.GroupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
 public class XService {
 
     @Autowired
-    private UserDao userDao;
-
-    public User getUser(User user) {
-        return user;
-    }
-
-
-    public List<User> getGroupUserList(Group group) {
-        return null;
-    }
+    private GroupDao groupDao;
 
 
 }

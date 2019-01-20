@@ -7,17 +7,16 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.HashedWheelTimer;
-import mmp.im.server.tcp.codec.decode.MessageDecoder;
-import mmp.im.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.common.server.tcp.codec.decode.MessageDecoder;
+import mmp.im.common.server.tcp.codec.encode.MessageEncoder;
+import mmp.im.common.server.tcp.connect.AbstractTCPConnector;
+import mmp.im.common.server.tcp.handler.channel.ReconnectHandler;
 import mmp.im.gate.handler.channel.ConnectorIdleStateTrigger;
-import mmp.im.server.tcp.handler.channel.ReconnectHandler;
-import mmp.im.server.tcp.connect.AbstractTCPConnector;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 
 @Component

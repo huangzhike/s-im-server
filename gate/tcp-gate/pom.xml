@@ -20,18 +20,10 @@
 
         </dependency>
 
-        <dependency>
-            <groupId>mmp</groupId>
-            <artifactId>protocol</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mmp</groupId>
-            <artifactId>tcp-server</artifactId>
 
-        </dependency>
         <dependency>
             <groupId>mmp</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>common</artifactId>
 
         </dependency>
         <dependency>

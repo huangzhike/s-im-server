@@ -1,8 +1,0 @@
-syntax = "proto3";
-package mmp.im.protocol;
-option java_outer_classname = "HeartbeatBody";
-
-message Heartbeat {
-
-
-}
