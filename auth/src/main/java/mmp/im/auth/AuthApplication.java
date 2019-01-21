@@ -1,4 +1,4 @@
-package mmp.im;
+package mmp.im.auth;
 
 import mmp.im.auth.server.accept.GateToAuthAcceptor;
 import org.mybatis.spring.annotation.MapperScan;

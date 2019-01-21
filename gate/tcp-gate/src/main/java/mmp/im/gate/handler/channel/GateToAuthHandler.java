@@ -46,7 +46,6 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         LOG.warn("channelActive... remoteAddress: " + ctx.channel().remoteAddress());
 
-
         ctx.fireChannelActive();
     }
 
@@ -54,7 +53,7 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
         try {
-
+            LOG.warn("GateToAuthHandler channelInactive..." );
             Channel channel = ctx.channel();
             if (channel != null) {
                 SocketAddress socketAddress = ctx.channel().remoteAddress();

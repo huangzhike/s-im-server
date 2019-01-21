@@ -86,7 +86,7 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
                         }
                     });
                 }
-            }, ++this.attempts * 500);
+            }, ++this.attempts * 100);
 
         }
         ctx.fireChannelInactive();

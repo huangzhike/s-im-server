@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 
-@Component
+// @Component
 public class ClientToGateAcceptor extends AbstractTCPAcceptor {
 
     @Override

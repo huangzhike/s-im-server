@@ -46,6 +46,7 @@ public class ConnectionHolder {
 
         // 之后重复登录需要踢掉原来的连接
         if (serverConnectionMap.containsKey(key)) {
+            LOG.warn("重复连接 key -> {} ", key);
             ChannelHandlerContext ctx = serverConnectionMap.remove(key);
             if (ctx.channel().isOpen()) {
                 ctx.channel().close();

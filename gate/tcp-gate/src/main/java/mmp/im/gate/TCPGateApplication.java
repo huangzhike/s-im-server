@@ -36,8 +36,8 @@ public class TCPGateApplication implements CommandLineRunner {
     @Autowired
     private GateToAuthConnector gateToAuthConnector;
 
-    @Autowired
-    private ClientToGateAcceptor clientToGateAcceptor;
+    // @Autowired
+    // private ClientToGateAcceptor clientToGateAcceptor;
 
     @Autowired
     private MQProducer mqProducer;
@@ -61,13 +61,13 @@ public class TCPGateApplication implements CommandLineRunner {
             }
         }).start();
 
-        new Thread(() -> {
-            try {
-                clientToGateAcceptor.bind(clientToGateAcceptorPort);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        // new Thread(() -> {
+        //     try {
+        //         clientToGateAcceptor.bind(clientToGateAcceptorPort);
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     }
+        // }).start();
 
         new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
 
