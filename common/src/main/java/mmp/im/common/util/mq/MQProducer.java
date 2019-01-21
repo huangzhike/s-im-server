@@ -10,24 +10,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class MQProducer {
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
-
-    protected final ConnectionFactory connectionFactory = new ConnectionFactory();
-    protected Connection connection = null;
-    protected Channel pubChannel = null;
-
-
-    // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-    protected final Timer startAgainTimer = new Timer();
-
-    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
-    protected boolean startRunning = false;
-
     // 发送消息失败，下次连接恢复时再发送
     protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
-
-
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
+    private final Timer startAgainTimer = new Timer();
+    protected Connection connection = null;
+    protected Channel pubChannel = null;
+    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
+    private boolean startRunning = false;
     // 队列的生产者，将消息发送至此
-    protected String publishToQueue;
+    private String publishToQueue;
 
 
     public MQProducer(String mqURI, String publishToQueue) {
@@ -134,8 +127,8 @@ public abstract class MQProducer {
         }
 
         while (resendQueue.size() > 0) {
-            MQProducer.ResendElement resendElement = resendQueue.poll();
-            this.publish(resendElement.exchangeName, resendElement.routingKey, resendElement.msg);
+            ResendElement resendElement = resendQueue.poll();
+            this.publish(resendElement.getExchangeName(), resendElement.getRoutingKey(), resendElement.getMsg());
         }
     }
 
@@ -147,18 +140,5 @@ public abstract class MQProducer {
         RabbitMQ在发消息者和 队列之间, 加入了交换器 (Exchange)
         这样发消息者和队列就没有直接联系, 转而变成发消息者把消息给交换器, 交换器根据调度策略再把消息再给队列
      */
-    protected class ResendElement {
-        // 交换器，用来接收生产者发送的消息并将这些消息路由给服务器中的队列
 
-        public String exchangeName;
-        // 队列映射的路由key
-        public String routingKey;
-        public Object msg;
-
-        public ResendElement(String exchangeName, String routingKey, Object msg) {
-            this.exchangeName = exchangeName;
-            this.routingKey = routingKey;
-            this.msg = msg;
-        }
-    }
 }

@@ -6,11 +6,14 @@ import mmp.im.auth.util.SpringContextHolder;
 import mmp.im.common.model.Info;
 import mmp.im.common.protocol.ClientMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.MessageSender;
+import mmp.im.common.server.tcp.util.MessageSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class FriendHandler implements IMessageTypeHandler {
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
     @Override

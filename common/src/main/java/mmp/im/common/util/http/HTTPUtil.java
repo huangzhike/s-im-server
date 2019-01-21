@@ -16,15 +16,20 @@ public class HTTPUtil {
 
 
     private static final Logger LOG = LoggerFactory.getLogger(HTTPUtil.class);
+
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     private static final OkHttpClient okHttpClient = new OkHttpClient();
 
 
     public static void get(String url, Object param, Callback callback) {
 
+        LOG.warn("get url -> {}", url);
+
         JSONObject jsonObject = (JSONObject) JSON.toJSON(param);
 
         String paramsString = objectToParams(jsonObject);
+
+        LOG.warn("get param -> {}", paramsString);
 
         final Request request = new Request.Builder().url(url + "?" + paramsString).get().build();
 
@@ -34,11 +39,19 @@ public class HTTPUtil {
 
     public static void post(String url, Object param, Callback callback) {
 
+        LOG.warn("post url -> {}", url);
+
         String json = JSON.toJSONString(param);
+        LOG.warn("post param -> {}", json);
+
         // 请求body
         RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, json);
+        LOG.warn("post body -> {}", body);
+
         // 请求header
         Headers headers = new Headers.Builder().add("token", "this is the token").add("id", "this is the id").build();
+        LOG.warn("post headers -> {}", headers);
+
         // 请求创建
         final Request request = new Request.Builder().url(url).post(body).headers(headers).build();
         // 发起请求
@@ -75,6 +88,8 @@ public class HTTPUtil {
                 stringBuilder.append("&");
             }
         }
+
+        LOG.warn("objectToParams -> {}", stringBuilder);
         return stringBuilder.toString();
     }
 

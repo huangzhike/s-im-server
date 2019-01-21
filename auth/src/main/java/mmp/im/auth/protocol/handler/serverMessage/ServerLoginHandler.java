@@ -3,11 +3,14 @@ package mmp.im.auth.protocol.handler.serverMessage;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.ServerMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.AttributeKeyHolder;
 import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerLoginHandler implements IMessageTypeHandler {
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public String getHandlerName() {
@@ -26,7 +29,7 @@ public class ServerLoginHandler implements IMessageTypeHandler {
             // 从AUTH获取用户TOKEN对比
 
             String userId = channelHandlerContext.channel().remoteAddress().toString();
-            channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).set(userId);
+            channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).set(userId);
 
 
             ConnectionHolder.addServerConnection(userId, channelHandlerContext);

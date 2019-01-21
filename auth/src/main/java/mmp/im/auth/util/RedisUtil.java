@@ -12,10 +12,8 @@ import java.util.List;
 @Component
 public class RedisUtil {
 
-
     @Autowired
     private JedisPool jedisPool;
-
 
     @SuppressWarnings("unchecked")
     public <T> T getMapValue(String mapkey, String key, Class<T> requiredType) {

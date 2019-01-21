@@ -6,16 +6,21 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.ClientLoginBody.ClientLogin;
 import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.AttributeKeyHolder;
 import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
 import mmp.im.common.util.http.HTTPUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 public class LoginHandler implements IMessageTypeHandler {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     @Override
     public String getHandlerName() {
@@ -50,7 +55,7 @@ public class LoginHandler implements IMessageTypeHandler {
             });
             // 从AUTH获取用户TOKEN对比
 
-            channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).set(login.getUserId());
+            channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).set(login.getUserId());
 
 
             ConnectionHolder.addClientConnection(login.getUserId(), channelHandlerContext);

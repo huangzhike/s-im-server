@@ -1,8 +1,11 @@
 package mmp.im;
 
+import mmp.im.auth.server.accept.GateToAuthAcceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +22,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class AuthApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
+    @Autowired
+    private GateToAuthAcceptor gateToAuthAcceptor;
+
+
+    @Value("${gateToAuthAcceptor.bind.port}")
+    private Integer gateToAuthAcceptorPort;
+
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -29,6 +39,14 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
 
     @Override
     public void run(String... args) throws Exception {
+
+        new Thread(() -> {
+            try {
+                gateToAuthAcceptor.bind(gateToAuthAcceptorPort);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         LOG.warn("Spring Boot 启动完成");
     }

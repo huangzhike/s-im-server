@@ -5,43 +5,36 @@ import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class ProtocolParserHolder {
 
-    private static HashMap<Integer, Object> parsers;
+    private static HashMap<Integer, IProtocolParser> parsers;
 
-    private static HashMap getParsers() {
-        /*
-         * DCL
-         * */
-        if (parsers == null) {
+    static {
 
-            synchronized (ProtocolParserHolder.class) {
-                if (parsers == null) {
-                    parsers = new HashMap<>();
-                    List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.auth.protocol.parser", IProtocolParser.class);
-                    Iterator iterator = classList.iterator();
+        parsers = new HashMap<>();
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.auth.protocol.parser", IProtocolParser.class);
 
-                    while (iterator.hasNext()) {
-                        Class c = (Class) iterator.next();
-                        try {
-                            IProtocolParser e = (IProtocolParser) c.newInstance();
-                            parsers.put(e.getProtocolKind(), e);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
+        if (classList != null) {
+            classList.forEach(aClass -> {
+                try {
+                    IProtocolParser e = (IProtocolParser) aClass.newInstance();
+                    parsers.put(e.getProtocolKind(), e);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
+            });
         }
+    }
+
+    private static HashMap<Integer, IProtocolParser> getParsers() {
+
         return parsers;
     }
 
 
     public static IProtocolParser get(int protocolKind) {
-        return (IProtocolParser) getParsers().get(protocolKind);
+        return getParsers().get(protocolKind);
     }
 }

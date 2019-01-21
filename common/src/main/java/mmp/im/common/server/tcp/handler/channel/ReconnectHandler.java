@@ -2,28 +2,37 @@ package mmp.im.common.server.tcp.handler.channel;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
-import io.netty.util.Timeout;
-import io.netty.util.Timer;
-import io.netty.util.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter implements TimerTask, IChannelHandlerHolder {
+@ChannelHandler.Sharable
+public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter implements IChannelHandlerHolder {
+
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final Bootstrap bootstrap;
-    private final Timer timer;
+
+
+    private final Timer timer = new Timer();
+
+
+    private TimerTask timerTask;
+
+
     private final int port;
 
     private final String host;
 
     private int attempts;
 
-    public ReconnectHandler(Bootstrap bootstrap, Timer timer, int port, String host) {
+    public ReconnectHandler(Bootstrap bootstrap, String host, int port) {
         this.bootstrap = bootstrap;
-        this.timer = timer;
         this.port = port;
         this.host = host;
-
     }
 
     /**
@@ -31,8 +40,8 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        attempts = 0;
+        LOG.warn("ReconnectHandler -> channelActive");
+        this.attempts = 0;
         ctx.fireChannelActive();
     }
 
@@ -41,40 +50,47 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
      * */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        LOG.warn("ReconnectHandler -> channelInactive");
+        if (this.attempts < 6) {
 
-        if (attempts < 6) {
-            // 重连间隔越来越长
-            timer.newTimeout(this, 2 << attempts++, TimeUnit.MILLISECONDS);
+            LOG.warn("the attempts is {} ", this.attempts);
+
+            // 重连
+            this.timer.schedule(  new TimerTask() {
+
+                @Override
+                public void run() {
+                    ChannelFuture future;
+                    // bootstrap初始化后，将handler填入
+                    synchronized (bootstrap) {
+                        bootstrap.handler(new ChannelInitializer<Channel>() {
+                            @Override
+                            protected void initChannel(Channel ch) throws Exception {
+                                ch.pipeline().addLast(handlers());
+                            }
+                        });
+                        LOG.warn("ReconnectHandler executing-> run connect");
+                        future = bootstrap.connect(host, port);
+                    }
+                    // future对象
+                    future.addListener(new ChannelFutureListener() {
+
+                        @Override
+                        public void operationComplete(ChannelFuture f) throws Exception {
+                            // 如果重连失败，则调用ChannelInactive方法
+                            LOG.warn("ReconnectHandler -> operationComplete");
+                            if (!f.isSuccess()) {
+                                LOG.warn("ReconnectHandler -> operationComplete failed");
+                                f.channel().pipeline().fireChannelInactive();
+                            }
+                        }
+                    });
+                }
+            }, ++this.attempts * 500);
+
         }
         ctx.fireChannelInactive();
     }
 
-    @Override
-    public void run(Timeout timeout) throws Exception {
-
-        ChannelFuture future;
-        // bootstrap初始化后，将handler填入
-        synchronized (bootstrap) {
-            bootstrap.handler(new ChannelInitializer<Channel>() {
-                @Override
-                protected void initChannel(Channel ch) throws Exception {
-                    ch.pipeline().addLast(handlers());
-                }
-            });
-            future = bootstrap.connect(host, port);
-        }
-        // future对象
-        future.addListener(new ChannelFutureListener() {
-
-            @Override
-            public void operationComplete(ChannelFuture f) throws Exception {
-                // 如果重连失败，则调用ChannelInactive方法
-                if (!f.isSuccess()) {
-                    f.channel().pipeline().fireChannelInactive();
-                }
-            }
-        });
-
-    }
 
 }

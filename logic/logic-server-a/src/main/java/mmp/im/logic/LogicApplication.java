@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -19,14 +18,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync
 @EnableScheduling
-public class LogicApplication extends SpringBootServletInitializer implements CommandLineRunner {
+public class LogicApplication implements CommandLineRunner {
 
-
-    @Autowired
-    private MQConsumer mqConsumer;
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
-
+    @Autowired
+    private MQConsumer mqConsumer;
     public static void main(String[] args) {
         SpringApplication.run(LogicApplication.class, args);
     }
@@ -34,7 +31,9 @@ public class LogicApplication extends SpringBootServletInitializer implements Co
 
     @Override
     public void run(String... args) throws Exception {
+
         mqConsumer.start();
+
         LOG.warn("Spring Boot 启动完成");
     }
 

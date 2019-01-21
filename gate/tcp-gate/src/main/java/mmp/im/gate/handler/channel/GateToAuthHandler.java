@@ -10,10 +10,11 @@ import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
 import mmp.im.gate.protocol.parser.ProtocolParserHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+
+import java.net.SocketAddress;
 
 
-@Component
+// @Component
 @ChannelHandler.Sharable
 public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
@@ -30,6 +31,7 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
         if (protocolParser != null) {
             protocolParser.parse(ctx, parserPacket.getBody());
+            LOG.warn("GateToAuthHandler channelRead parserPacket  {} remoteAddress {} ", parserPacket, channel.remoteAddress());
         } else {
             channel.close();
             LOG.warn("无法识别，通道关闭");
@@ -53,12 +55,21 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
         try {
 
-            String key = ctx.channel().remoteAddress().toString();
+            Channel channel = ctx.channel();
+            if (channel != null) {
+                SocketAddress socketAddress = ctx.channel().remoteAddress();
+                if (socketAddress != null) {
+                    String key = socketAddress.toString();
+                    LOG.warn("GateToAuthHandler channelInactive... remove remoteAddress: " + ctx.channel().remoteAddress());
+                    ConnectionHolder.removeServerConnection(key);
+                }
+            }
 
-            ConnectionHolder.removeServerConnection(key);
+
             // 关闭连接
             if (ctx.channel().isOpen()) {
                 ctx.channel().close();
+                LOG.warn("GateToAuthHandler channelInactive... close remoteAddress: " + ctx.channel().remoteAddress());
             }
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);

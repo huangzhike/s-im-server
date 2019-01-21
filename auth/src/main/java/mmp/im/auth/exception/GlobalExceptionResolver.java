@@ -24,6 +24,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
         ex.printStackTrace();
         // AJAX JSON
         HandlerMethod handlerMethod = (HandlerMethod) handler;
+
         ResponseBody responseBodyAnno = null;
         if (handlerMethod != null) {
             responseBodyAnno = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);

@@ -12,26 +12,20 @@ public abstract class MQConsumer {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    protected final ConnectionFactory connectionFactory = new ConnectionFactory();
-    protected Connection connection = null;
-
-
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
     // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-    protected final Timer startAgainTimer = new Timer();
-
-    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
-    protected boolean startRunning = false;
-
-
+    private final Timer startAgainTimer = new Timer();
     // processor 启动或运行出错时，可以自动恢复
-    protected final Timer retryProcessorTimer = new Timer();
-
+    private final Timer retryProcessorTimer = new Timer();
+    protected Connection connection = null;
+    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
+    private boolean startRunning = false;
     // 防止 processor 失败重试时因TimeTask的异步执行发生重复执行
-    protected boolean retryProcessorRunning = false;
+    private boolean retryProcessorRunning = false;
 
 
     // 队列的消费者，从其中读取消息
-    protected String consumeFromQueue;
+    private String consumeFromQueue;
 
 
     public MQConsumer(String mqURI, String consumeFromQueue) {

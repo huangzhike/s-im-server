@@ -36,6 +36,13 @@
         <dependencies>
 
 
+            <!-- https://mvnrepository.com/artifact/io.grpc/grpc-all -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-all</artifactId>
+                <version>1.17.1</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>mmp</groupId>

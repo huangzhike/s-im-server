@@ -7,7 +7,7 @@ import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.ServerMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
 import mmp.im.common.protocol.parser.IProtocolParser;
-import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.AttributeKeyHolder;
 import mmp.im.common.util.reflect.PackageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class ServerMessageParser implements IProtocolParser {
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.auth.protocol.serverMessage", IMessageTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.auth.protocol.handler.serverMessage", IMessageTypeHandler.class);
 
         classList.forEach(v -> {
             try {
@@ -47,7 +47,7 @@ public class ServerMessageParser implements IProtocolParser {
     @Override
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
-        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
+        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
 
 
         ServerMessageBody.ServerMessage msg = null;

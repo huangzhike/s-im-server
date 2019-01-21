@@ -3,9 +3,13 @@ package mmp.im.gate.protocol.handler.clientMessage;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.ClientMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.MessageSender;
+import mmp.im.common.server.tcp.util.MessageSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FriendHandler implements IMessageTypeHandler {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
     @Override

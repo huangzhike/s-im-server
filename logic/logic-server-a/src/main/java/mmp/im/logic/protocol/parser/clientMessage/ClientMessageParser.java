@@ -14,13 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ClientMessageParser implements IMQProtocolParser {
+
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private Map<String, Object> msgTypeHandlers;
+    private Map<String, IMQMessageTypeHandler> msgTypeHandlers;
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.clientMessage", IMQMessageTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.logic.protocol.handler.clientMessage", IMQMessageTypeHandler.class);
 
         classList.forEach(v -> {
             try {
@@ -31,6 +32,7 @@ public class ClientMessageParser implements IMQProtocolParser {
             }
         });
 
+        LOG.warn("ClientMessageParser size -> {}", msgTypeHandlers.size());
 
     }
 
@@ -47,25 +49,27 @@ public class ClientMessageParser implements IMQProtocolParser {
 
         try {
             msg = ClientMessageBody.ClientMessage.parseFrom(bytes);
-
-
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
         if (msg != null) {
+
             String type = String.valueOf(msg.getType().getNumber());
-            IMQMessageTypeHandler handler = (IMQMessageTypeHandler) this.getMsgTypeHandlers().get(type);
+
+            IMQMessageTypeHandler handler = this.getMsgTypeHandlers().get(type);
+
+            LOG.warn("ClientMessageParser parse -> {}", msg);
+
             if (handler != null) {
                 handler.process(msg);
             }
 
-
         }
-
 
     }
 
-    private Map<String, Object> getMsgTypeHandlers() {
+    private Map<String, IMQMessageTypeHandler> getMsgTypeHandlers() {
         return this.msgTypeHandlers;
     }
 

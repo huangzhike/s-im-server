@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ProtocolParserHolder {
 
-    private static HashMap<Integer, Object> parsers;
+    private static HashMap<Integer, IProtocolParser> parsers;
 
-    private static HashMap getParsers() {
+    private static HashMap<Integer, IProtocolParser> getParsers() {
         /*
          * DCL
          * */
@@ -27,8 +27,8 @@ public class ProtocolParserHolder {
                     while (iterator.hasNext()) {
                         Class c = (Class) iterator.next();
                         try {
-                            IProtocolParser e = (IProtocolParser) c.newInstance();
-                            parsers.put(e.getProtocolKind(), e);
+                            IProtocolParser instance = (IProtocolParser) c.newInstance();
+                            parsers.put(instance.getProtocolKind(), instance);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -42,6 +42,6 @@ public class ProtocolParserHolder {
 
 
     public static IProtocolParser get(int protocolKind) {
-        return (IProtocolParser) getParsers().get(protocolKind);
+        return getParsers().get(protocolKind);
     }
 }

@@ -5,11 +5,16 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import mmp.im.common.protocol.ParserPacket;
 import mmp.im.common.protocol.ProtocolHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 
 public class MessageDecoder extends ByteToMessageDecoder {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -22,12 +27,12 @@ public class MessageDecoder extends ByteToMessageDecoder {
             // 标记头不对
             if (flag != ProtocolHeader.FLAG_NUM) {
                 in.resetReaderIndex();
+                LOG.warn("MessageDecoder 标记头不对");
                 return;
             }
 
             // 获取包头中的类型
             byte protocolType = in.readByte();
-
 
             // 获取包头中的body长度，高低位，大端模式
             byte high = in.readByte();
@@ -35,16 +40,15 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
             short bodyLength = (short) ((low & 0xff) | ((high & 0xff) << 8));
 
-
             // 如果可读长度小于body长度，恢复读指针，退出
             if (in.readableBytes() < bodyLength) {
                 in.resetReaderIndex();
+                LOG.warn("MessageDecoder 可读长度不对");
                 return;
             }
 
             // 读取body
             ByteBuf bodyByteBuf = in.readBytes(bodyLength);
-
 
             int readableLen = bodyByteBuf.readableBytes(); // 获取可读取字节数量
             byte[] array;
@@ -52,11 +56,13 @@ public class MessageDecoder extends ByteToMessageDecoder {
             int offset;
 
             if (bodyByteBuf.hasArray()) {
+                LOG.warn("MessageDecoder 堆缓冲区");
                 // 堆缓冲区(基于数组实现)，通过hasArray判断是否支持数组
                 array = bodyByteBuf.array();
                 offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
             } else {
                 // 直接缓冲区
+                LOG.warn("MessageDecoder 直接缓冲区");
                 array = new byte[readableLen];
                 bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
                 offset = 0;
@@ -72,7 +78,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
 
             out.add(new ParserPacket().setProtocolType(protocolType).setBody(bytes));
-
+            LOG.warn("MessageDecoder finished");
 
         }
     }

@@ -11,6 +11,7 @@ public class ResendMessage {
     private final MessageLite msg;
 
     private final Channel channel;
+
     private long timestamp = System.currentTimeMillis();
 
     public ResendMessage(MessageLite msg, Channel channel, long id) {
@@ -31,12 +32,10 @@ public class ResendMessage {
     public Channel getChannel() {
         return channel;
     }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public long getTimestamp() {
         return timestamp;
+    }
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

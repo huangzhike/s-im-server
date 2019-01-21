@@ -7,10 +7,16 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import mmp.im.common.protocol.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @ChannelHandler.Sharable
 public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
+
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageLite msg, ByteBuf out) throws Exception {
@@ -20,7 +26,7 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
 
         out.writeBytes(header);
         out.writeBytes(body);
-
+        LOG.warn("MessageEncoder encode finished");
     }
 
     private byte[] encodeHeader(MessageLite msg, short bodyLength) {

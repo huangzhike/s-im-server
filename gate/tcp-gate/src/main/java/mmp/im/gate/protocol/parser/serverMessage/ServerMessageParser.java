@@ -7,9 +7,10 @@ import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.ServerMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
 import mmp.im.common.protocol.parser.IProtocolParser;
-import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.AttributeKeyHolder;
+import mmp.im.common.util.mq.MQProducer;
 import mmp.im.common.util.reflect.PackageUtil;
-import mmp.im.gate.util.MQHolder;
+import mmp.im.gate.util.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ public class ServerMessageParser implements IProtocolParser {
 
     {
         this.msgTypeHandlers = new HashMap<>();
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.serverMessage", IMessageTypeHandler.class);
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.gate.protocol.handler.serverMessage", IMessageTypeHandler.class);
 
         classList.forEach(v -> {
             try {
@@ -48,7 +49,7 @@ public class ServerMessageParser implements IProtocolParser {
     @Override
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
-        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
+        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
 
 
         ServerMessageBody.ServerMessage msg = null;
@@ -78,11 +79,12 @@ public class ServerMessageParser implements IProtocolParser {
                 handler.process(channelHandlerContext, msg);
             }
             // 推送到logic处理，数据库操作等
-            MQHolder.getMq().publish("", "", msg);
+            SpringContextHolder.getBean(MQProducer.class).publish("", "", msg);
+
             // 回复确认
             AcknowledgeBody.Acknowledge.Builder builder = AcknowledgeBody.Acknowledge.newBuilder();
 
-            channelHandlerContext.channel().writeAndFlush(builder.setAck(msg.getSeq()));
+            channelHandlerContext.channel().writeAndFlush(builder.setAck(msg.getSeq()).build());
 
         }
 

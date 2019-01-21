@@ -8,12 +8,17 @@ import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.util.reflect.PackageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ClientLoginParser implements IProtocolParser {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     private Map<String, Object> msgTypeHandlers;
 
@@ -59,7 +64,7 @@ public class ClientLoginParser implements IProtocolParser {
                 // 回复确认
                 AcknowledgeBody.Acknowledge.Builder builder = AcknowledgeBody.Acknowledge.newBuilder();
 
-                channelHandlerContext.channel().writeAndFlush(builder.setAck(login.getSeq()));
+                channelHandlerContext.channel().writeAndFlush(builder.setAck(login.getSeq()).build());
             }
         }
 

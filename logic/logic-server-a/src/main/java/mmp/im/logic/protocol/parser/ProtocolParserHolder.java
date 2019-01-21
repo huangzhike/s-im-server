@@ -10,38 +10,34 @@ import java.util.List;
 
 public class ProtocolParserHolder {
 
-    private static HashMap<Integer, Object> parsers;
+    private static HashMap<Integer, IMQProtocolParser> parsers;
 
-    private static HashMap getParsers() {
-        /*
-         * DCL
-         * */
-        if (parsers == null) {
+    static {
 
-            synchronized (ProtocolParserHolder.class) {
-                if (parsers == null) {
-                    parsers = new HashMap<>();
-                    List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.logic.protocol.parser", IMQProtocolParser.class);
-                    Iterator iterator = classList.iterator();
+        parsers = new HashMap<>();
 
-                    while (iterator.hasNext()) {
-                        Class c = (Class) iterator.next();
-                        try {
-                            IMQProtocolParser e = (IMQProtocolParser) c.newInstance();
-                            parsers.put(e.getProtocolKind(), e);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.logic.protocol.parser", IMQProtocolParser.class);
 
-                }
+        Iterator iterator = classList.iterator();
+
+        while (iterator.hasNext()) {
+            Class c = (Class) iterator.next();
+            try {
+                IMQProtocolParser instance = (IMQProtocolParser) c.newInstance();
+                parsers.put(instance.getProtocolKind(), instance);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    private static HashMap<Integer, IMQProtocolParser> getParsers() {
+
         return parsers;
     }
 
 
     public static IMQProtocolParser get(int protocolKind) {
-        return (IMQProtocolParser) getParsers().get(protocolKind);
+        return getParsers().get(protocolKind);
     }
 }

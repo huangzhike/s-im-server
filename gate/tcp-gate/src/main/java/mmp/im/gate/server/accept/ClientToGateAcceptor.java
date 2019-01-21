@@ -5,11 +5,11 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
-import mmp.im.common.server.tcp.accept.AbstractTCPAcceptor;
 import mmp.im.common.server.tcp.codec.decode.MessageDecoder;
 import mmp.im.common.server.tcp.codec.encode.MessageEncoder;
-import mmp.im.common.server.tcp.handler.channel.EventHandler;
-import mmp.im.gate.handler.channel.AcceptorIdleStateTrigger;
+import mmp.im.common.server.tcp.event.EventHandler;
+import mmp.im.common.server.tcp.handler.channel.AcceptorIdleStateTrigger;
+import mmp.im.common.server.tcp.server.accept.AbstractTCPAcceptor;
 import mmp.im.gate.handler.channel.ClientToGateHandler;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class ClientToGateAcceptor extends AbstractTCPAcceptor {
-
 
     @Override
     public void bind(Integer port) throws InterruptedException {
@@ -43,6 +42,8 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                             );
                         }
                     });
+
+            LOG.warn("ClientToGateAcceptor bind...port {} ", port);
             ChannelFuture future = serverBootstrap.bind(new InetSocketAddress(port)).sync();
 
             future.channel().closeFuture().sync();

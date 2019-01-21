@@ -4,8 +4,13 @@ import mmp.im.common.protocol.ClientMessageBody;
 import mmp.im.common.protocol.handler.IMQMessageTypeHandler;
 import mmp.im.logic.service.XService;
 import mmp.im.logic.util.SpringContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FriendHandler implements IMQMessageTypeHandler {
+
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
     @Override
@@ -17,16 +22,20 @@ public class FriendHandler implements IMQMessageTypeHandler {
     @Override
     public void process(Object object) {
 
-
         ClientMessageBody.ClientMessage message = (ClientMessageBody.ClientMessage) object;
-        try {
-            ClientMessageBody.ClientMessage.Friend msg = message.getData().unpack(ClientMessageBody.ClientMessage.Friend.class);
-            System.out.println(msg.getName());
 
-            SpringContextHolder.getBean(XService.class);
+        ClientMessageBody.ClientMessage.Friend msg = null;
+        try {
+            msg = message.getData().unpack(ClientMessageBody.ClientMessage.Friend.class);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        LOG.warn("FriendHandler process message -> {} ", message);
+
+        SpringContextHolder.getBean(XService.class);
 
     }
 }

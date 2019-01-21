@@ -6,14 +6,19 @@ import mmp.im.common.protocol.ClientLogoutBody;
 import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
 import mmp.im.common.protocol.parser.IProtocolParser;
-import mmp.im.common.server.tcp.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.AttributeKeyHolder;
 import mmp.im.common.util.reflect.PackageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ClientLogoutParser implements IProtocolParser {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
 
     private Map<String, Object> msgTypeHandlers;
 
@@ -43,7 +48,7 @@ public class ClientLogoutParser implements IProtocolParser {
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
 
-        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.USER_ID).get();
+        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
         // 没登陆就关闭
         if (userId == null) {
             channelHandlerContext.channel().close();

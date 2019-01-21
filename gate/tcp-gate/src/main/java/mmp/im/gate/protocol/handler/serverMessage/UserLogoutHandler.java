@@ -3,8 +3,12 @@ package mmp.im.gate.protocol.handler.serverMessage;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.ServerMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserLogoutHandler implements IMessageTypeHandler {
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
     @Override

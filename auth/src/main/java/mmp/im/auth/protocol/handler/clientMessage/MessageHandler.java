@@ -3,9 +3,12 @@ package mmp.im.auth.protocol.handler.clientMessage;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.ClientMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageHandler implements IMessageTypeHandler {
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public String getHandlerName() {
