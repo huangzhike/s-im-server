@@ -19,7 +19,7 @@ public class MessageHandler implements IMQMessageTypeHandler {
     @Override
     public void process(Object object) {
 
-        LOG.warn("MessageHandler -> {} ", object);
+        LOG.warn("MessageHandler -> {}", object);
 
     }
 }

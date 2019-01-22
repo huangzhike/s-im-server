@@ -30,7 +30,7 @@ public class GroupHandler implements IMQMessageTypeHandler {
         }
 
 
-        LOG.warn("GroupHandler process message -> {} ", message);
+        LOG.warn("GroupHandler process message -> {}", message);
 
         SpringContextHolder.getBean(XService.class);
 

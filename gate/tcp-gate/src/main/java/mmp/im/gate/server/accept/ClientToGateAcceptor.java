@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 
-// @Component
+@Component
 public class ClientToGateAcceptor extends AbstractTCPAcceptor {
 
     @Override
@@ -43,7 +43,7 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                         }
                     });
 
-            LOG.warn("ClientToGateAcceptor bind...port {} ", port);
+            LOG.warn("ClientToGateAcceptor bind...port {}", port);
             ChannelFuture future = serverBootstrap.bind(new InetSocketAddress(port)).sync();
 
             future.channel().closeFuture().sync();

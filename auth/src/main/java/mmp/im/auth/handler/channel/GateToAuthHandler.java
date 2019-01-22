@@ -1,22 +1,21 @@
-package mmp.im.gate.handler.channel;
+package mmp.im.auth.handler.channel;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import mmp.im.auth.protocol.ProtocolParserHolder;
 import mmp.im.common.protocol.ParserPacket;
+import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.common.server.tcp.util.AttributeKeyHolder;
-import mmp.im.gate.protocol.ProtocolParserHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 // @Component
 @ChannelHandler.Sharable
-// public class InboundHandlerHandler extends SimpleChannelInboundHandler<Object> {
-public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
+public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -27,16 +26,20 @@ public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
 
         ParserPacket parserPacket = (ParserPacket) message;
 
-
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
+
+        LOG.warn("协议类型 -> {}", parserPacket.getProtocolType());
 
         if (protocolParser != null) {
             protocolParser.parse(ctx, parserPacket.getBody());
-            LOG.warn("ClientToGateHandler channelRead parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
+            LOG.warn("GateToAuthHandler channelRead parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
+        } else if (parserPacket.getProtocolType() == ProtocolHeader.ProtocolType.HEART_BEAT.getType()) {
+            LOG.warn("GateToAuthHandler channelRead heartbeat... parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
         } else {
-            channel.close();
             LOG.warn("无法识别，通道关闭");
+            // channel.close();
         }
+
 
         // channel.writeAndFlush(null).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
 
@@ -55,20 +58,19 @@ public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
         try {
-            String userId = ctx.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
-            LOG.warn("channelInactive... userId: " + userId + "remoteAddress: " + ctx.channel().remoteAddress());
-            if (null != userId) {
-                // 移除连接
-                ChannelHandlerContext channelHandlerContext = ConnectionHolder.removeClientConnection(userId);
-                LOG.warn("ClientToGateHandler channelInactive... remove remoteAddress: " + ctx.channel().remoteAddress());
-            }
+
+            String key = ctx.channel().remoteAddress().toString();
+
+            ConnectionHolder.removeServerConnection(key);
+            LOG.warn("channelInactive... remoteAddress: " + ctx.channel().remoteAddress());
             // 关闭连接
             if (ctx.channel().isOpen()) {
-                LOG.warn("ClientToGateHandler channelInactive... close remoteAddress: " + ctx.channel().remoteAddress());
                 ctx.channel().close();
+                LOG.warn("channelInactive... isOpen remoteAddress: " + ctx.channel().remoteAddress());
+
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            e.printStackTrace();
         }
 
         ctx.fireChannelInactive();
@@ -87,3 +89,4 @@ public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
     }
 
 }
+

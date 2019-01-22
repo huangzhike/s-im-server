@@ -20,7 +20,7 @@ public class EventExecutor implements Runnable {
 
     public void putNettyEvent(Event event) {
         if (this.eventQueue.size() <= 10000) {
-            LOG.warn("putNettyEvent -> {} ", event);
+            LOG.warn("putNettyEvent -> {}", event);
             this.eventQueue.offer(event);
         }
     }

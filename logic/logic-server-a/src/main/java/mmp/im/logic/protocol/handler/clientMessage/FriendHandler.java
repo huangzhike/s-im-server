@@ -33,7 +33,7 @@ public class FriendHandler implements IMQMessageTypeHandler {
         }
 
 
-        LOG.warn("FriendHandler process message -> {} ", message);
+        LOG.warn("FriendHandler process message -> {}", message);
 
         SpringContextHolder.getBean(XService.class);
 

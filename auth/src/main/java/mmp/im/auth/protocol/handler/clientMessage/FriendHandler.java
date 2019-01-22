@@ -1,16 +1,10 @@
 package mmp.im.auth.protocol.handler.clientMessage;
 
 import io.netty.channel.ChannelHandlerContext;
-import mmp.im.auth.service.XService;
-import mmp.im.auth.util.SpringContextHolder;
-import mmp.im.common.model.Info;
 import mmp.im.common.protocol.ClientMessageBody;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.util.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class FriendHandler implements IMessageTypeHandler {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -29,14 +23,16 @@ public class FriendHandler implements IMessageTypeHandler {
         ClientMessageBody.ClientMessage message = (ClientMessageBody.ClientMessage) object;
         try {
             ClientMessageBody.ClientMessage.Friend msg = message.getData().unpack(ClientMessageBody.ClientMessage.Friend.class);
-            System.out.println(msg.getName());
+
+            LOG.warn("FriendHandler收到消息message -> {}", message);
+            LOG.warn("FriendHandler收到消息msg -> {}", msg);
             // 收到转发的消息
-            List<Info> serverList = SpringContextHolder.getBean(XService.class).getUserServerList(message.getFrom());
-
-            serverList.forEach((info) -> {
-                MessageSender.sendToServer(info.getServerInfo(), message);
-
-            });
+            // List<Info> serverList = SpringContextHolder.getBean(XService.class).getUserServerList(message.getFrom());
+            //
+            // serverList.forEach((info) -> {
+            //     MessageSender.sendToServer(info.getServerInfo(), message);
+            //
+            // });
 
         } catch (Exception e) {
             e.printStackTrace();

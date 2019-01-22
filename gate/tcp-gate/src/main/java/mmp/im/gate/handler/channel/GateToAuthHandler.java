@@ -7,7 +7,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import mmp.im.common.protocol.ParserPacket;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
-import mmp.im.gate.protocol.parser.ProtocolParserHolder;
+import mmp.im.gate.protocol.ProtocolParserHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,15 +25,17 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object message) throws Exception {
         Channel channel = ctx.channel();
 
+        LOG.warn("TYPE -------->>>>>>> {}", message.getClass());
+
         ParserPacket parserPacket = (ParserPacket) message;
 
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
 
         if (protocolParser != null) {
             protocolParser.parse(ctx, parserPacket.getBody());
-            LOG.warn("GateToAuthHandler channelRead parserPacket  {} remoteAddress {} ", parserPacket, channel.remoteAddress());
+            LOG.warn("GateToAuthHandler channelRead parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
         } else {
-            channel.close();
+            // channel.close();
             LOG.warn("无法识别，通道关闭");
         }
 
@@ -46,6 +48,7 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         LOG.warn("channelActive... remoteAddress: " + ctx.channel().remoteAddress());
 
+
         ctx.fireChannelActive();
     }
 
@@ -53,7 +56,7 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 
         try {
-            LOG.warn("GateToAuthHandler channelInactive..." );
+
             Channel channel = ctx.channel();
             if (channel != null) {
                 SocketAddress socketAddress = ctx.channel().remoteAddress();

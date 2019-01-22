@@ -20,12 +20,12 @@ public class ResendMessageThread implements Runnable {
         while (true) {
 
             for (ResendMessage resendMessage : map.values()) {
-                // 5秒没确认
-                if (System.currentTimeMillis() - resendMessage.getTimestamp() > SECONDS.toMillis(5)) {
+                // 10秒没确认
+                if (System.currentTimeMillis() - resendMessage.getTimestamp() > SECONDS.toMillis(10)) {
                     // 通道未关闭
                     if (resendMessage.getChannel().isActive()) {
 
-                        LOG.warn("ResendMessageThread 重发 -> {} ", resendMessage.getMsg());
+                        LOG.warn("ResendMessageThread 重发 -> {}", resendMessage.getMsg());
                         // 重发
                         resendMessage.getChannel().writeAndFlush(resendMessage.getMsg()).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                         // 更新时间戳

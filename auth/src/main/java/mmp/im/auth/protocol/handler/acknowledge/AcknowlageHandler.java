@@ -22,7 +22,7 @@ public class AcknowlageHandler implements IMessageTypeHandler {
     public void process(ChannelHandlerContext channel, Object object) {
         Acknowledge acknowledge = (Acknowledge) object;
         try {
-
+            LOG.warn("处理ACK -> {}",acknowledge);
             ResendMessageMap.remove(acknowledge.getAck());
         } catch (Exception e) {
             e.printStackTrace();

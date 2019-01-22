@@ -3,6 +3,7 @@ package mmp.im.common.server.tcp.codec.encode;
 
 import com.google.protobuf.MessageLite;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -20,13 +21,28 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageLite msg, ByteBuf out) throws Exception {
+        LOG.warn("MessageEncoder encode start...");
+
+
+        // TODO 加密消息体
 
         byte[] body = msg.toByteArray();
         byte[] header = encodeHeader(msg, (short) body.length);
+        LOG.warn("MessageEncoder encode header... {}", header);
+        LOG.warn("MessageEncoder encode body... {}", body);
 
         out.writeBytes(header);
         out.writeBytes(body);
-        LOG.warn("MessageEncoder encode finished");
+        LOG.warn("MessageEncoder bodyLength...{}", body.length);
+
+        //
+        // ByteBuf buf = Unpooled.buffer(header.length + body.length);
+        // buf.writeBytes(header);
+        // buf.writeBytes(body);
+        //
+        // out.writeBytes(buf);
+
+        LOG.warn("MessageEncoder encode finished...");
     }
 
     private byte[] encodeHeader(MessageLite msg, short bodyLength) {

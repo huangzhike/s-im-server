@@ -53,7 +53,7 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
         LOG.warn("ReconnectHandler -> channelInactive");
         if (this.attempts < 6) {
 
-            LOG.warn("the attempts is {} ", this.attempts);
+            LOG.warn("the attempts is {}", this.attempts);
 
             // 重连
             this.timer.schedule(  new TimerTask() {
@@ -86,7 +86,7 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
                         }
                     });
                 }
-            }, ++this.attempts * 100);
+            }, ++this.attempts * 500);
 
         }
         ctx.fireChannelInactive();
