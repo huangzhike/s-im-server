@@ -1,6 +1,8 @@
 package mmp.im.auth.exception;
 
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,9 @@ import java.util.Map;
 @Order(-1000)
 public class GlobalExceptionResolver implements HandlerExceptionResolver {
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
+
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
@@ -32,7 +37,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("success", false);
         map.put("msg", ex.getMessage());
 
@@ -41,7 +46,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
             try {
                 response.getWriter().write(JSON.toJSONString(map));
             } catch (Exception e) {
-                ex.printStackTrace();
+                LOG.error("GlobalExceptionResolver Exception... {}", e);
             }
         } else {
             modelAndView = new ModelAndView("error", map);

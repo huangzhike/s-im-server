@@ -9,30 +9,35 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class MQProducer {
+
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
-    // 发送消息失败，下次连接恢复时再发送
-    protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
+
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-    private final Timer startAgainTimer = new Timer();
+
     protected Connection connection = null;
+
     protected Channel pubChannel = null;
-    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行的可能
-    private boolean startRunning = false;
+
     // 队列的生产者，将消息发送至此
     private String publishToQueue;
 
+    // 发送消息失败，下次连接恢复时再发送
+    protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
+
+    // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
+    private final Timer startAgainTimer = new Timer();
+
+    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行
+    private boolean startRunning = false;
 
     public MQProducer(String mqURI, String publishToQueue) {
 
         this.publishToQueue = publishToQueue;
 
-
         try {
-            // 消息队列服务器连接URI，如：“amqp://admin:123456789@192.168.1.190”
             this.connectionFactory.setUri(mqURI);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("init MQProducer Exception... {}", e);
         }
 
         this.connectionFactory.setAutomaticRecoveryEnabled(true);
@@ -52,7 +57,6 @@ public abstract class MQProducer {
             Connection conn = this.tryGetConnection();
             if (conn != null) {
                 this.startPublisher(conn);
-
             } else {
                 // 重新启动
                 this.startAgainTimer.schedule(new TimerTask() {
@@ -89,9 +93,8 @@ public abstract class MQProducer {
                     }
                 });
             } catch (Exception e) {
-
+                LOG.error("tryGetConnection Exception... {}", e);
                 this.connection = null;
-
             }
         }
 
@@ -104,26 +107,21 @@ public abstract class MQProducer {
             try {
                 this.pubChannel.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("startPublisher pubChannel Exception... {}", e);
             }
         }
 
-        String queue = this.publishToQueue; // queue name
-        boolean durable = true; // durable - RabbitMQ will never lose the queue if a crash occurs
-        boolean exclusive = false; // exclusive - if queue only will be used by one connection
-        boolean autoDelete = false; // autodelete - queue is deleted when last consumer unsubscribes
-
-        if (queue == null || queue.equals("")) {
+        if (this.publishToQueue == null || this.publishToQueue.equals("")) {
             return;
         }
 
         try {
             this.pubChannel = connection.createChannel();
             // 声明队列
-            AMQP.Queue.DeclareOk queueDeclare = pubChannel.queueDeclare(queue, durable, exclusive, autoDelete, null);
+            AMQP.Queue.DeclareOk queueDeclare = pubChannel.queueDeclare(this.publishToQueue, true, false, false, null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("startPublisher Exception... {}", e);
         }
 
         while (resendQueue.size() > 0) {
@@ -132,13 +130,13 @@ public abstract class MQProducer {
         }
     }
 
-    // 发布
-    public abstract boolean publish(String exchangeName, String routingKey, Object msg);
-
     /*
         队列服务： 发消息者、队列、收消息者
-        RabbitMQ在发消息者和 队列之间, 加入了交换器 (Exchange)
+        RabbitMQ在发消息者和队列之间, 加入了交换器 (Exchange)
         这样发消息者和队列就没有直接联系, 转而变成发消息者把消息给交换器, 交换器根据调度策略再把消息再给队列
      */
+
+    // 发布
+    public abstract boolean publish(String exchangeName, String routingKey, Object msg);
 
 }

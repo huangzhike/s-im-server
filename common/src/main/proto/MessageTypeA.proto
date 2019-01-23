@@ -1,0 +1,72 @@
+syntax = "proto3";
+package mmp.im.common.protocol;
+
+import "google/protobuf/any.proto"; // 继承 使用Any必须要导入Any.proto
+
+option java_outer_classname = "MessageTypeA";
+
+message Message {
+
+    int64 seq = 1;
+    string from = 2;
+    string to = 3;
+
+    // uint32 type = 4;
+    Type type = 4;
+
+    // bytes data = 5;
+    google.protobuf.Any data = 5;
+
+    enum Type {
+
+        FRIEND_MESSAGE = 0;
+        GROUP_MESSAGE = 1;
+
+        SERVER_LOGIN = 2;
+        SERVER_LOGOUT = 3;
+
+
+        CLIENT_LOGIN = 4;
+        CLIENT_LOGOUT = 5;
+
+        CLIENT_LOGIN_STATUS = 6;
+
+
+    }
+
+    //
+    message FriendMessage {
+        string data = 1;
+    }
+
+    message GroupMessage {
+        string data = 1;
+    }
+
+    //
+    message ServerLogin {
+        string id = 1;
+        string token = 2;
+    }
+    message ServerLogout {
+        string id = 1;
+        string token = 2;
+    }
+
+    //
+    message ClientLogin {
+        string id = 1;
+        string token = 2;
+    }
+    message ClientLogout {
+        string id = 1;
+        string token = 2;
+    }
+
+    //
+    message ClientLoginStatus {
+        string id = 1;
+        bool status = 2;
+    }
+
+}

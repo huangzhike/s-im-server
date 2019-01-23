@@ -31,8 +31,8 @@ public class ProtocolParserHolder {
                 }
             });
         }
-        LOG.warn("parsers -> {}", parsers);
-        LOG.warn("parsers size -> {}", parsers.size());
+        LOG.warn("parsers... {}", parsers);
+        LOG.warn("parsers size... {}", parsers.size());
 
     }
 

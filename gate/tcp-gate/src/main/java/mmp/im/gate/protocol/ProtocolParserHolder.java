@@ -13,9 +13,7 @@ import java.util.List;
 public class ProtocolParserHolder {
 
 
-
     private static final Logger LOG = LoggerFactory.getLogger(ProtocolParserHolder.class);
-
 
     private static HashMap<Integer, IProtocolParser> parsers;
 
@@ -37,14 +35,12 @@ public class ProtocolParserHolder {
                             IProtocolParser instance = (IProtocolParser) c.newInstance();
                             parsers.put(instance.getProtocolKind(), instance);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            LOG.error("init ProtocolParserHolder parsers Exception... {}", e);
                         }
                     }
 
-                    LOG.warn("parsers -> {}", parsers);
-                    LOG.warn("parsers size -> {}", parsers.size());
-
-
+                    LOG.warn("parsers... {}", parsers);
+                    LOG.warn("parsers size... {}", parsers.size());
                 }
             }
         }

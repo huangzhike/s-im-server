@@ -1,7 +1,7 @@
 package mmp.im;
 
 import mmp.im.auth.server.accept.GateToAuthAcceptor;
-import mmp.im.common.server.tcp.cache.ack.ResendMessageThread;
+import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,6 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
     @Autowired
     private GateToAuthAcceptor gateToAuthAcceptor;
 
-
     @Value("${gateToAuthAcceptor.bind.port}")
     private Integer gateToAuthAcceptorPort;
 
@@ -41,16 +40,9 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
     @Override
     public void run(String... args) throws Exception {
 
-        new Thread(() -> {
-            try {
-                gateToAuthAcceptor.bind(gateToAuthAcceptorPort);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        new Thread(() -> gateToAuthAcceptor.bind(gateToAuthAcceptorPort)).start();
 
         new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
-
 
         LOG.warn("Spring Boot 启动完成");
     }

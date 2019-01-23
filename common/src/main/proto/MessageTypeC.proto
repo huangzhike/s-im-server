@@ -1,0 +1,7 @@
+syntax = "proto3";
+package mmp.im.common.protocol;
+option java_outer_classname = "MessageTypeC";
+
+message Heartbeat {
+
+}

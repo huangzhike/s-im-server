@@ -31,13 +31,16 @@ public class MQConfig {
                 boolean ok = false;
 
                 MessageLite messageLite = (MessageLite) msg;
-
+                LOG.warn("MQProducer publish msg... {}", msg);
                 try {
-                    pubChannel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, encode(messageLite));
-                    LOG.error("MQProducer publish msg -> {}", msg);
+                    byte[] contents = encode(messageLite);
+
+                    this.pubChannel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, contents);
+
+                    LOG.warn("MQProducer publish byte... {}", contents);
                     ok = true;
                 } catch (Exception e) {
-                    LOG.error("MQProducer add resend -> {}", msg);
+                    LOG.error("MQProducer resend Exception... {}", e);
                     resendQueue.add(new ResendElement(exchangeName, routingKey, msg));
                 }
                 return ok;
@@ -45,13 +48,13 @@ public class MQConfig {
 
             private byte[] encode(MessageLite msg) {
 
-
                 byte protocolType = ProtocolUtil.encodeProtocolType(msg);
 
                 byte[] body = msg.toByteArray();
 
                 ByteBuffer buffer = ByteBuffer.allocate(body.length + 1); // 声明一个缓冲区
                 buffer.put(protocolType);
+
                 buffer.put(body);
 
                 return buffer.array();

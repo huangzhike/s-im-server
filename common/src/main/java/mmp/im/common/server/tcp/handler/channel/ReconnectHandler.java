@@ -11,21 +11,15 @@ import java.util.TimerTask;
 @ChannelHandler.Sharable
 public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter implements IChannelHandlerHolder {
 
-
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final Bootstrap bootstrap;
 
-
-    private final Timer timer = new Timer();
-
-
-    private TimerTask timerTask;
-
-
     private final int port;
 
     private final String host;
+
+    private final Timer timer = new Timer();
 
     private int attempts;
 
@@ -53,11 +47,9 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
         LOG.warn("ReconnectHandler -> channelInactive");
         if (this.attempts < 6) {
 
-            LOG.warn("the attempts is {}", this.attempts);
-
+            LOG.warn("attempts... {}", this.attempts);
             // 重连
-            this.timer.schedule(  new TimerTask() {
-
+            this.timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     ChannelFuture future;
@@ -69,12 +61,11 @@ public abstract class ReconnectHandler extends ChannelInboundHandlerAdapter impl
                                 ch.pipeline().addLast(handlers());
                             }
                         });
-                        LOG.warn("ReconnectHandler executing-> run connect");
+                        LOG.warn("ReconnectHandler schedule -> run connect");
                         future = bootstrap.connect(host, port);
                     }
                     // future对象
                     future.addListener(new ChannelFutureListener() {
-
                         @Override
                         public void operationComplete(ChannelFuture f) throws Exception {
                             // 如果重连失败，则调用ChannelInactive方法

@@ -21,71 +21,62 @@ public class GateToAuthHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object message) throws Exception {
-        Channel channel = ctx.channel();
+    public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
+        Channel channel = channelHandlerContext.channel();
 
         ParserPacket parserPacket = (ParserPacket) message;
 
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
 
-        LOG.warn("协议类型 -> {}", parserPacket.getProtocolType());
+        LOG.warn("协议类型... {}", parserPacket.getProtocolType());
 
         if (protocolParser != null) {
-            protocolParser.parse(ctx, parserPacket.getBody());
+            protocolParser.parse(channelHandlerContext, parserPacket.getBody());
             LOG.warn("GateToAuthHandler channelRead parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
-        } else if (parserPacket.getProtocolType() == ProtocolHeader.ProtocolType.HEART_BEAT.getType()) {
+        } else if (parserPacket.getProtocolType() == ProtocolHeader.ProtocolType.HEARTBEAT.getType()) {
             LOG.warn("GateToAuthHandler channelRead heartbeat... parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
         } else {
             LOG.warn("无法识别，通道关闭");
             // channel.close();
         }
 
-
         // channel.writeAndFlush(null).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-
     }
 
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        LOG.warn("channelActive... remoteAddress: " + ctx.channel().remoteAddress());
-
-
-        ctx.fireChannelActive();
+    public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
+        LOG.warn("channelActive... remoteAddress: " + channelHandlerContext.channel().remoteAddress());
+        channelHandlerContext.fireChannelActive();
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
+        Channel channel = channelHandlerContext.channel();
 
-        try {
+        String key = channelHandlerContext.channel().remoteAddress().toString();
+        // 移除连接
+        ConnectionHolder.removeServerConnection(key);
+        LOG.warn("channelInactive... remoteAddress: " + channel.remoteAddress());
+        // 关闭连接
+        if (channel.isOpen()) {
+            // channel.close();
+            LOG.warn("channelInactive... isOpen remoteAddress: " + channel.remoteAddress());
 
-            String key = ctx.channel().remoteAddress().toString();
-
-            ConnectionHolder.removeServerConnection(key);
-            LOG.warn("channelInactive... remoteAddress: " + ctx.channel().remoteAddress());
-            // 关闭连接
-            if (ctx.channel().isOpen()) {
-                ctx.channel().close();
-                LOG.warn("channelInactive... isOpen remoteAddress: " + ctx.channel().remoteAddress());
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-        ctx.fireChannelInactive();
+        channelHandlerContext.fireChannelInactive();
 
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.fireExceptionCaught(cause);
+    public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable cause) throws Exception {
+        channelHandlerContext.fireExceptionCaught(cause);
     }
 
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        super.userEventTriggered(ctx, evt);
+    public void userEventTriggered(ChannelHandlerContext channelHandlerContext, Object evt) throws Exception {
+        super.userEventTriggered(channelHandlerContext, evt);
     }
 
 }

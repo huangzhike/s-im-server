@@ -20,21 +20,19 @@ public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object message) throws Exception {
-        Channel channel = ctx.channel();
+    public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
+        Channel channel = channelHandlerContext.channel();
 
         ParserPacket parserPacket = (ParserPacket) message;
-
 
         IProtocolParser protocolParser = ProtocolParserHolder.get(parserPacket.getProtocolType());
 
         if (protocolParser != null) {
-            protocolParser.parse(ctx, parserPacket.getBody());
+            protocolParser.parse(channelHandlerContext, parserPacket.getBody());
             LOG.warn("ClientToGateHandler channelRead parserPacket  {} remoteAddress {}", parserPacket, channel.remoteAddress());
         } else {
-            channel.close();
+            // channel.close();
             LOG.warn("无法识别，通道关闭");
         }
 
@@ -44,46 +42,44 @@ public class ClientToGateHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        LOG.warn("channelActive... remoteAddress: " + ctx.channel().remoteAddress());
-
-
-        ctx.fireChannelActive();
+    public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
+        LOG.warn("channelActive... remoteAddress: " + channelHandlerContext.channel().remoteAddress());
+        channelHandlerContext.fireChannelActive();
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-
+    public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
+        Channel channel = channelHandlerContext.channel();
         try {
-            String userId = ctx.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
-            LOG.warn("channelInactive... userId: " + userId + "remoteAddress: " + ctx.channel().remoteAddress());
+            String userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+            LOG.warn("channelInactive... userId: " + userId + "remoteAddress: " + channel.remoteAddress());
             if (null != userId) {
                 // 移除连接
-                ChannelHandlerContext channelHandlerContext = ConnectionHolder.removeClientConnection(userId);
-                LOG.warn("ClientToGateHandler channelInactive... remove remoteAddress: " + ctx.channel().remoteAddress());
+                ChannelHandlerContext context = ConnectionHolder.removeClientConnection(userId);
+                LOG.warn("ClientToGateHandler channelInactive... remove remoteAddress: " + channel.remoteAddress());
             }
             // 关闭连接
-            if (ctx.channel().isOpen()) {
-                LOG.warn("ClientToGateHandler channelInactive... close remoteAddress: " + ctx.channel().remoteAddress());
-                ctx.channel().close();
+            if (channel.isOpen()) {
+                LOG.warn("ClientToGateHandler channelInactive... close remoteAddress: " + channel.remoteAddress());
+                // channel.close();
             }
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            LOG.error("ClientToGateHandler channelInactive... {}", e);
         }
 
-        ctx.fireChannelInactive();
+        channelHandlerContext.fireChannelInactive();
 
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        ctx.fireExceptionCaught(cause);
+    public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable cause) throws Exception {
+        channelHandlerContext.fireExceptionCaught(cause);
     }
 
 
     @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        super.userEventTriggered(ctx, evt);
+    public void userEventTriggered(ChannelHandlerContext channelHandlerContext, Object evt) throws Exception {
+        super.userEventTriggered(channelHandlerContext, evt);
     }
 
 }

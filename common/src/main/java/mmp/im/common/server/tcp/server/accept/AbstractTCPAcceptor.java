@@ -4,7 +4,6 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import mmp.im.common.server.tcp.server.AbstractServer;
@@ -24,13 +23,12 @@ public abstract class AbstractTCPAcceptor extends AbstractServer implements ISer
 
     public AbstractTCPAcceptor() {
 
-        // bossEventLoopGroup = initEventLoopGroup(1, new DefaultThreadFactory("netty.acceptor.boss"));
-        // workerEventLoopGroup = initEventLoopGroup(Runtime.getRuntime().availableProcessors() << 1,
-        //         new DefaultThreadFactory("netty.acceptor.worker"));
+        bossEventLoopGroup = initEventLoopGroup(1, new DefaultThreadFactory("netty.acceptor.boss"));
+        int workerNum = Runtime.getRuntime().availableProcessors() << 1;
+        workerEventLoopGroup = initEventLoopGroup(workerNum, new DefaultThreadFactory("netty.acceptor.worker"));
 
-        bossEventLoopGroup =new NioEventLoopGroup();
-
-                workerEventLoopGroup=new NioEventLoopGroup();
+        // bossEventLoopGroup = new NioEventLoopGroup();
+        // workerEventLoopGroup = new NioEventLoopGroup();
         serverBootstrap = new ServerBootstrap().group(bossEventLoopGroup, workerEventLoopGroup);
 
         serverBootstrap
@@ -51,13 +49,10 @@ public abstract class AbstractTCPAcceptor extends AbstractServer implements ISer
          * 一般高性能的场景下使用的堆外内存，也就是直接内存，好处就是减少内存的拷贝，和上下文的切换
          * 缺点是容易发生堆外内存OOM
          */
-
         serverBootstrap.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()));
 
     }
 
-
-    public abstract void bind(Integer port) throws InterruptedException;
-
+    public abstract void bind(Integer port);
 
 }

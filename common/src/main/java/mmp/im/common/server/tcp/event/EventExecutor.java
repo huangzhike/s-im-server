@@ -20,7 +20,7 @@ public class EventExecutor implements Runnable {
 
     public void putNettyEvent(Event event) {
         if (this.eventQueue.size() <= 10000) {
-            LOG.warn("putNettyEvent -> {}", event);
+            LOG.warn("putNettyEvent... {}", event);
             this.eventQueue.offer(event);
         }
     }
@@ -33,7 +33,7 @@ public class EventExecutor implements Runnable {
             try {
                 event = this.eventQueue.poll(3000, TimeUnit.MILLISECONDS);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("poll Exception... {}", e);
             }
             if (event != null && listener != null) {
                 switch (event.getType()) {

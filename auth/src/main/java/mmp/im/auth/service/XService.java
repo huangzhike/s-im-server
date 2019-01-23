@@ -23,7 +23,7 @@ public class XService {
     private RedisUtil redisUtil;
 
 
-    private ConcurrentHashMap<String, List<Info>> userServerMap = new ConcurrentHashMap();
+    private ConcurrentHashMap<String, List<Info>> userServerMap = new ConcurrentHashMap<>();
 
     public User getUser(User user) {
         return user;

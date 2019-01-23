@@ -1,7 +1,6 @@
 package mmp.im.common.server.tcp.codec.decode;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import mmp.im.common.protocol.ParserPacket;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
 
 
 public class MessageDecoder extends ByteToMessageDecoder {
@@ -80,21 +78,19 @@ public class MessageDecoder extends ByteToMessageDecoder {
             LOG.warn("MessageDecoder 堆缓冲区...");
             // 堆缓冲区(基于数组实现)，通过hasArray判断是否支持数组
             array = bodyByteBuf.array();
-            LOG.warn("MessageDecoder 堆缓冲区...array -> {}", array);
+            LOG.warn("MessageDecoder 堆缓冲区... array... {}", array);
             // offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
         } else {
             // 直接缓冲区
             LOG.warn("MessageDecoder 直接缓冲区...");
             array = new byte[readableLen];
             bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
-            LOG.warn("MessageDecoder 直接缓冲区...array -> {}", array);
+            LOG.warn("MessageDecoder 直接缓冲区... array... {}", array);
             // offset = 0;
         }
 
-
         out.add(new ParserPacket().setProtocolType(protocolType).setBody(array));
         LOG.warn("MessageDecoder finished...");
-
 
     }
 

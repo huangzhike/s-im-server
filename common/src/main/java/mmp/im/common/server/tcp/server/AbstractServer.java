@@ -17,6 +17,9 @@ public abstract class AbstractServer {
      */
     private static final boolean SUPPORT_NATIVE_ET;
 
+    /*
+     * Windows不支持epoll模型
+     * */
     static {
         boolean epoll;
         try {
@@ -27,7 +30,7 @@ public abstract class AbstractServer {
         }
         SUPPORT_NATIVE_ET = epoll;
 
-        LOG.warn("AbstractServer SUPPORT_NATIVE_ET epoll -> {}", epoll);
+        LOG.warn("AbstractServer SUPPORT_NATIVE_ET epoll... {}", epoll);
     }
 
     protected EventLoopGroup initEventLoopGroup(int workerNum, ThreadFactory workerFactory) {

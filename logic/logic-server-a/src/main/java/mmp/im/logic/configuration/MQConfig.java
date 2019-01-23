@@ -24,13 +24,14 @@ public class MQConfig {
     public MQConsumer mqConsumer() {
 
         return new MQConsumer(mqURI, consumeFromQueue) {
+
             @Override
             public boolean process(byte[] contentBody) {
 
                 // 获取包头中的类型
                 byte protocolType = contentBody[0];
 
-                LOG.warn("MQConsumer parserPacket protocolType -> {}", protocolType);
+                LOG.warn("MQConsumer parserPacket protocolType... {}", protocolType);
 
                 IMQProtocolParser protocolParser = ProtocolParserHolder.get(protocolType);
 

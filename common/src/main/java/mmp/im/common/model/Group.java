@@ -1,36 +1,17 @@
 package mmp.im.common.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.util.List;
 
+
+@Data
+@Accessors(chain = true)
 public class Group {
+
     private String id;
     private String name;
     private List<User> groupUser;
 
-    public String getId() {
-        return id;
-    }
-
-    public Group setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Group setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public List<User> getGroupUser() {
-        return groupUser;
-    }
-
-    public Group setGroupUser(List<User> groupUser) {
-        this.groupUser = groupUser;
-        return this;
-    }
 }

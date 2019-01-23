@@ -5,7 +5,6 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.DefaultMessageSizeEstimator;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
@@ -24,17 +23,18 @@ public abstract class AbstractTCPConnector extends AbstractServer implements ISe
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     protected Bootstrap bootstrap;
+
     protected EventLoopGroup workerEventLoopGroup;
 
     public AbstractTCPConnector() {
 
-        // ThreadFactory workerFactory = new DefaultThreadFactory("client.connector");
-        //
-        // int workerNum = Runtime.getRuntime().availableProcessors() << 1;
-        //
-        // workerEventLoopGroup = initEventLoopGroup(workerNum, workerFactory);
+        ThreadFactory workerFactory = new DefaultThreadFactory("client.connector");
 
-        workerEventLoopGroup  =new NioEventLoopGroup();
+        int workerNum = Runtime.getRuntime().availableProcessors() << 1;
+
+        workerEventLoopGroup = initEventLoopGroup(workerNum, workerFactory);
+
+        // workerEventLoopGroup = new NioEventLoopGroup();
 
         bootstrap = new Bootstrap().group(workerEventLoopGroup);
         bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()))

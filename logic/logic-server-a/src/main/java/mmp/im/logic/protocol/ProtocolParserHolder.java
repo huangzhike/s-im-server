@@ -16,7 +16,6 @@ public class ProtocolParserHolder {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtocolParserHolder.class);
 
-
     static {
 
         parsers = new HashMap<>();
@@ -31,16 +30,15 @@ public class ProtocolParserHolder {
                 IMQProtocolParser instance = (IMQProtocolParser) c.newInstance();
                 parsers.put(instance.getProtocolKind(), instance);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("init ProtocolParserHolder parsers Exception... {}", e);
             }
         }
 
-        LOG.warn("parsers -> {}", parsers);
-        LOG.warn("parsers size -> {}", parsers.size());
+        LOG.warn("init ProtocolParserHolder parsers... {}", parsers);
+        LOG.warn("init ProtocolParserHolder parsers size... {}", parsers.size());
     }
 
     private static HashMap<Integer, IMQProtocolParser> getParsers() {
-
         return parsers;
     }
 

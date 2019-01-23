@@ -1,6 +1,7 @@
 package mmp.im.common.protocol;
 
 public class ParserPacket {
+
     private byte protocolType;
 
     private byte[] body;

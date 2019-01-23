@@ -22,7 +22,7 @@ public class GateToAuthAcceptor extends AbstractTCPAcceptor {
 
 
     @Override
-    public void bind(Integer port) throws InterruptedException {
+    public void bind(Integer port) {
 
         try {
             serverBootstrap.channel(NioServerSocketChannel.class)
@@ -31,14 +31,14 @@ public class GateToAuthAcceptor extends AbstractTCPAcceptor {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(
+                                    new MessageDecoder(),
+                                    new MessageEncoder(),
                                     // 每隔60s没有接受到read事件的话，则会触发userEventTriggered事件，并指定IdleState的类型为READER_IDLE
                                     new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS),
                                     // client端设置了每隔30s会发送一个心跳包过来，如果60s都没有收到心跳，则说明链路发生了问题
                                     new AcceptorIdleStateTrigger(),
-                                    new MessageDecoder(),
-                                    new MessageEncoder(),
-                                    new GateToAuthHandler(),
 
+                                    new GateToAuthHandler(),
                                     new EventHandler(null)
                             );
                         }
@@ -49,7 +49,7 @@ public class GateToAuthAcceptor extends AbstractTCPAcceptor {
 
             future.channel().closeFuture().sync();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("GateToAuthAcceptor Exception... {}", e);
         } finally {
             bossEventLoopGroup.shutdownGracefully().awaitUninterruptibly();
             workerEventLoopGroup.shutdownGracefully().awaitUninterruptibly();

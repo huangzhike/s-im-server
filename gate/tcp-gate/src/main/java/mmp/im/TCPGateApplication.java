@@ -1,6 +1,6 @@
 package mmp.im;
 
-import mmp.im.common.server.tcp.cache.ack.ResendMessageThread;
+import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
 import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.server.accept.ClientToGateAcceptor;
 import mmp.im.gate.server.connect.GateToAuthConnector;
@@ -52,22 +52,9 @@ public class TCPGateApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        new Thread(() -> gateToAuthConnector.connect(gateToAuthConnectorHost, gateToAuthAcceptorPort)).start();
 
-        new Thread(() -> {
-            try {
-                gateToAuthConnector.connect(gateToAuthConnectorHost, gateToAuthAcceptorPort);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                clientToGateAcceptor.bind(clientToGateAcceptorPort);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        new Thread(() -> clientToGateAcceptor.bind(clientToGateAcceptorPort)).start();
 
         new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
 
