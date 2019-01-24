@@ -18,28 +18,26 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageLite msg, ByteBuf out) throws Exception {
-        LOG.warn("MessageEncoder encode start...");
+        LOG.warn("encode start...");
 
         // TODO 加密消息体
 
         byte[] body = msg.toByteArray();
         byte[] header = encodeHeader(msg, (short) body.length);
-        LOG.warn("MessageEncoder encode header... {}", header);
-        LOG.warn("MessageEncoder encode body... {}", body);
-        LOG.warn("MessageEncoder bodyLength... {}", body.length);
+        LOG.warn("encode header... {}", header);
+        LOG.warn("encode body... {}", body);
+        LOG.warn("bodyLength... {}", body.length);
         out.writeBytes(header);
         out.writeBytes(body);
 
         // ByteBuf buf = Unpooled.buffer(header.length + body.length);
         // buf.writeBytes(header);
         // buf.writeBytes(body);
-        //
         // out.writeBytes(buf);
 
-        LOG.warn("MessageEncoder encode finished...");
+        LOG.warn("encode finished...");
     }
 
     private byte[] encodeHeader(MessageLite msg, short bodyLength) {

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadFactory;
 
-public abstract class AbstractServer {
+public abstract class AbstractServer implements IServer{
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServer.class);
 
@@ -30,7 +30,7 @@ public abstract class AbstractServer {
         }
         SUPPORT_NATIVE_ET = epoll;
 
-        LOG.warn("AbstractServer SUPPORT_NATIVE_ET epoll... {}", epoll);
+        LOG.warn("SUPPORT_NATIVE_ET epoll... {}", epoll);
     }
 
     protected EventLoopGroup initEventLoopGroup(int workerNum, ThreadFactory workerFactory) {

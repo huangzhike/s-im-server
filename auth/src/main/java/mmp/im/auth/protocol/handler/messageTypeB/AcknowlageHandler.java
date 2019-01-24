@@ -11,10 +11,8 @@ import org.slf4j.LoggerFactory;
 public class AcknowlageHandler implements IMessageTypeHandler {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     @Override
     public String getHandlerName() {
-
         return String.valueOf(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
     }
 
@@ -22,10 +20,9 @@ public class AcknowlageHandler implements IMessageTypeHandler {
     public void process(ChannelHandlerContext channel, Object object) {
         MessageTypeB.Acknowledge acknowledge = (MessageTypeB.Acknowledge) object;
         try {
-            LOG.warn("处理ACK... {}", acknowledge);
             ResendMessageMap.remove(acknowledge.getAck());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
 
     }

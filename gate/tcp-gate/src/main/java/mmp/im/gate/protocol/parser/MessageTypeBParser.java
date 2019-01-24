@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageTypeBParser implements IProtocolParser {
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, Object> msgTypeHandlers;
 
@@ -29,7 +29,7 @@ public class MessageTypeBParser implements IProtocolParser {
                 IMessageTypeHandler e = (IMessageTypeHandler) v.newInstance();
                 this.msgTypeHandlers.put(e.getHandlerName(), e);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("newInstance Exception... {}", e);
             }
         });
 
@@ -51,11 +51,11 @@ public class MessageTypeBParser implements IProtocolParser {
             message = MessageTypeB.Acknowledge.parseFrom(bytes);
 
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            LOG.error("parseFrom Exception... {}", e);
         }
         if (message != null) {
-
-            IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
+            String type = String.valueOf(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
+            IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(type);
             if (handler != null) {
                 handler.process(channelHandlerContext, message);
             }

@@ -30,7 +30,7 @@ public class MessageTypeAParser implements IProtocolParser {
                 IMessageTypeHandler e = (IMessageTypeHandler) v.newInstance();
                 this.msgTypeHandlers.put(e.getHandlerName(), e);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("MessageTypeAParser parseFrom Exception... {}", e);
             }
         });
 
@@ -46,9 +46,9 @@ public class MessageTypeAParser implements IProtocolParser {
     @Override
     public void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes) {
 
-        String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
+        String channelId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
         // 没登陆就关闭
-        if (userId == null) {
+        if (channelId == null) {
             // channelHandlerContext.channel().close();
             // return;
         }
@@ -57,17 +57,19 @@ public class MessageTypeAParser implements IProtocolParser {
 
         try {
             message = MessageTypeA.Message.parseFrom(bytes);
-
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            LOG.error("parseFrom Exception... {}", e);
         }
         if (message != null) {
 
-            LOG.warn("收到消息 ClientMessageParser... {}", message);
+
             String type = String.valueOf(message.getType().getNumber());
+
             IMessageTypeHandler handler = (IMessageTypeHandler) this.getMsgTypeHandlers().get(type);
+
             if (handler != null) {
-                LOG.warn("处理消息 ClientMessage Process... {}", message);
+
+
                 handler.process(channelHandlerContext, message);
             }
 

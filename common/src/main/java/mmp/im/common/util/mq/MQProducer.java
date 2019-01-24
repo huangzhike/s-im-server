@@ -77,14 +77,14 @@ public abstract class MQProducer {
                 this.connection = this.connectionFactory.newConnection();
 
                 this.connection.addShutdownListener((shutdownSignalException) -> {
-                    LOG.warn("shutdownCompleted: " + shutdownSignalException.getReason().toString());
+                    LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason());
                 });
 
                 // 自动恢复
                 ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
                     @Override
                     public void handleRecoveryStarted(Recoverable recoverable) {
-                        LOG.warn("handleRecoveryStarted");
+                        LOG.warn("handleRecoveryStarted...");
                     }
 
                     @Override
@@ -107,7 +107,7 @@ public abstract class MQProducer {
             try {
                 this.pubChannel.close();
             } catch (Exception e) {
-                LOG.error("startPublisher pubChannel Exception... {}", e);
+                LOG.error("startPublisher close Exception... {}", e);
             }
         }
 
@@ -121,7 +121,7 @@ public abstract class MQProducer {
             AMQP.Queue.DeclareOk queueDeclare = pubChannel.queueDeclare(this.publishToQueue, true, false, false, null);
 
         } catch (Exception e) {
-            LOG.error("startPublisher Exception... {}", e);
+            LOG.error("startPublisher pubChannel Exception... {}", e);
         }
 
         while (resendQueue.size() > 0) {

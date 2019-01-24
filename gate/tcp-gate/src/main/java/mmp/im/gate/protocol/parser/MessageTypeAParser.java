@@ -32,7 +32,7 @@ public class MessageTypeAParser implements IProtocolParser {
                 IMessageTypeHandler e = (IMessageTypeHandler) v.newInstance();
                 this.msgTypeHandlers.put(e.getHandlerName(), e);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("newInstance Exception... {}", e);
             }
         });
 
@@ -60,9 +60,8 @@ public class MessageTypeAParser implements IProtocolParser {
         try {
             message = MessageTypeA.Message.parseFrom(bytes);
 
-
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            LOG.error("parseFrom Exception... {}", e);
         }
         if (message != null) {
             String type = String.valueOf(message.getType().getNumber());

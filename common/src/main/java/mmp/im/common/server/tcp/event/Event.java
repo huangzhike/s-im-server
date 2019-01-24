@@ -1,7 +1,11 @@
 package mmp.im.common.server.tcp.event;
 
 import io.netty.channel.Channel;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Data
+@Accessors(chain = true)
 public class Event {
 
     private final EventType type;
@@ -14,27 +18,5 @@ public class Event {
         this.channel = channel;
     }
 
-    public EventType getType() {
-        return type;
-    }
 
-
-    public String getRemoteAddr() {
-        return remoteAddr;
-    }
-
-
-    public Channel getChannel() {
-        return channel;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "type=" + type +
-                ", remoteAddr='" + remoteAddr + '\'' +
-                ", channel=" + channel +
-                '}';
-    }
 }

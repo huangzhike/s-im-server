@@ -23,11 +23,11 @@ public class ResendMessageThread implements Runnable {
                 // 10秒没确认
                 if (System.currentTimeMillis() - resendMessage.getTimestamp() > SECONDS.toMillis(10)) {
                     // 通道未关闭
-                    if (resendMessage.getChannel().channel().isActive()) {
+                    if (resendMessage.getChannelHandlerContext().channel().isActive()) {
 
-                        LOG.warn("ResendMessageThread 重发... {}", resendMessage.getMsg());
+                        LOG.warn("重发... {}", resendMessage.getMsg());
                         // 重发
-                        resendMessage.getChannel().writeAndFlush(resendMessage.getMsg()).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                        resendMessage.getChannelHandlerContext().channel().writeAndFlush(resendMessage.getMsg()).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                         // 更新时间戳
                         resendMessage.setTimestamp(System.currentTimeMillis());
                     }
@@ -37,7 +37,7 @@ public class ResendMessageThread implements Runnable {
             try {
                 Thread.sleep(300);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error("Thread Exception... {}", e);
             }
 
         }

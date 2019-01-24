@@ -2,39 +2,26 @@ package mmp.im.common.server.tcp.cache.acknowledge;
 
 import com.google.protobuf.MessageLite;
 import io.netty.channel.ChannelHandlerContext;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-
+@Data
+@Accessors(chain = true)
 public class ResendMessage {
 
     private final long id;
 
     private final MessageLite msg;
 
-    private final ChannelHandlerContext channel;
+    private final ChannelHandlerContext channelHandlerContext;
 
     private long timestamp = System.currentTimeMillis();
 
-    public ResendMessage(MessageLite msg, ChannelHandlerContext channel, long id) {
+    public ResendMessage(MessageLite msg, ChannelHandlerContext channelHandlerContext, long id) {
         this.msg = msg;
-        this.channel = channel;
+        this.channelHandlerContext = channelHandlerContext;
         this.id = id;
     }
 
-    public long getId() {
-        return id;
-    }
 
-    public MessageLite getMsg() {
-        return msg;
-    }
-
-    public ChannelHandlerContext getChannel() {
-        return channel;
-    }
-    public long getTimestamp() {
-        return timestamp;
-    }
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
 }

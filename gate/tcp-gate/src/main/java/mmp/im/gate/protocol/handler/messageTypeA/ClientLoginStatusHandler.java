@@ -10,10 +10,8 @@ public class ClientLoginStatusHandler implements IMessageTypeHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     @Override
     public String getHandlerName() {
-
         return String.valueOf(MessageTypeA.Message.Type.CLIENT_LOGIN_STATUS_VALUE);
     }
 
@@ -22,13 +20,12 @@ public class ClientLoginStatusHandler implements IMessageTypeHandler {
 
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
+        MessageTypeA.Message.ClientLoginStatus msg = null;
         try {
-            MessageTypeA.Message.ClientLoginStatus msg = message.getData().unpack(MessageTypeA.Message.ClientLoginStatus.class);
-
+            msg = message.getData().unpack(MessageTypeA.Message.ClientLoginStatus.class);
             // todo 收到别的端用户登陆信息，保存给用户显示在线状态
-
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("unpack Exception... {}", e);
         }
 
     }

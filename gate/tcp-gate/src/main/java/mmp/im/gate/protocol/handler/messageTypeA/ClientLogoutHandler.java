@@ -16,13 +16,12 @@ public class ClientLogoutHandler implements IMessageTypeHandler {
 
     @Override
     public String getHandlerName() {
-        return String.valueOf(MessageTypeA.Message.Type.CLIENT_LOGOUT);
+        return String.valueOf(MessageTypeA.Message.Type.CLIENT_LOGOUT_VALUE);
     }
 
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, Object object) {
         MessageTypeA.Message message = (MessageTypeA.Message) object;
-
 
         // 从AUTH获取用户TOKEN对比
 

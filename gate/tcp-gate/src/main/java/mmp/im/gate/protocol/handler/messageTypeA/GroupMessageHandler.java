@@ -24,12 +24,11 @@ public class GroupMessageHandler implements IMessageTypeHandler {
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
         MessageSender.sendToServers(message);
-
+        MessageTypeA.Message.GroupMessage msg = null;
         try {
-            MessageTypeA.Message.GroupMessage msg = message.getData().unpack(MessageTypeA.Message.GroupMessage.class);
-
+            msg = message.getData().unpack(MessageTypeA.Message.GroupMessage.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("unpack Exception... {}", e);
         }
 
     }

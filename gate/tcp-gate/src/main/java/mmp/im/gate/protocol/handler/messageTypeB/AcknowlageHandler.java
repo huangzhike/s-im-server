@@ -15,7 +15,6 @@ public class AcknowlageHandler implements IMessageTypeHandler {
 
     @Override
     public String getHandlerName() {
-
         return String.valueOf(ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType());
     }
 
@@ -25,7 +24,7 @@ public class AcknowlageHandler implements IMessageTypeHandler {
         try {
             ResendMessageMap.remove(acknowledge.getAck());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
 
     }

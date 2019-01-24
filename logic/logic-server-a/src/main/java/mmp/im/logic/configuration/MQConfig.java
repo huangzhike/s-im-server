@@ -28,16 +28,17 @@ public class MQConfig {
             @Override
             public boolean process(byte[] contentBody) {
 
+                LOG.warn("contentBody... {}", contentBody);
                 // 获取包头中的类型
                 byte protocolType = contentBody[0];
 
-                LOG.warn("MQConsumer parserPacket protocolType... {}", protocolType);
+                LOG.warn("protocolType... {}", protocolType);
 
                 IMQProtocolParser protocolParser = ProtocolParserHolder.get(protocolType);
 
                 if (protocolParser != null) {
 
-                    LOG.warn("MQConsumer protocolParser {}", protocolParser);
+                    LOG.warn("protocolParser... {}", protocolParser);
 
                     protocolParser.parse(Arrays.copyOfRange(contentBody, 1, contentBody.length));
                 }

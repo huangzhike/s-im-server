@@ -22,7 +22,7 @@ public class HTTPUtil {
     private static final OkHttpClient okHttpClient = new OkHttpClient();
 
 
-    public static void get(String url, Object param, Callback callback) {
+    private static Call get(String url, Object param) {
 
         LOG.warn("get url... {}", url);
 
@@ -36,11 +36,11 @@ public class HTTPUtil {
 
         final Request request = new Request.Builder().url(url + "?" + paramsString).get().build();
 
-        okHttpClient.newCall(request).enqueue(callback);
+        return okHttpClient.newCall(request);
     }
 
 
-    public static void post(String url, Object param, Callback callback) {
+    private static Call post(String url, Object param) {
 
         LOG.warn("post url... {}", url);
 
@@ -57,9 +57,36 @@ public class HTTPUtil {
 
         // 请求创建
         final Request request = new Request.Builder().url(url).post(body).headers(headers).build();
-        // 发起请求
-        okHttpClient.newCall(request).enqueue(callback);
 
+        return okHttpClient.newCall(request);
+    }
+
+
+    public static void asynGet(String url, Object param, Callback callback) {
+        get(url, param).enqueue(callback);
+    }
+    public static void asynPost(String url, Object param, Callback callback) {
+        post(url, param).enqueue(callback);
+    }
+
+    public static Object syncGet(String url, Object param) {
+        Object result = null;
+        try {
+            result = get(url, param).execute();
+        } catch (Exception e) {
+            LOG.error("Exception... {}", e);
+        }
+        return result;
+    }
+    public static Object syncPost(String url, Object param) {
+
+        Object result = null;
+        try {
+            result = post(url, param).execute();
+        } catch (Exception e) {
+            LOG.error("Exception... {}", e);
+        }
+        return result;
     }
 
 

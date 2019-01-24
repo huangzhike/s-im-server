@@ -27,7 +27,7 @@ public class ProtoStuffSerializer implements ISerializer {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> byte[] writeObject(T obj) {
+    public <T> byte[] serialize(T obj) {
 
         Class<T> cls = (Class<T>) obj.getClass();
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
@@ -41,7 +41,7 @@ public class ProtoStuffSerializer implements ISerializer {
         }
     }
 
-    public <T> T readObject(byte[] bytes, Class<T> clazz) {
+    public <T> T deserialize(byte[] bytes, Class<T> clazz) {
         try {
             T message = objenesis.newInstance(clazz);
             Schema<T> schema = getSchema(clazz);

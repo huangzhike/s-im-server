@@ -7,11 +7,11 @@ public interface ISerializer {
     /*
      * 序列化
      * */
-    <T> byte[] writeObject(T obj);
+    <T> byte[] serialize(T obj);
 
 
     /*
      * 反序列化
      * */
-    <T> T readObject(byte[] bytes, Class<T> clazz);
+    <T> T deserialize(byte[] bytes, Class<T> clazz);
 }

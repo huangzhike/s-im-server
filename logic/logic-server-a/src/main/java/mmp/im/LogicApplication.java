@@ -29,7 +29,6 @@ public class LogicApplication implements CommandLineRunner {
         SpringApplication.run(LogicApplication.class, args);
     }
 
-
     @Override
     public void run(String... args) throws Exception {
 

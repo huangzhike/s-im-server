@@ -23,21 +23,21 @@ public class ServerLogoutHandler implements IMessageTypeHandler {
 
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
+        MessageTypeA.Message.ServerLogout msg = null;
         try {
-            MessageTypeA.Message.ServerLogout msg = message.getData().unpack(MessageTypeA.Message.ServerLogout.class);
-
-            String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
-
-            if (userId != null) {
-                // 直接关闭连接，不发送确认了
-                ConnectionHolder.removeServerConnection(userId);
-                // channelHandlerContext.channel().close();
-
-            }
-
+            msg = message.getData().unpack(MessageTypeA.Message.ServerLogout.class);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("unpack Exception... {}", e);
+        }
+
+        String channelId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
+
+        if (channelId != null) {
+            // 直接关闭连接，不发送确认了
+            ConnectionHolder.removeServerConnection(channelId);
+            // channelHandlerContext.channel().close();
+
         }
 
     }

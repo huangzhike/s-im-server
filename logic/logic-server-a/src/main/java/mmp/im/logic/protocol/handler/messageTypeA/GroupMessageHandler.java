@@ -27,10 +27,10 @@ public class GroupMessageHandler implements IMQMessageTypeHandler {
         try {
             msg = message.getData().unpack(MessageTypeA.Message.GroupMessage.class);
         } catch (Exception e) {
-            LOG.error("GroupMessageHandler parsers Exception... {}", e);
+            LOG.error("unpack Exception... {}", e);
         }
 
-        LOG.warn("GroupMessageHandler process message... {}", message);
+        LOG.warn("processing message... {}", message);
 
         SpringContextHolder.getBean(XService.class);
 

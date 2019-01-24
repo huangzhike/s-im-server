@@ -22,7 +22,6 @@ public class ProtocolParserHolder {
          * DCL
          * */
         if (parsers == null) {
-
             synchronized (ProtocolParserHolder.class) {
                 if (parsers == null) {
                     parsers = new HashMap<>();
@@ -35,7 +34,7 @@ public class ProtocolParserHolder {
                             IProtocolParser instance = (IProtocolParser) c.newInstance();
                             parsers.put(instance.getProtocolKind(), instance);
                         } catch (Exception e) {
-                            LOG.error("init ProtocolParserHolder parsers Exception... {}", e);
+                            LOG.error("newInstance Exception... {}", e);
                         }
                     }
 

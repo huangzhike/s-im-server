@@ -28,11 +28,11 @@ public class MessageTypeAParser implements IMQProtocolParser {
                 IMQMessageTypeHandler e = (IMQMessageTypeHandler) v.newInstance();
                 this.msgTypeHandlers.put(e.getHandlerName(), e);
             } catch (Exception e) {
-                LOG.error("init MessageTypeAParser Exception... {}", e);
+                LOG.error("newInstance Exception... {}", e);
             }
         });
 
-        LOG.warn("init MessageTypeAParser size... {}", msgTypeHandlers.size());
+        LOG.warn("handlers size... {}", msgTypeHandlers.size());
 
     }
 
@@ -50,12 +50,12 @@ public class MessageTypeAParser implements IMQProtocolParser {
         try {
             message = MessageTypeA.Message.parseFrom(bytes);
         } catch (InvalidProtocolBufferException e) {
-            LOG.error("MessageTypeAParser parse Exception... {}", e);
+            LOG.error("parse Exception... {}", e);
         }
 
         if (message != null) {
 
-            LOG.warn("MessageTypeAParser parsing message... {}", message);
+            LOG.warn("message... {}", message);
 
             String type = String.valueOf(message.getType().getNumber());
 
@@ -65,7 +65,7 @@ public class MessageTypeAParser implements IMQProtocolParser {
 
                 handler.process(message);
 
-                LOG.warn("MessageTypeAParser handler processing message... {}", message);
+                LOG.warn("handler message... {}", message);
             }
 
         }

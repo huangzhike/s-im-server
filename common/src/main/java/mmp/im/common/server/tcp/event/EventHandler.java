@@ -25,7 +25,7 @@ public class EventHandler extends ChannelDuplexHandler {
 
         super.connect(ctx, remoteAddress, localAddress, future);
         String r = remoteAddress.toString();
-        LOG.warn("EventHandler connect remoteAddress... {}", r);
+        LOG.warn("connect remoteAddress... {}", r);
         this.eventExecutor.putNettyEvent(new Event(EventType.CONNECT, r, ctx.channel()));
     }
 
@@ -33,7 +33,7 @@ public class EventHandler extends ChannelDuplexHandler {
     public void disconnect(ChannelHandlerContext ctx, ChannelPromise future) throws Exception {
         String remoteAddress = ctx.channel().remoteAddress().toString();
         super.disconnect(ctx, future);
-        LOG.warn("EventHandler disconnect remoteAddress... {}", remoteAddress);
+        LOG.warn("disconnect remoteAddress... {}", remoteAddress);
         this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, ctx.channel()));
 
     }
@@ -42,7 +42,7 @@ public class EventHandler extends ChannelDuplexHandler {
     public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
         String remoteAddress = ctx.channel().remoteAddress().toString();
         super.close(ctx, promise);
-        LOG.warn("EventHandler close remoteAddress... {}", remoteAddress);
+        LOG.warn("close remoteAddress... {}", remoteAddress);
         this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, ctx.channel()));
 
     }
@@ -51,7 +51,7 @@ public class EventHandler extends ChannelDuplexHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         String remoteAddress = ctx.channel().remoteAddress().toString();
-        LOG.warn("EventHandler exceptionCaught remoteAddress... {}", remoteAddress);
+        LOG.warn("exceptionCaught remoteAddress... {}", remoteAddress);
         this.eventExecutor.putNettyEvent(new Event(EventType.EXCEPTION, remoteAddress, ctx.channel()));
     }
 }

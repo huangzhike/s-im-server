@@ -27,7 +27,7 @@ public class ProtocolParserHolder {
                     IProtocolParser e = (IProtocolParser) aClass.newInstance();
                     parsers.put(e.getProtocolKind(), e);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    LOG.error("newInstance Exception... {}", e);
                 }
             });
         }

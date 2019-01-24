@@ -7,7 +7,6 @@ import mmp.im.gate.server.connect.GateToAuthConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,21 +16,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync
 @EnableScheduling
 public class TCPGateApplication implements CommandLineRunner {
 
-
-    @Value("${gateToAuthConnector.connect.host}")
-    private String gateToAuthConnectorHost;
-
-    @Value("${gateToAuthAcceptor.connect.port}")
-    private Integer gateToAuthAcceptorPort;
-
-    @Value("${clientToGateAcceptor.bind.port}")
-    private Integer clientToGateAcceptorPort;
 
     @Autowired
     private GateToAuthConnector gateToAuthConnector;
@@ -52,9 +41,9 @@ public class TCPGateApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        new Thread(() -> gateToAuthConnector.connect(gateToAuthConnectorHost, gateToAuthAcceptorPort)).start();
+        new Thread(() -> gateToAuthConnector.connect()).start();
 
-        new Thread(() -> clientToGateAcceptor.bind(clientToGateAcceptorPort)).start();
+        new Thread(() -> clientToGateAcceptor.bind()).start();
 
         new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
 

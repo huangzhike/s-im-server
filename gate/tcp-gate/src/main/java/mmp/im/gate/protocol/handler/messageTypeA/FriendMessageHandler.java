@@ -23,11 +23,11 @@ public class FriendMessageHandler implements IMessageTypeHandler {
 
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
+        MessageTypeA.Message.FriendMessage msg = null;
         try {
-            MessageTypeA.Message.FriendMessage msg = message.getData().unpack(MessageTypeA.Message.FriendMessage.class);
-
+            msg = message.getData().unpack(MessageTypeA.Message.FriendMessage.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("unpack Exception... {}", e);
         }
 
         // 单聊消息

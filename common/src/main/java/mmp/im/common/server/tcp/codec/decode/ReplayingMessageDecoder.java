@@ -25,12 +25,12 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
                 if (ProtocolHeader.FLAG_NUM != in.readInt()) {
                     throw new IllegalArgumentException();
                 }
-                LOG.warn("ReplayingMessageDecoder checkpoint -> PROTOCOL_TYPE");
+                LOG.warn("checkpoint -> PROTOCOL_TYPE");
                 checkpoint(ReplayingMessageDecoder.State.PROTOCOL_TYPE);
                 // 这里没有break，接下来进入PROTOCOL_TYPE代码块
             case PROTOCOL_TYPE:
                 protocolType = in.readByte(); // 消息标志位
-                LOG.warn("ReplayingMessageDecoder checkpoint -> BODY_LENGTH");
+                LOG.warn("checkpoint -> BODY_LENGTH");
                 checkpoint(ReplayingMessageDecoder.State.BODY_LENGTH);
             case BODY_LENGTH:
                 // 获取包头中的body长度，高低位，大端模式
@@ -38,7 +38,7 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
                 byte low = in.readByte();
 
                 bodyLength = (short) ((low & 0xff) | ((high & 0xff) << 8)); // 消息体长度
-                LOG.warn("ReplayingMessageDecoder checkpoint -> BODY");
+                LOG.warn("checkpoint -> BODY");
                 checkpoint(ReplayingMessageDecoder.State.BODY);
             case BODY:
                 ParserPacket parserPacket = new ParserPacket();
@@ -48,7 +48,7 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
                 in.readBytes(bytes);
                 parserPacket.setProtocolType(protocolType).setBody(bytes);
                 out.add(parserPacket);
-                LOG.warn("ReplayingMessageDecoder checkpoint -> FLAG");
+                LOG.warn("checkpoint -> FLAG");
                 checkpoint(ReplayingMessageDecoder.State.FLAG);
         }
     }

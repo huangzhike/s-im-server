@@ -14,7 +14,6 @@ public class ServerLoginHandler implements IMessageTypeHandler {
 
     @Override
     public String getHandlerName() {
-
         return String.valueOf(MessageTypeA.Message.Type.SERVER_LOGIN_VALUE);
     }
 
@@ -23,21 +22,21 @@ public class ServerLoginHandler implements IMessageTypeHandler {
 
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
+        MessageTypeA.Message.ServerLogin msg = null;
         try {
-            MessageTypeA.Message.ServerLogin msg = message.getData().unpack(MessageTypeA.Message.ServerLogin.class);
-
-            // 从AUTH获取用户TOKEN对比
-
-            String userId = channelHandlerContext.channel().remoteAddress().toString();
-            channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).set(userId);
-
-
-            ConnectionHolder.addServerConnection(userId, channelHandlerContext);
-
+            msg = message.getData().unpack(MessageTypeA.Message.ServerLogin.class);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("unpack Exception... {}", e);
         }
+
+        // 从AUTH获取用户TOKEN对比
+
+        String channelId = channelHandlerContext.channel().remoteAddress().toString();
+        channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).set(channelId);
+
+
+        ConnectionHolder.addServerConnection(channelId, channelHandlerContext);
 
     }
 }

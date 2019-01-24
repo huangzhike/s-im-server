@@ -46,7 +46,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
             try {
                 response.getWriter().write(JSON.toJSONString(map));
             } catch (Exception e) {
-                LOG.error("GlobalExceptionResolver Exception... {}", e);
+                LOG.error("Exception... {}", e);
             }
         } else {
             modelAndView = new ModelAndView("error", map);

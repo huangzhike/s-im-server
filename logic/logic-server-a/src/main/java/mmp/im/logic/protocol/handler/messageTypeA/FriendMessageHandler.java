@@ -26,10 +26,10 @@ public class FriendMessageHandler implements IMQMessageTypeHandler {
         try {
             msg = message.getData().unpack(MessageTypeA.Message.FriendMessage.class);
         } catch (Exception e) {
-            LOG.error("FriendMessageHandler parsers Exception... {}", e);
+            LOG.error("unpack Exception... {}", e);
         }
 
-        LOG.warn("FriendMessageHandler process message... {}", message);
+        LOG.warn("processing message... {}", message);
 
         SpringContextHolder.getBean(XService.class);
 

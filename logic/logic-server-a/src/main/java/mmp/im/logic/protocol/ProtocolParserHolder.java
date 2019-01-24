@@ -30,12 +30,12 @@ public class ProtocolParserHolder {
                 IMQProtocolParser instance = (IMQProtocolParser) c.newInstance();
                 parsers.put(instance.getProtocolKind(), instance);
             } catch (Exception e) {
-                LOG.error("init ProtocolParserHolder parsers Exception... {}", e);
+                LOG.error("newInstance Exception... {}", e);
             }
         }
 
-        LOG.warn("init ProtocolParserHolder parsers... {}", parsers);
-        LOG.warn("init ProtocolParserHolder parsers size... {}", parsers.size());
+        LOG.warn("parsers... {}", parsers);
+        LOG.warn("parsers size... {}", parsers.size());
     }
 
     private static HashMap<Integer, IMQProtocolParser> getParsers() {

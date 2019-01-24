@@ -9,7 +9,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import mmp.im.common.server.tcp.server.AbstractServer;
-import mmp.im.common.server.tcp.server.IServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,27 +16,25 @@ import java.util.concurrent.ThreadFactory;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public abstract class AbstractTCPConnector extends AbstractServer implements IServer {
+public abstract class AbstractTCPConnector extends AbstractServer {
 
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     protected Bootstrap bootstrap;
-
+    protected int port;
+    protected String host;
     protected EventLoopGroup workerEventLoopGroup;
 
     public AbstractTCPConnector() {
+        this.initBootstrap();
+    }
 
-        ThreadFactory workerFactory = new DefaultThreadFactory("client.connector");
+    public void initBootstrap(EventLoopGroup workerEventLoopGroup) {
+        this.workerEventLoopGroup = workerEventLoopGroup;
 
-        int workerNum = Runtime.getRuntime().availableProcessors() << 1;
-
-        workerEventLoopGroup = initEventLoopGroup(workerNum, workerFactory);
-
-        // workerEventLoopGroup = new NioEventLoopGroup();
-
-        bootstrap = new Bootstrap().group(workerEventLoopGroup);
-        bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()))
+        this.bootstrap = new Bootstrap().group(workerEventLoopGroup);
+        this.bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()))
                 .option(ChannelOption.MESSAGE_SIZE_ESTIMATOR, DefaultMessageSizeEstimator.DEFAULT)
                 .option(ChannelOption.SO_REUSEADDR, true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) SECONDS.toMillis(3))
@@ -45,10 +42,25 @@ public abstract class AbstractTCPConnector extends AbstractServer implements ISe
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.ALLOW_HALF_CLOSURE, false)
                 .channel(NioSocketChannel.class);
+    }
+
+    private void initBootstrap() {
+        ThreadFactory workerFactory = new DefaultThreadFactory("client.connector");
+
+        int workerNum = Runtime.getRuntime().availableProcessors() << 1;
+
+        EventLoopGroup workerEventLoopGroup = this.initEventLoopGroup(workerNum, workerFactory);
+
+        // workerEventLoopGroup = new NioEventLoopGroup();
+        this.initBootstrap(workerEventLoopGroup);
 
     }
+
+
+
     protected Object bootstrapLock() {
-        return bootstrap;
+        return this.bootstrap;
     }
-    public abstract void connect(String host, Integer port);
+
+    public abstract void connect();
 }

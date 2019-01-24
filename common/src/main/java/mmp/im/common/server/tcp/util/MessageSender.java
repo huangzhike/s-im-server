@@ -32,7 +32,7 @@ public class MessageSender {
         ChannelHandlerContext channelHandlerContext = ConnectionHolder.getClientConnection(to);
         // 发送
         channelHandlerContext.channel().writeAndFlush(messageLite);
-        LOG.warn("MessageSender sendToClient... {}", messageLite);
+        LOG.warn("sendToClient... {}", messageLite);
         // 需要ACK
         toBeAcknowledgedIfNeed(channelHandlerContext, object);
     }
@@ -47,7 +47,7 @@ public class MessageSender {
         if (serverChannelHandlerContextList != null && serverChannelHandlerContextList.size() != 0) {
             serverChannelHandlerContextList.forEach(channelHandlerContext -> {
                 channelHandlerContext.channel().writeAndFlush(messageLite);
-                LOG.warn("MessageSender sendToServers... {}", messageLite);
+                LOG.warn("sendToServers... {}", messageLite);
                 toBeAcknowledgedIfNeed(channelHandlerContext, object);
             });
         }
@@ -61,7 +61,7 @@ public class MessageSender {
         ChannelHandlerContext channelHandlerContext = ConnectionHolder.getServerConnection(key);
         if (channelHandlerContext != null) {
             channelHandlerContext.channel().writeAndFlush(messageLite);
-            LOG.warn("MessageSender sendToServer... {}", messageLite);
+            LOG.warn("sendToServer... {}", messageLite);
             toBeAcknowledgedIfNeed(channelHandlerContext, object);
         }
 
@@ -72,7 +72,7 @@ public class MessageSender {
         MessageLite messageLite = (MessageLite) object;
 
         if (messageLite instanceof MessageTypeA.Message) {
-            LOG.warn("MessageSender messageLite... instanceof MessageTypeA.Message");
+            LOG.warn("messageLite... instanceof MessageTypeA.Message...");
             MessageTypeA.Message msg = (MessageTypeA.Message) messageLite;
             ResendMessageMap.put(msg.getSeq(), new ResendMessage(messageLite, channelHandlerContext, msg.getSeq()));
         }

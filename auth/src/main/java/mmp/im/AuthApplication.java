@@ -6,7 +6,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,10 +25,6 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
     @Autowired
     private GateToAuthAcceptor gateToAuthAcceptor;
 
-    @Value("${gateToAuthAcceptor.bind.port}")
-    private Integer gateToAuthAcceptorPort;
-
-
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
@@ -40,7 +35,7 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
     @Override
     public void run(String... args) throws Exception {
 
-        new Thread(() -> gateToAuthAcceptor.bind(gateToAuthAcceptorPort)).start();
+        new Thread(() -> gateToAuthAcceptor.bind()).start();
 
         new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
 

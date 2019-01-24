@@ -19,7 +19,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 
-        LOG.warn("MessageDecoder decode start...");
+        LOG.warn("decode start...");
 
         in.markReaderIndex(); // 重用ByteBuf 已读 可读 可写 剩余
 
@@ -34,7 +34,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
         if (flag != ProtocolHeader.FLAG_NUM) {
             // 重置指针
             in.resetReaderIndex();
-            LOG.warn("MessageDecoder 标记头不对...");
+            LOG.warn("标记头不对...");
 
             ctx.close();
             LOG.warn("非法数据，关闭连接...");
@@ -53,11 +53,11 @@ public class MessageDecoder extends ByteToMessageDecoder {
         // 如果可读长度小于body长度，恢复读指针，退出
         if (in.readableBytes() < bodyLength) {
             in.resetReaderIndex();
-            LOG.warn("MessageDecoder 可读长度不对...小于body长度...");
+            LOG.warn("可读长度不对...小于body长度...");
             return;
         }
 
-        LOG.warn("MessageDecoder bodyLength...{}", bodyLength);
+        LOG.warn("decode bodyLength...{}", bodyLength);
 
         // // 读取body
         // byte[] bytes = new byte[in.readableBytes()];
@@ -65,7 +65,6 @@ public class MessageDecoder extends ByteToMessageDecoder {
         // // 读取body
         // ByteBuf frame = Unpooled.buffer(bodyLength);
         // in.readBytes(frame);
-
 
         // 读取body
         ByteBuf bodyByteBuf = in.readBytes(bodyLength);
@@ -75,22 +74,22 @@ public class MessageDecoder extends ByteToMessageDecoder {
         int offset;
 
         if (bodyByteBuf.hasArray()) {
-            LOG.warn("MessageDecoder 堆缓冲区...");
+            LOG.warn("堆缓冲区...");
             // 堆缓冲区(基于数组实现)，通过hasArray判断是否支持数组
             array = bodyByteBuf.array();
-            LOG.warn("MessageDecoder 堆缓冲区... array... {}", array);
+            LOG.warn("堆缓冲区... array... {}", array);
             // offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
         } else {
             // 直接缓冲区
-            LOG.warn("MessageDecoder 直接缓冲区...");
+            LOG.warn("直接缓冲区...");
             array = new byte[readableLen];
             bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
-            LOG.warn("MessageDecoder 直接缓冲区... array... {}", array);
+            LOG.warn("直接缓冲区... array... {}", array);
             // offset = 0;
         }
 
         out.add(new ParserPacket().setProtocolType(protocolType).setBody(array));
-        LOG.warn("MessageDecoder finished...");
+        LOG.warn("decode finished...");
 
     }
 
