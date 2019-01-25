@@ -12,9 +12,11 @@ public abstract class ProtocolHeader {
     protected short bodyLength;
 
     public enum ProtocolType {
-        HEARTBEAT((byte) 0x01),
-        ACKNOWLEDGE((byte) 0x02),
-        MESSAGE((byte) 0x03);
+
+        PROTOBUF_HEARTBEAT((byte) 0x01),
+        PROTOBUF_ACKNOWLEDGE((byte) 0x02),
+        PROTOBUF_MESSAGE((byte) 0x03),
+        PROTOBUF_MESSAGE_LITE((byte) 0x04);
 
         private byte type;
 

@@ -3,12 +3,9 @@ package mmp.im.gate.protocol.handler.messageTypeA;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class ClientLoginStatusHandler implements IMessageTypeHandler {
+public class ClientLoginStatusHandler extends MessageTypeAHandler implements IMessageTypeHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public String getHandlerName() {
@@ -17,7 +14,6 @@ public class ClientLoginStatusHandler implements IMessageTypeHandler {
 
     @Override
     public void process(ChannelHandlerContext channel, Object object) {
-
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
         MessageTypeA.Message.ClientLoginStatus msg = null;

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ThreadFactory;
 
-public abstract class AbstractServer implements IServer{
+public abstract class AbstractServer implements IServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(AbstractServer.class);
 

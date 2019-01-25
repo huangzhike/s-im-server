@@ -15,9 +15,11 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
     private byte protocolType;
     private short bodyLength;
+
     public ReplayingMessageDecoder() {
         super(ReplayingMessageDecoder.State.FLAG);
     }
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         switch (this.state()) {

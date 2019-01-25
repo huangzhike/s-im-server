@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 public interface IProtocolParser {
 
+
     int getProtocolKind();
 
     void parse(ChannelHandlerContext channelHandlerContext, byte[] bytes);

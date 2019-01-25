@@ -65,6 +65,7 @@ public class HTTPUtil {
     public static void asynGet(String url, Object param, Callback callback) {
         get(url, param).enqueue(callback);
     }
+
     public static void asynPost(String url, Object param, Callback callback) {
         post(url, param).enqueue(callback);
     }
@@ -78,6 +79,7 @@ public class HTTPUtil {
         }
         return result;
     }
+
     public static Object syncPost(String url, Object param) {
 
         Object result = null;

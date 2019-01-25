@@ -4,42 +4,21 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.handler.IMQMessageTypeHandler;
+import mmp.im.common.protocol.parser.AbstractMQProtocolParser;
 import mmp.im.common.protocol.parser.IMQProtocolParser;
-import mmp.im.common.util.reflect.PackageUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class MessageTypeAParser extends AbstractMQProtocolParser implements IMQProtocolParser {
 
-public class MessageTypeAParser implements IMQProtocolParser {
 
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+    public MessageTypeAParser() {
 
-    private Map<String, IMQMessageTypeHandler> msgTypeHandlers = new HashMap<>();
-
-    {
-
-        List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.logic.protocol.handler.messageTypeA", IMQMessageTypeHandler.class);
-
-        classList.forEach(v -> {
-            try {
-                IMQMessageTypeHandler e = (IMQMessageTypeHandler) v.newInstance();
-                this.msgTypeHandlers.put(e.getHandlerName(), e);
-            } catch (Exception e) {
-                LOG.error("newInstance Exception... {}", e);
-            }
-        });
-
-        LOG.warn("handlers size... {}", msgTypeHandlers.size());
-
+        this.initHandler("mmp.im.logic.protocol.handler.messageTypeA", IMQMessageTypeHandler.class);
     }
 
 
     @Override
     public int getProtocolKind() {
-        return ProtocolHeader.ProtocolType.MESSAGE.getType();
+        return ProtocolHeader.ProtocolType.PROTOBUF_MESSAGE.getType();
     }
 
     @Override
@@ -59,22 +38,10 @@ public class MessageTypeAParser implements IMQProtocolParser {
 
             String type = String.valueOf(message.getType().getNumber());
 
-            IMQMessageTypeHandler handler = this.getMsgTypeHandlers().get(type);
-
-            if (handler != null) {
-
-                handler.process(message);
-
-                LOG.warn("handler message... {}", message);
-            }
+            this.assignHandler(type, message);
 
         }
 
     }
-
-    private Map<String, IMQMessageTypeHandler> getMsgTypeHandlers() {
-        return this.msgTypeHandlers;
-    }
-
 
 }

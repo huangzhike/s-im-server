@@ -12,14 +12,20 @@ public class ResendMessageThread implements Runnable {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
+    private ResendMessageMap resendMessageMap;
+
+    public ResendMessageThread(ResendMessageMap resendMessageMap) {
+        this.resendMessageMap = resendMessageMap;
+    }
+
     @Override
     public void run() {
 
-        Map<Long, ResendMessage> map = ResendMessageMap.getMap();
+        Map<Long, ResendMessage> messageToAckMap = this.resendMessageMap.getMap();
 
         while (true) {
 
-            for (ResendMessage resendMessage : map.values()) {
+            for (ResendMessage resendMessage : messageToAckMap.values()) {
                 // 10秒没确认
                 if (System.currentTimeMillis() - resendMessage.getTimestamp() > SECONDS.toMillis(10)) {
                     // 通道未关闭

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
 
+
 public class EventHandler extends ChannelDuplexHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -20,38 +21,37 @@ public class EventHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress,
+    public void connect(ChannelHandlerContext channelHandlerContext, SocketAddress remoteAddress,
                         SocketAddress localAddress, ChannelPromise future) throws Exception {
 
-        super.connect(ctx, remoteAddress, localAddress, future);
-        String r = remoteAddress.toString();
-        LOG.warn("connect remoteAddress... {}", r);
-        this.eventExecutor.putNettyEvent(new Event(EventType.CONNECT, r, ctx.channel()));
+        super.connect(channelHandlerContext, remoteAddress, localAddress, future);
+        LOG.warn("connect remoteAddress... {}", remoteAddress);
+        this.eventExecutor.putNettyEvent(new Event(EventType.CONNECT, remoteAddress.toString(), channelHandlerContext.channel()));
     }
 
     @Override
-    public void disconnect(ChannelHandlerContext ctx, ChannelPromise future) throws Exception {
-        String remoteAddress = ctx.channel().remoteAddress().toString();
-        super.disconnect(ctx, future);
+    public void disconnect(ChannelHandlerContext channelHandlerContext, ChannelPromise future) throws Exception {
+        String remoteAddress = channelHandlerContext.channel().remoteAddress().toString();
+        super.disconnect(channelHandlerContext, future);
         LOG.warn("disconnect remoteAddress... {}", remoteAddress);
-        this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, ctx.channel()));
+        this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, channelHandlerContext.channel()));
 
     }
 
     @Override
-    public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-        String remoteAddress = ctx.channel().remoteAddress().toString();
-        super.close(ctx, promise);
+    public void close(ChannelHandlerContext channelHandlerContext, ChannelPromise promise) throws Exception {
+        String remoteAddress = channelHandlerContext.channel().remoteAddress().toString();
+        super.close(channelHandlerContext, promise);
         LOG.warn("close remoteAddress... {}", remoteAddress);
-        this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, ctx.channel()));
+        this.eventExecutor.putNettyEvent(new Event(EventType.CLOSE, remoteAddress, channelHandlerContext.channel()));
 
     }
 
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        String remoteAddress = ctx.channel().remoteAddress().toString();
+    public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable cause) throws Exception {
+        String remoteAddress = channelHandlerContext.channel().remoteAddress().toString();
         LOG.warn("exceptionCaught remoteAddress... {}", remoteAddress);
-        this.eventExecutor.putNettyEvent(new Event(EventType.EXCEPTION, remoteAddress, ctx.channel()));
+        this.eventExecutor.putNettyEvent(new Event(EventType.EXCEPTION, remoteAddress, channelHandlerContext.channel()));
     }
 }

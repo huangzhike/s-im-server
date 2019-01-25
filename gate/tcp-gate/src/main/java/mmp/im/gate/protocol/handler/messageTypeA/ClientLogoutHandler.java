@@ -3,15 +3,12 @@ package mmp.im.gate.protocol.handler.messageTypeA;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.cache.connection.ConnectionHolder;
+import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
 import mmp.im.common.server.tcp.util.AttributeKeyHolder;
 import mmp.im.common.server.tcp.util.MessageSender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mmp.im.gate.util.SpringContextHolder;
 
-public class ClientLogoutHandler implements IMessageTypeHandler {
-
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+public class ClientLogoutHandler extends MessageTypeAHandler implements IMessageTypeHandler {
 
 
     @Override
@@ -28,10 +25,12 @@ public class ClientLogoutHandler implements IMessageTypeHandler {
         String userId = channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).get();
 
         // 直接关闭连接，不发送确认了
-        ConnectionHolder.removeClientConnection(userId);
+        SpringContextHolder.getBean("", AcceptorChannelHandlerMap.class).removeChannel(userId);
         // channelHandlerContext.channel().close();
         // 发给Auth
-        MessageSender.sendToServers(message);
+
+
+        SpringContextHolder.getBean("", MessageSender.class).sendTo(message, null);
 
 
     }

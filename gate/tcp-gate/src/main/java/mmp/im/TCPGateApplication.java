@@ -1,32 +1,30 @@
 package mmp.im;
 
+import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
 import mmp.im.common.util.mq.MQProducer;
-import mmp.im.gate.server.accept.ClientToGateAcceptor;
-import mmp.im.gate.server.connect.GateToAuthConnector;
+import mmp.im.gate.acceptor.ClientToGateAcceptor;
+import mmp.im.gate.connector.GateToDistConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@EnableCaching(proxyTargetClass = true)
-@EnableAsync
-@EnableScheduling
 public class TCPGateApplication implements CommandLineRunner {
 
 
     @Autowired
-    private GateToAuthConnector gateToAuthConnector;
+    private GateToDistConnector gateToDistConnector;
 
     @Autowired
     private ClientToGateAcceptor clientToGateAcceptor;
+
+    @Autowired
+    private ResendMessageMap resendMessageMap;
 
     @Autowired
     private MQProducer mqProducer;
@@ -41,12 +39,14 @@ public class TCPGateApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        new Thread(() -> gateToAuthConnector.connect()).start();
+        new Thread(() -> gateToDistConnector.connect()).start();
 
         new Thread(() -> clientToGateAcceptor.bind()).start();
 
-        new Thread(new ResendMessageThread(), "ackTimeoutScanner").start();
 
+        LOG.warn("starting ResendMessageThread... ");
+
+        new Thread(new ResendMessageThread(resendMessageMap), "ResendMessageThread").start();
         mqProducer.start();
 
         LOG.warn("Spring Boot 启动完成");

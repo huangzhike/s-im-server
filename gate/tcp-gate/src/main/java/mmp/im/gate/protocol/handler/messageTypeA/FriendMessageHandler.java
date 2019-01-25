@@ -3,13 +3,12 @@ package mmp.im.gate.protocol.handler.messageTypeA;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.server.tcp.util.MessageBuilder;
 import mmp.im.common.server.tcp.util.MessageSender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mmp.im.common.util.mq.MQProducer;
+import mmp.im.gate.util.SpringContextHolder;
 
-public class FriendMessageHandler implements IMessageTypeHandler {
-
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+public class FriendMessageHandler extends MessageTypeAHandler implements IMessageTypeHandler {
 
 
     @Override
@@ -21,7 +20,6 @@ public class FriendMessageHandler implements IMessageTypeHandler {
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, Object object) {
 
-
         MessageTypeA.Message message = (MessageTypeA.Message) object;
         MessageTypeA.Message.FriendMessage msg = null;
         try {
@@ -30,10 +28,19 @@ public class FriendMessageHandler implements IMessageTypeHandler {
             LOG.error("unpack Exception... {}", e);
         }
 
+
+        SpringContextHolder.getBean("", MessageSender.class).sendTo(message, null);
         // 单聊消息
-        MessageSender.sendToClient(message.getTo(), message);
+
         // 其他端有登陆
-        MessageSender.sendToServers(message);
+
+
+        // 推送到logic处理，数据库操作等
+
+        SpringContextHolder.getBean(MQProducer.class).publish("", "", message);
+
+        // 回复确认
+        SpringContextHolder.getBean("", MessageSender.class).reply(channelHandlerContext, MessageBuilder.buildAcknowlege(message.getSeq()));
 
     }
 }

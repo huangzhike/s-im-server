@@ -77,7 +77,7 @@ public abstract class MQConsumer {
                 this.connection = this.connectionFactory.newConnection();
 
                 this.connection.addShutdownListener((shutdownSignalException) ->
-                        LOG.warn("shutdownCompleted... {}" , shutdownSignalException.getReason()));
+                        LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason()));
 
                 // 自动恢复
                 ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
@@ -85,6 +85,7 @@ public abstract class MQConsumer {
                     public void handleRecoveryStarted(Recoverable recoverable) {
                         LOG.warn("handleRecoveryStarted...");
                     }
+
                     @Override
                     public void handleRecovery(Recoverable recoverable) {
                         MQConsumer.this.start();

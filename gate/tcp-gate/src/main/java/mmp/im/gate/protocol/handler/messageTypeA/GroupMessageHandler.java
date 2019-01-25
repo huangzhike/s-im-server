@@ -4,13 +4,10 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
 import mmp.im.common.server.tcp.util.MessageSender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mmp.im.gate.util.SpringContextHolder;
 
 
-public class GroupMessageHandler implements IMessageTypeHandler {
-
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+public class GroupMessageHandler extends MessageTypeAHandler implements IMessageTypeHandler {
 
 
     @Override
@@ -23,7 +20,8 @@ public class GroupMessageHandler implements IMessageTypeHandler {
     public void process(ChannelHandlerContext channelHandlerContext, Object object) {
 
         MessageTypeA.Message message = (MessageTypeA.Message) object;
-        MessageSender.sendToServers(message);
+        SpringContextHolder.getBean("", MessageSender.class).sendTo("message", null);
+
         MessageTypeA.Message.GroupMessage msg = null;
         try {
             msg = message.getData().unpack(MessageTypeA.Message.GroupMessage.class);

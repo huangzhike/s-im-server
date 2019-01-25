@@ -1,10 +1,7 @@
 package mmp.im.common.protocol.util;
 
 import com.google.protobuf.MessageLite;
-import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.protocol.MessageTypeB;
-import mmp.im.common.protocol.MessageTypeC;
-import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.*;
 
 public class ProtocolUtil {
 
@@ -12,11 +9,13 @@ public class ProtocolUtil {
         byte protocolType = 0;
 
         if (msg instanceof MessageTypeA.Message) {
-            protocolType = ProtocolHeader.ProtocolType.MESSAGE.getType();
+            protocolType = ProtocolHeader.ProtocolType.PROTOBUF_MESSAGE.getType();
         } else if (msg instanceof MessageTypeB.Acknowledge) {
-            protocolType = ProtocolHeader.ProtocolType.ACKNOWLEDGE.getType();
+            protocolType = ProtocolHeader.ProtocolType.PROTOBUF_ACKNOWLEDGE.getType();
         } else if (msg instanceof MessageTypeC.Heartbeat) {
-            protocolType = ProtocolHeader.ProtocolType.HEARTBEAT.getType();
+            protocolType = ProtocolHeader.ProtocolType.PROTOBUF_HEARTBEAT.getType();
+        } else if (msg instanceof MessageTypeD.MessageLite) {
+            protocolType = ProtocolHeader.ProtocolType.PROTOBUF_MESSAGE_LITE.getType();
         }
         return protocolType;
     }

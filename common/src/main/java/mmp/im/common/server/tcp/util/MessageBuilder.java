@@ -9,31 +9,40 @@ import mmp.im.common.protocol.MessageTypeC;
 public class MessageBuilder {
 
 
-    public MessageLite buildHeartbeat() {
+    public static MessageLite buildHeartbeat() {
         return MessageTypeC.Heartbeat.newBuilder().build();
     }
 
-    public MessageLite buildAcknowlege(Long seq) {
+    public static MessageLite buildAcknowlege(Long seq) {
         return MessageTypeB.Acknowledge.newBuilder().setAck(seq).build();
     }
 
-    public MessageLite buildMessage() {
+
+    public static MessageLite buildClientLoginStatus(String from, String to, String data) {
+
+        MessageTypeA.Message.Builder builder = buildMessage(from, to, MessageTypeA.Message.Type.FRIEND_MESSAGE);
+
+        MessageTypeA.Message.FriendMessage.Builder msgBuilder = MessageTypeA.Message.FriendMessage.newBuilder();
+
+        msgBuilder.setData(data);
+
+        builder.setData(Any.pack(msgBuilder.build()));
+
+        return builder.build();
+    }
+
+    private static MessageTypeA.Message.Builder buildMessage(String from, String to, MessageTypeA.Message.Type type) {
 
         MessageTypeA.Message.Builder builder = MessageTypeA.Message.newBuilder();
 
         builder.setSeq(SeqGenerator.get());
-        builder.setFrom("from mmp");
-        builder.setTo("to mmp");
-        builder.setType(MessageTypeA.Message.Type.FRIEND_MESSAGE);
+        builder.setFrom(from);
+        builder.setTo(to);
+        builder.setType(type);
 
-        MessageTypeA.Message.FriendMessage.Builder msgBuilder = MessageTypeA.Message.FriendMessage.newBuilder();
 
-        msgBuilder.setData("尼玛的 为什么");
+        return builder;
 
-        builder.setData(Any.pack(msgBuilder.build()));
 
-        MessageTypeA.Message result = builder.build();
-
-        return result;
     }
 }

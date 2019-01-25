@@ -8,4 +8,5 @@ public interface IMessageTypeHandler {
     String getHandlerName();
 
     void process(ChannelHandlerContext channelHandlerContext, Object object);
+
 }

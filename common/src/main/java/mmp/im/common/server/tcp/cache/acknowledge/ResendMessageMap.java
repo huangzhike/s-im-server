@@ -5,21 +5,21 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ResendMessageMap {
 
-    private static final Map<Long, ResendMessage> messageToAckMap = new ConcurrentHashMap<>();
+    private final Map<Long, ResendMessage> messageToAckMap = new ConcurrentHashMap<>();
 
-    public static ResendMessage get(Long key) {
+    public ResendMessage get(Long key) {
         return messageToAckMap.get(key);
     }
 
-    public static Object remove(Long key) {
+    public ResendMessage remove(Long key) {
         return messageToAckMap.remove(key);
     }
 
-    public static Object put(Long key, ResendMessage resendMessage) {
+    public ResendMessage put(Long key, ResendMessage resendMessage) {
         return messageToAckMap.put(key, resendMessage);
     }
 
-    public static Map<Long, ResendMessage> getMap() {
+    public Map<Long, ResendMessage> getMap() {
         return messageToAckMap;
     }
 
