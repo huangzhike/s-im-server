@@ -30,7 +30,7 @@ public class AcceptorConfig {
 
     @Bean
     public ProtocolParserHolder protocolParserHolder() {
-        return new ProtocolParserHolder("mmp.im.gate.protocol.parser", IProtocolParser.class);
+        return new ProtocolParserHolder("mmp.im.gate.acceptor.parser", IProtocolParser.class);
     }
 
 

@@ -139,4 +139,6 @@ public abstract class MQProducer {
     // 发布
     public abstract boolean publish(String exchangeName, String routingKey, Object msg);
 
+    public abstract boolean pub(Object msg);
+
 }

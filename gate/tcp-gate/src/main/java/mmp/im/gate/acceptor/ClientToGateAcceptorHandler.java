@@ -4,11 +4,15 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.ParserPacket;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
 import mmp.im.common.server.tcp.util.AttributeKeyHolder;
+import mmp.im.common.server.tcp.util.MessageBuilder;
+import mmp.im.common.server.tcp.util.MessageSender;
+import mmp.im.gate.util.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +80,14 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
             LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
         }
+
+
+        String serverId = SpringContextHolder.getBean(ClientToGateAcceptor.class).getServeId();
+
+        MessageTypeA.Message m = (MessageTypeA.Message) MessageBuilder.buildClientStatus(channelId, "", channelId, serverId, false);
+
+        // distribute
+        SpringContextHolder.getBean(MessageSender.class).sendToAcceptor(m);
 
         channelHandlerContext.fireChannelInactive();
 

@@ -37,7 +37,7 @@ public class ConnectorConfig {
 
     @Bean("gateToDistConnectorProtocolParserHolder")
     public ProtocolParserHolder protocolParserHolder() {
-        return new ProtocolParserHolder("mmp.im.gate.protocol.parser", IProtocolParser.class);
+        return new ProtocolParserHolder("mmp.im.gate.connector.parser", IProtocolParser.class);
     }
 
 

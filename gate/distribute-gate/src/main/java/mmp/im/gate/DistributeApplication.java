@@ -2,6 +2,7 @@ package mmp.im.gate;
 
 import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
+import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.acceptor.GateToDistAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,9 @@ public class DistributeApplication implements CommandLineRunner {
     @Autowired
     private GateToDistAcceptor gateToDistAcceptor;
 
+
+    @Autowired
+    private MQProducer mqProducer;
 
     @Autowired
     private ResendMessageMap resendMessageMap;
@@ -35,6 +39,9 @@ public class DistributeApplication implements CommandLineRunner {
         new Thread(() -> gateToDistAcceptor.bind()).start();
 
         new Thread(new ResendMessageThread(resendMessageMap), "ResendMessageThread").start();
+
+
+        mqProducer.start();
 
         LOG.warn("Spring Boot 启动完成");
     }

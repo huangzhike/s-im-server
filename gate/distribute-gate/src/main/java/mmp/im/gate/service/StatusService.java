@@ -3,7 +3,7 @@ package mmp.im.gate.service;
 
 import mmp.im.common.model.Info;
 import mmp.im.common.model.User;
-import mmp.im.gate.util.RedisUtil;
+import mmp.im.common.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,20 +21,24 @@ public class StatusService {
 
     private ConcurrentHashMap<String, List<Info>> userServerMap = new ConcurrentHashMap<>();
 
-    public User getUser(User user) {
-        return user;
-    }
-
 
     public List<Info> getUserServerList(String key) {
         return userServerMap.get(key);
     }
+
 
     public void putUserServerList(String key, Info info) {
         List<Info> list = userServerMap.get(key);
         if (list == null) {
             list = new ArrayList<>();
             userServerMap.putIfAbsent(key, list);
+        }
+
+
+        for (Info i : list) {
+            if (i.getServerInfo().equals(info.getServerInfo())) {
+                return;
+            }
         }
         list.add(info);
     }
@@ -50,6 +54,7 @@ public class StatusService {
         }
     }
 
+    ///
 
     public <T> List<T> getUserServerList(User user) {
 

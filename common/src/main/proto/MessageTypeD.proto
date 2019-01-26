@@ -14,8 +14,9 @@ message MessageLite {
 
 
     enum Type {
-
+        // 已读
         READ_MESSAGE = 0;
+        // 正在输入
         INPUT_NOW_MESSAGE = 1;
 
     }

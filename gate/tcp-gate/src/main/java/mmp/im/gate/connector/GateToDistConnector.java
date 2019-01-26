@@ -14,6 +14,7 @@ import mmp.im.common.server.tcp.channel.listener.ConnectionListener;
 import mmp.im.common.server.tcp.codec.decode.MessageDecoder;
 import mmp.im.common.server.tcp.codec.encode.MessageEncoder;
 import mmp.im.common.server.tcp.server.AbstractTCPConnector;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +23,9 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class GateToDistConnector extends AbstractTCPConnector {
 
+
+    @Autowired
+    private GateToDistConnectorHandler gateToDistConnectorHandler;
 
     public GateToDistConnector(String host, int port) {
         this.host = host;
@@ -41,7 +45,7 @@ public class GateToDistConnector extends AbstractTCPConnector {
                     new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
                     // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
                     new ConnectorIdleStateTrigger(),
-                    new GateToDistConnectorHandler(),
+                    gateToDistConnectorHandler,
                     new ReconnectHandler(this)
             };
         };

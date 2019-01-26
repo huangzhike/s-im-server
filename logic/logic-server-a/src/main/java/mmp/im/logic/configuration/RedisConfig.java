@@ -1,4 +1,4 @@
-package mmp.im.gate.configuration;
+package mmp.im.logic.configuration;
 
 
 import mmp.im.common.util.redis.RedisUtil;

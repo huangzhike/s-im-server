@@ -29,6 +29,7 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
     @Autowired
     private ClientToGateAcceptorHandler clientToGateAcceptorHandler;
 
+    private String serveId;
 
     @Override
     public void bind() {

@@ -14,6 +14,6 @@ public class Info {
     private String protocolInfo;
     private String clientInfo;
     private String serverInfo;
-    private Date lastLogin;
+    private Date lastLogin = new Date(System.currentTimeMillis());
 
 }

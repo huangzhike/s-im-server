@@ -4,6 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AcceptorChannelHandlerMap {
@@ -11,6 +14,13 @@ public class AcceptorChannelHandlerMap {
     private final ConcurrentHashMap<String, ChannelHandlerContext> handlerContextConcurrentHashMap = new ConcurrentHashMap<>();
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
+
+    public List<String> getChannelMapKeyList() {
+        Set<String> keys = this.handlerContextConcurrentHashMap.keySet();
+
+        return new ArrayList<>(keys);
+    }
 
     public ChannelHandlerContext getChannel(String key) {
         return handlerContextConcurrentHashMap.get(key);

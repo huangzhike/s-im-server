@@ -15,15 +15,11 @@
     <dependencies>
 
 
-
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
 
         </dependency>
-
-
-
 
 
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
@@ -107,9 +103,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
-
-
 
 
     </dependencies>

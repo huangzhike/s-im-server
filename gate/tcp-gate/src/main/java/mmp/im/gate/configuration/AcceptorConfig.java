@@ -23,18 +23,21 @@ public class AcceptorConfig {
     private Integer clientToGateAcceptorPort;
 
 
+    @Value("${acceptor.serverId}")
+    private String serverId;
+
     @Bean
     public ClientToGateAcceptor clientToGateAcceptor() {
 
         ClientToGateAcceptor clientToGateAcceptor = new ClientToGateAcceptor(clientToGateAcceptorPort);
-
+        clientToGateAcceptor.setServeId(serverId);
         return clientToGateAcceptor;
     }
 
 
     @Bean("clientToGateAcceptorProtocolParserHolder")
     public ProtocolParserHolder protocolParserHolder() {
-        return new ProtocolParserHolder("mmp.im.gate.protocol.parser", IProtocolParser.class);
+        return new ProtocolParserHolder("mmp.im.gate.acceptor.parser", IProtocolParser.class);
     }
 
 

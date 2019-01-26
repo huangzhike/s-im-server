@@ -2,7 +2,6 @@ package mmp.im;
 
 import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
-import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.acceptor.ClientToGateAcceptor;
 import mmp.im.gate.connector.GateToDistConnector;
 import org.slf4j.Logger;
@@ -26,9 +25,6 @@ public class TCPGateApplication implements CommandLineRunner {
     @Autowired
     private ResendMessageMap resendMessageMap;
 
-    @Autowired
-    private MQProducer mqProducer;
-
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
@@ -47,7 +43,6 @@ public class TCPGateApplication implements CommandLineRunner {
         LOG.warn("starting ResendMessageThread... ");
 
         new Thread(new ResendMessageThread(resendMessageMap), "ResendMessageThread").start();
-        mqProducer.start();
 
         LOG.warn("Spring Boot 启动完成");
     }
