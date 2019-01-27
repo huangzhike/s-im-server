@@ -4,9 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.model.Info;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
-import mmp.im.common.server.tcp.util.MessageBuilder;
-import mmp.im.common.server.tcp.util.MessageSender;
+import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.service.StatusService;
 import mmp.im.gate.service.XService;
@@ -42,7 +42,7 @@ public class GroupMessageHandler extends MessageTypeAHandler implements IMessage
 
         List<String> serverList = SpringContextHolder.getBean(AcceptorChannelHandlerMap.class).getChannelMapKeyList();
 
-
+// todo 自己的别的端也要同步
         // 查找好友列表 server列表 推送到server
         List<String> userFriendList = SpringContextHolder.getBean(XService.class).getGroupUserIdList(message.getTo());
 

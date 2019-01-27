@@ -2,7 +2,7 @@ package mmp.im.gate.acceptor.handler.messageTypeA;
 
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.server.tcp.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

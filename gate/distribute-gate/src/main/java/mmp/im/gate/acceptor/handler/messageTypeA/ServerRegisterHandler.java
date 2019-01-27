@@ -3,10 +3,10 @@ package mmp.im.gate.acceptor.handler.messageTypeA;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
-import mmp.im.common.server.tcp.util.AttributeKeyHolder;
-import mmp.im.common.server.tcp.util.MessageBuilder;
-import mmp.im.common.server.tcp.util.MessageSender;
+import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.SpringContextHolder;
 
 public class ServerRegisterHandler extends MessageTypeAHandler implements IMessageTypeHandler {

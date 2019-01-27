@@ -8,6 +8,8 @@ public abstract class ProtocolHeader {
     protected int flag = FLAG_NUM;
 
     protected byte protocolType;
+    // todo 改为command
+    protected byte commandId;
 
     protected short bodyLength;
 

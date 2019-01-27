@@ -8,7 +8,7 @@ public class Test {
     public static void main(String[] args) {
         // 序列化
         AddressBookProtos.Person.Builder person = AddressBookProtos.Person.newBuilder();
-        person.setEmail("xxxxxxxx@qq.com").setId(1).setName("张三");
+        person.setEmail("xxxxxxxx@qq.com").setId(1).setName("mmp");
 
         AddressBookProtos.Person.PhoneNumber.Builder number = AddressBookProtos.Person.PhoneNumber.newBuilder();
         AddressBookProtos.Person.PhoneType type = AddressBookProtos.Person.PhoneType.HOME;
@@ -17,39 +17,47 @@ public class Test {
         number.setNumber("XXXXXXXX");
         person.addPhones(number);
 
-        AddressBookProtos.Person.PhoneNumber phoneNumber = AddressBookProtos.Person.PhoneNumber.newBuilder().build();
+        AddressBookProtos.Person.PhoneNumber phoneNumber = AddressBookProtos.Person.PhoneNumber.newBuilder().setNumber("ds").build();
+        AddressBookProtos.Person.PhoneNumber phoneNumber2 = AddressBookProtos.Person.PhoneNumber.newBuilder().setNumber("ds2").build();
+
+
         // 包装
         person.setData(Any.pack(phoneNumber));
 
-        System.out.println(person.getData().getTypeUrl());
+        // System.out.println(person.getData().getTypeUrl());
+
+        AddressBookProtos.Person b=person.build();
+        AddressBookProtos.Person c=person.setData(Any.pack(phoneNumber2)).build();
 
         try {
-            AddressBookProtos.Person.PhoneNumber p = person.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
+            AddressBookProtos.Person.PhoneNumber p = b.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
+            AddressBookProtos.Person.PhoneNumber e = c.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
             System.out.println(p.getNumber());
+            System.out.println(e.getNumber());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        person.putProtoMap("k", "v");
-
-        AddressBookProtos.AddressBook.Builder address = AddressBookProtos.AddressBook.newBuilder();
-        address.addPeople(person);
-        address.addPeople(person);
-
-        AddressBookProtos.AddressBook book = address.build();
-        byte[] result = book.toByteArray(); // 序列化
-
-        // 反序列化
-        AddressBookProtos.AddressBook read;
-        try {
-            read = AddressBookProtos.AddressBook.parseFrom(result);
-            // 转成中文
-            System.out.println(read.getPeopleList().get(0).getNameBytes().toStringUtf8());
-            System.out.println(read);
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+        // person.putProtoMap("k", "v");
+        //
+        // AddressBookProtos.AddressBook.Builder address = AddressBookProtos.AddressBook.newBuilder();
+        // address.addPeople(person);
+        // address.addPeople(person);
+        //
+        // AddressBookProtos.AddressBook book = address.build();
+        // byte[] result = book.toByteArray(); // 序列化
+        //
+        // // 反序列化
+        // AddressBookProtos.AddressBook read;
+        // try {
+        //     read = AddressBookProtos.AddressBook.parseFrom(result);
+        //     // 转成中文
+        //     System.out.println(read.getPeopleList().get(0).getNameBytes().toStringUtf8());
+        //     System.out.println(read);
+        // } catch (InvalidProtocolBufferException e) {
+        //     e.printStackTrace();
+        // }
     }
 
 }

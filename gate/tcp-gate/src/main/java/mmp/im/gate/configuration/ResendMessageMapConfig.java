@@ -1,6 +1,6 @@
 package mmp.im.gate.configuration;
 
-import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
+import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

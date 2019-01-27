@@ -1,7 +1,7 @@
 package mmp.im;
 
-import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
-import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageThread;
+import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
+import mmp.im.common.server.cache.acknowledge.ResendMessageThread;
 import mmp.im.gate.acceptor.ClientToGateAcceptor;
 import mmp.im.gate.connector.GateToDistConnector;
 import org.slf4j.Logger;

@@ -4,8 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.model.Info;
 import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.util.MessageBuilder;
-import mmp.im.common.server.tcp.util.MessageSender;
+import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.service.StatusService;
 import mmp.im.gate.util.SpringContextHolder;
@@ -36,7 +36,7 @@ public class FriendMessageHandler extends MessageTypeAHandler implements IMessag
         // 单聊消息
 
         // 查找登陆server列表 推送到server
-
+// todo 自己的别的端也要同步
         List<Info> userServerList = SpringContextHolder.getBean(StatusService.class).getUserServerList(message.getTo());
         // List<String> userServerIdList = new ArrayList<>();
         if (userServerList != null) {

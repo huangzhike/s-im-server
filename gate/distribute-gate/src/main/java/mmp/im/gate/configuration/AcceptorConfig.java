@@ -3,7 +3,7 @@ package mmp.im.gate.configuration;
 
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
-import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
 import mmp.im.gate.acceptor.GateToDistAcceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeB;
 import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.handler.IMessageTypeHandler;
-import mmp.im.common.server.tcp.cache.acknowledge.ResendMessageMap;
+import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import mmp.im.gate.util.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

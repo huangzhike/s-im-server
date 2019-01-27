@@ -7,11 +7,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.server.tcp.channel.handler.AcceptorIdleStateTrigger;
-import mmp.im.common.server.tcp.codec.decode.MessageDecoder;
-import mmp.im.common.server.tcp.codec.encode.MessageEncoder;
-import mmp.im.common.server.tcp.event.EventHandler;
-import mmp.im.common.server.tcp.server.AbstractTCPAcceptor;
+import mmp.im.common.server.channel.handler.AcceptorIdleStateTrigger;
+import mmp.im.common.server.codec.decode.MessageDecoder;
+import mmp.im.common.server.codec.encode.MessageEncoder;
+import mmp.im.common.server.event.EventHandler;
+import mmp.im.common.server.server.AbstractTCPAcceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetSocketAddress;

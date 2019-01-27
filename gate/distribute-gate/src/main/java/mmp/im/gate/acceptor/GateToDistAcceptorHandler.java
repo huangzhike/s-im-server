@@ -8,7 +8,7 @@ import mmp.im.common.protocol.ParserPacket;
 import mmp.im.common.protocol.ProtocolHeader;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
-import mmp.im.common.server.tcp.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>tcp-client</module>
+        <module>websocket-client</module>
     </modules>
 
 
