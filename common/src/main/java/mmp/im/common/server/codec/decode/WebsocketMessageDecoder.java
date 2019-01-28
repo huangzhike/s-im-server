@@ -14,7 +14,7 @@ public class WebsocketMessageDecoder extends MessageToMessageDecoder<WebSocketFr
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame frame, List<Object> out) throws Exception {
 
-        // 文本帧处理(收到的消息广播到前台客户端)
+        // 文本帧处理
         if (frame instanceof TextWebSocketFrame) {
 
         }

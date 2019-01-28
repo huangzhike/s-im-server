@@ -1,10 +1,10 @@
 package mmp.im.common.server.util;
 
 import com.google.protobuf.MessageLite;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.protocol.MessageTypeA;
 import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
@@ -65,7 +65,12 @@ public class MessageSender {
         // 连在同一个Gate
 
         // 发送
-        channelHandlerContext.channel().writeAndFlush(messageLite);
+        channelHandlerContext.channel().writeAndFlush(messageLite)
+                .addListener(ChannelFutureListener.CLOSE).addListener((channelFuture) -> {
+            LOG.warn("sendToClient...channelFuture {}");
+        });
+
+
         LOG.warn("sendToClient... {}", messageLite);
         // 需要ACK
         toBeAcknowledgedIfNeed(channelHandlerContext, object);
@@ -73,13 +78,17 @@ public class MessageSender {
 
 
     private void toBeAcknowledgedIfNeed(ChannelHandlerContext channelHandlerContext, Object object) {
-        MessageLite messageLite = (MessageLite) object;
+        if (object instanceof MessageLite) {
+            MessageLite messageLite = (MessageLite) object;
 
-        if (messageLite instanceof MessageTypeA.Message) {
-            LOG.warn("messageLite... instanceof MessageTypeA.Message...");
-            MessageTypeA.Message msg = (MessageTypeA.Message) messageLite;
-            this.resendMessageMap.put(msg.getSeq(), new ResendMessage(messageLite, channelHandlerContext, msg.getSeq()));
         }
+
+        // if (messageLite instanceof MessageTypeA.Message) {
+        //     LOG.warn("messageLite... instanceof MessageTypeA.Message...");
+        //     MessageTypeA.Message msg = (MessageTypeA.Message) messageLite;
+        //     this.resendMessageMap.put(msg.getSeq(), new ResendMessage(messageLite, channelHandlerContext, msg.getSeq()));
+        // }
+
 
     }
 

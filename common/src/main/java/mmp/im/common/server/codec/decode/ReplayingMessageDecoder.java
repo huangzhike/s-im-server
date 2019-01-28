@@ -3,8 +3,7 @@ package mmp.im.common.server.codec.decode;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
-import mmp.im.common.protocol.ParserPacket;
-import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.util.ProtocolHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +42,12 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
                 LOG.warn("checkpoint -> BODY");
                 checkpoint(ReplayingMessageDecoder.State.BODY);
             case BODY:
-                ParserPacket parserPacket = new ParserPacket();
 
-                byte[] bytes = new byte[bodyLength];
+                byte[] bytes = new byte[bodyLength + 1];
 
                 in.readBytes(bytes);
-                parserPacket.setProtocolType(protocolType).setBody(bytes);
-                out.add(parserPacket);
+                // todo
+                out.add(bytes);
                 LOG.warn("checkpoint -> FLAG");
                 checkpoint(ReplayingMessageDecoder.State.FLAG);
         }

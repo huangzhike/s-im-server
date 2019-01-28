@@ -24,37 +24,35 @@ public class ReconnectHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * channel链路每次active的时候，连接次数重新置零
+     * channel每次active的时候，连接次数重新置零
      */
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
         LOG.warn("channelActive attempts = 0...");
         this.attempts = 0;
-        ctx.fireChannelActive();
+        channelHandlerContext.fireChannelActive();
     }
 
     /*
      * 重连
      * */
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         LOG.warn("channelInactive...");
         if (this.attempts < 6) {
             ++this.attempts;
-
             LOG.warn("attempts... {}", this.attempts);
             // 重连
-
-            final EventLoop eventLoop = ctx.channel().eventLoop();
+            final EventLoop eventLoop = channelHandlerContext.channel().eventLoop();
             eventLoop.schedule(() -> {
                 connector.initBootstrap(eventLoop);
                 connector.connect();
             }, 1L, TimeUnit.SECONDS);
 
-            super.channelInactive(ctx);
+            super.channelInactive(channelHandlerContext);
 
         }
-        ctx.fireChannelInactive();
+        channelHandlerContext.fireChannelInactive();
     }
 
 

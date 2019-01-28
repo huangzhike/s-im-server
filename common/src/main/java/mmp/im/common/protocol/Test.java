@@ -32,8 +32,11 @@ public class Test {
         try {
             AddressBookProtos.Person.PhoneNumber p = b.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
             AddressBookProtos.Person.PhoneNumber e = c.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
-            System.out.println(p.getNumber());
-            System.out.println(e.getNumber());
+            // System.out.println(p.getNumber());
+            System.out.println(b.getClass());
+            System.out.println( AddressBookProtos.Person.getDescriptor());
+            System.out.println( AddressBookProtos.Person.getDefaultInstance().getClass());
+            System.out.println("type====");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -34,14 +34,14 @@ public class MQConfig {
 
                 LOG.warn("protocolType... {}", protocolType);
 
-                IMQProtocolParser protocolParser = ProtocolParserHolder.get(protocolType);
-
-                if (protocolParser != null) {
-
-                    LOG.warn("protocolParser... {}", protocolParser);
-
-                    protocolParser.parse(Arrays.copyOfRange(contentBody, 1, contentBody.length));
-                }
+                // IMQProtocolParser protocolParser = ProtocolParserHolder.get(protocolType);
+                //
+                // if (protocolParser != null) {
+                //
+                //     LOG.warn("protocolParser... {}", protocolParser);
+                //
+                //     protocolParser.parse(Arrays.copyOfRange(contentBody, 1, contentBody.length));
+                // }
 
                 return true;
             }

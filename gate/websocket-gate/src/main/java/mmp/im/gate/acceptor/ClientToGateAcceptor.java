@@ -47,9 +47,7 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
 
-
                         ChannelPipeline pipeline = ch.pipeline();
-
 
                         // HTTP请求的解码和编码
                         pipeline.addLast(new HttpServerCodec());
@@ -61,13 +59,11 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                         // WebSocket数据压缩
                         pipeline.addLast(new WebSocketServerCompressionHandler());
 
-
                         pipeline.addFirst(new LoggingHandler(LogLevel.INFO)); // 打印日志,可以看到websocket帧数据
                         pipeline.addLast(new HttpServerCodec()); // 将请求和应答消息编码或解码为HTTP消息
                         pipeline.addLast(new HttpObjectAggregator(65536)); // 将HTTP消息的多个部分组合成一条完整的HTTP消息
                         pipeline.addLast(new WebSocketServerCompressionHandler());
                         pipeline.addLast(new WebSocketServerProtocolHandler("websocket地址/ws", null, true));
-
 
                         pipeline.addLast(new WebsocketMessageDecoder());
                         pipeline.addLast(new WebsocketMessageEncoder());
@@ -79,11 +75,9 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                         pipeline.addLast(clientToGateAcceptorHandler);
                         pipeline.addLast(new EventHandler(null));
 
-
                     }
                 });
         try {
-
 
             LOG.warn("binding port... {}", this.port);
             ChannelFuture future = this.serverBootstrap.bind(new InetSocketAddress(this.port)).sync();

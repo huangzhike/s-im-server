@@ -35,10 +35,5 @@ public class AcceptorConfig {
     }
 
 
-    @Bean("clientToGateAcceptorProtocolParserHolder")
-    public ProtocolParserHolder protocolParserHolder() {
-        return new ProtocolParserHolder("mmp.im.gate.acceptor.parser", IProtocolParser.class);
-    }
-
 
 }

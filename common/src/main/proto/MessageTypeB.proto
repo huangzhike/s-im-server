@@ -1,9 +1,0 @@
-syntax = "proto3";
-package mmp.im.common.protocol;
-option java_outer_classname = "MessageTypeB";
-
-message Acknowledge {
-
-    int64 ack = 1;
-
-}

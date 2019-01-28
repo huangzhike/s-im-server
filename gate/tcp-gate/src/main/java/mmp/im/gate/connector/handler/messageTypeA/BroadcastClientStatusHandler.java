@@ -2,7 +2,7 @@ package mmp.im.gate.connector.handler.messageTypeA;
 
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.handler.IMessageHandler;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.SpringContextHolder;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class BroadcastClientStatusHandler implements IMessageTypeHandler {
+public class BroadcastClientStatusHandler implements IMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 

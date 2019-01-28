@@ -9,16 +9,18 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ProtocolParserHolder {
 
-    private static HashMap<Integer, IMQProtocolParser> parsers;
+    private static Map<Integer, IMQProtocolParser> parsers;
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtocolParserHolder.class);
 
     static {
 
-        parsers = new HashMap<>();
+        parsers = new ConcurrentHashMap<>();
 
         List<Class<?>> classList = PackageUtil.getSubClasses("mmp.im.logic.protocol.parser", IMQProtocolParser.class);
 
@@ -38,7 +40,7 @@ public class ProtocolParserHolder {
         LOG.warn("parsers size... {}", parsers.size());
     }
 
-    private static HashMap<Integer, IMQProtocolParser> getParsers() {
+    private static Map<Integer, IMQProtocolParser> getParsers() {
         return parsers;
     }
 

@@ -1,23 +1,23 @@
 package mmp.im.gate.acceptor;
 
+import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.protocol.ParserPacket;
+import io.netty.util.ReferenceCountUtil;
+import mmp.im.common.protocol.handler.MessageHandlerHolder;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
 import mmp.im.common.server.util.AttributeKeyHolder;
-import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 
 @Component
@@ -28,30 +28,41 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    @Qualifier("clientToGateAcceptorProtocolParserHolder")
     private ProtocolParserHolder protocolParserHolder;
 
     @Autowired
+    private MessageHandlerHolder messageHandlerHolder;
+
+    @Autowired
     private AcceptorChannelHandlerMap acceptorChannelHandlerMap;
+
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
 
         Channel channel = channelHandlerContext.channel();
 
-        ParserPacket parserPacket = (ParserPacket) message;
 
-        IProtocolParser protocolParser = protocolParserHolder.get(parserPacket.getProtocolType());
+        byte[] bytes = (byte[]) message;
 
-        if (protocolParser != null) {
-            protocolParser.parse(channelHandlerContext, parserPacket.getBody());
-            LOG.warn("channelRead parserPacket... {} remoteAddress... {}", parserPacket, channel.remoteAddress());
-        } else {
-            // channel.close();
-            LOG.warn("无法识别，通道关闭");
-        }
+        channel.eventLoop().execute(() -> {
+            IProtocolParser protocolParser = protocolParserHolder.get(bytes[0]);
+            if (protocolParser != null) {
+                MessageLite msg = (MessageLite) protocolParser.parse(Arrays.copyOfRange(bytes, 1, bytes.length));
+                LOG.warn("channelRead parserPacket... {} remoteAddress... {}", protocolParser, channel.remoteAddress());
 
-        // channel.writeAndFlush(null).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+                if (msg != null) {
+                    messageHandlerHolder.assignHandler(channelHandlerContext, msg);
+                }
+            } else {
+                // channel.close();
+                LOG.warn("无法识别，通道关闭");
+            }
+        });
+
+        // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
+        // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
+        ReferenceCountUtil.release(message);
 
     }
 
@@ -84,10 +95,10 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
         String serverId = SpringContextHolder.getBean(ClientToGateAcceptor.class).getServeId();
 
-        MessageTypeA.Message m = (MessageTypeA.Message) MessageBuilder.buildClientStatus(channelId, "", channelId, serverId, false);
+        // ProtobufMessage.Message m = (MessageTypeA.Message) MessageBuilder.buildClientStatus(channelId, "", channelId, serverId, false);
 
         // distribute
-        SpringContextHolder.getBean(MessageSender.class).sendToAcceptor(m);
+        // SpringContextHolder.getBean(MessageSender.class).sendToAcceptor(m);
 
         channelHandlerContext.fireChannelInactive();
 

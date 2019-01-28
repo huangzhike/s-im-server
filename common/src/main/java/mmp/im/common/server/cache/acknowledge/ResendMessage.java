@@ -17,10 +17,13 @@ public class ResendMessage {
 
     private long timestamp = System.currentTimeMillis();
 
-    public ResendMessage(MessageLite msg, ChannelHandlerContext channelHandlerContext, long id) {
+    private long lastSendTimeStamp = System.currentTimeMillis();
+
+    public ResendMessage(long id, MessageLite msg, ChannelHandlerContext channelHandlerContext) {
+        this.id = id;
         this.msg = msg;
         this.channelHandlerContext = channelHandlerContext;
-        this.id = id;
+
     }
 
 

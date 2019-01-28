@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.util.ProtocolHeader;
 import mmp.im.common.protocol.util.ProtocolUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

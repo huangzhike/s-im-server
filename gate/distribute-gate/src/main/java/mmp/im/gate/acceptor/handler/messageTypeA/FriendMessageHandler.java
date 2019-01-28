@@ -3,7 +3,7 @@ package mmp.im.gate.acceptor.handler.messageTypeA;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.model.Info;
 import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.handler.IMessageHandler;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.mq.MQProducer;
@@ -12,7 +12,7 @@ import mmp.im.gate.util.SpringContextHolder;
 
 import java.util.List;
 
-public class FriendMessageHandler extends MessageTypeAHandler implements IMessageTypeHandler {
+public class FriendMessageHandler extends MessageTypeAHandler implements IMessageHandler {
 
 
     @Override

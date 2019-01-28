@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import mmp.im.common.protocol.ParserPacket;
-import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.util.ProtocolHeader;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;

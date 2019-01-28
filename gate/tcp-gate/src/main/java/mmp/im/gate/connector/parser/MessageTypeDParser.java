@@ -3,8 +3,8 @@ package mmp.im.gate.connector.parser;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeD;
-import mmp.im.common.protocol.ProtocolHeader;
-import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.util.ProtocolHeader;
+import mmp.im.common.protocol.handler.IMessageHandler;
 import mmp.im.common.protocol.parser.AbstractProtocolParser;
 import mmp.im.common.protocol.parser.IProtocolParser;
 
@@ -12,7 +12,7 @@ public class MessageTypeDParser extends AbstractProtocolParser implements IProto
 
     public MessageTypeDParser() {
 
-        this.initHandler("mmp.im.gate.connector.handler.messageTypeD", IMessageTypeHandler.class);
+        this.initHandler("mmp.im.gate.connector.handler.messageTypeD", IMessageHandler.class);
     }
 
     @Override

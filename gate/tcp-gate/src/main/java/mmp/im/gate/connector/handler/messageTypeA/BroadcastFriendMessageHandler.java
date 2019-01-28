@@ -2,14 +2,14 @@ package mmp.im.gate.connector.handler.messageTypeA;
 
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.MessageTypeA;
-import mmp.im.common.protocol.handler.IMessageTypeHandler;
+import mmp.im.common.protocol.handler.IMessageHandler;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BroadcastFriendMessageHandler implements IMessageTypeHandler {
+public class BroadcastFriendMessageHandler implements IMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 

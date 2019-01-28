@@ -1,10 +1,10 @@
 package mmp.im.common.server.codec.decode;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import mmp.im.common.protocol.ParserPacket;
-import mmp.im.common.protocol.ProtocolHeader;
+import mmp.im.common.protocol.util.ProtocolHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,9 +15,12 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
+    /*
+     * 加个对象池
+     * */
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
 
         LOG.warn("decode start...");
 
@@ -36,7 +39,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
             in.resetReaderIndex();
             LOG.warn("标记头不对...");
 
-            ctx.close();
+            channelHandlerContext.close();
             LOG.warn("非法数据，关闭连接...");
             return;
         }
@@ -59,36 +62,14 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
         LOG.warn("decode bodyLength...{}", bodyLength);
 
-        // // 读取body
-        // byte[] bytes = new byte[in.readableBytes()];
-        // in.readBytes(bytes);
-        // // 读取body
-        // ByteBuf frame = Unpooled.buffer(bodyLength);
-        // in.readBytes(frame);
+        ByteBuf frame = Unpooled.buffer(bodyLength + 1);
 
-        // 读取body
-        ByteBuf bodyByteBuf = in.readBytes(bodyLength);
 
-        int readableLen = bodyByteBuf.readableBytes(); // 获取可读取字节数量
-        byte[] array;
-        int offset;
 
-        if (bodyByteBuf.hasArray()) {
-            LOG.warn("堆缓冲区...");
-            // 堆缓冲区(基于数组实现)，通过hasArray判断是否支持数组
-            array = bodyByteBuf.array();
-            LOG.warn("堆缓冲区... array... {}", array);
-            // offset = bodyByteBuf.arrayOffset() + bodyByteBuf.readerIndex();
-        } else {
-            // 直接缓冲区
-            LOG.warn("直接缓冲区...");
-            array = new byte[readableLen];
-            bodyByteBuf.getBytes(bodyByteBuf.readerIndex(), array, 0, readableLen);
-            LOG.warn("直接缓冲区... array... {}", array);
-            // offset = 0;
-        }
+        // todo
 
-        out.add(new ParserPacket().setProtocolType(protocolType).setBody(array));
+
+        out.add(frame.array());
         LOG.warn("decode finished...");
 
     }
