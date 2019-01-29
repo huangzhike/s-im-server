@@ -21,4 +21,26 @@ public class SessionService {
 
     }
 
+    public void getRecentFriendSession(Long userId ) {
+
+        redisUtil.getList(RECENT_FRIEND_SESSION_DATABASE + userId, Long.class);
+
+    }
+
+    public void addRecentGroupSession(Long userId, Long sessionId) {
+
+        redisUtil.addList(RECENT_GROUP_SESSION_DATABASE + userId, sessionId);
+
+    }
+
+    public void getRecentGroupSession(Long userId ) {
+
+        redisUtil.getList(RECENT_GROUP_SESSION_DATABASE + userId, Long.class);
+
+    }
+
+
+
+
+
 }
