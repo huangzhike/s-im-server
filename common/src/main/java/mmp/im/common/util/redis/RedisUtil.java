@@ -3,11 +3,13 @@ package mmp.im.common.util.redis;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import mmp.im.common.util.serializer.IOSerializer;
+import mmp.im.common.util.serializer.SerializerHolder;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -31,6 +33,7 @@ public class RedisUtil {
         }
         return null;
     }
+
 
 
     public void setMapValue(String mapkey, String key, Object value) {
@@ -110,6 +113,50 @@ public class RedisUtil {
 
     }
 
+
+    // 单个加入
+    public void addSortedSet(String key, Long id, Object object) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            byte[] bytes = SerializerHolder.getSerializer().serialize(object);
+            jedis.zadd(key.getBytes(), id, bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Set<byte[]> getSortedSet(String key, Long start, Long end)  {
+        Set<byte[]> set = null;
+        try (Jedis jedis = jedisPool.getResource()) {
+            set = jedis.zrange(key.getBytes(), start, end);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return set;
+
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getSortedSet(String key, Long start, Long end, Class<T> clazz)   {
+        List<T> list = new ArrayList<>();
+        try (Jedis jedis = jedisPool.getResource()) {
+            Set<byte[]> set = jedis.zrange(key.getBytes(), start, end);
+
+            if (set != null) {
+                set.forEach(bytes -> {
+                    list.add(SerializerHolder.getSerializer().deserialize(bytes, clazz));
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
 
     public String hget(String hkey, String key) {
         Jedis jedis = jedisPool.getResource();
