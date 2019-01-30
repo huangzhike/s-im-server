@@ -38,21 +38,23 @@ message GroupMessage {
 //
 message ServerRegister {
     int64 seq = 1;
-    string id = 2;
+    string severId = 2;
     string token = 3;
 }
 
 //
 message ClientLogin {
     int64 seq = 1;
-    string id = 2;
+    string userId = 2;
     string token = 3;
+    string clientInfo = 4;
 }
 
 message ClientLogout {
     int64 seq = 1;
-    string id = 2;
+    string userId = 2;
     string token = 3;
+    string clientInfo = 4;
 }
 
 // 在线状态
@@ -61,15 +63,16 @@ message ClientStatus {
     string userId = 2;
     string serverId = 3;
     bool status = 4;
+    string clientInfo = 5;
     // 仅用于转发
-    repeated string broadcastIdList = 5;
+    repeated string broadcastIdList = 6;
 }
 
 // 已读
 message ReadMessage {
     string from = 1;
     string to = 2;
-    string seqId = 3;
+    int64 seqId = 3;
 }
 
 // 正在输入

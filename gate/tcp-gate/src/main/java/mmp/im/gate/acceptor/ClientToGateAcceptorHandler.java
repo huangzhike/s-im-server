@@ -5,36 +5,35 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import mmp.im.common.protocol.handler.MessageHandlerHolder;
-import mmp.im.common.protocol.parser.IProtocolParser;
-import mmp.im.common.protocol.parser.ProtocolParserHolder;
-import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.common.server.util.AttributeKeyHolder;
-import mmp.im.gate.util.SpringContextHolder;
+import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-
-@Component
+@Data
+@Accessors(chain = true)
 @ChannelHandler.Sharable
+// 参考 https://www.jianshu.com/p/93ce43a0eb16
 // public class InboundHandlerHandler extends SimpleChannelInboundHandler<Object> {
 public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private ProtocolParserHolder protocolParserHolder;
 
-    @Autowired
     private MessageHandlerHolder messageHandlerHolder;
 
-    @Autowired
-    private AcceptorChannelHandlerMap acceptorChannelHandlerMap;
+    private AcceptorChannelMap acceptorChannelMap;
 
 
     @Override
@@ -42,27 +41,13 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
         Channel channel = channelHandlerContext.channel();
 
-
-        byte[] bytes = (byte[]) message;
-
-        channel.eventLoop().execute(() -> {
-            IProtocolParser protocolParser = protocolParserHolder.get(bytes[0]);
-            if (protocolParser != null) {
-                MessageLite msg = (MessageLite) protocolParser.parse(Arrays.copyOfRange(bytes, 1, bytes.length));
-                LOG.warn("channelRead parserPacket... {} remoteAddress... {}", protocolParser, channel.remoteAddress());
-
-                if (msg != null) {
-                    messageHandlerHolder.assignHandler(channelHandlerContext, msg);
-                }
-            } else {
-                // channel.close();
-                LOG.warn("无法识别，通道关闭");
-            }
-        });
-
-        // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
-        // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
-        ReferenceCountUtil.release(message);
+        if (message instanceof MessageLite) {
+            channel.eventLoop().execute(() -> messageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
+        } else {
+            // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
+            // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
+            ReferenceCountUtil.release(message);
+        }
 
     }
 
@@ -86,19 +71,19 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
         if (null != channelId) {
             // 移除连接 关闭连接
-
-            ChannelHandlerContext context = acceptorChannelHandlerMap.removeChannel(channelId);
-
+            ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
             LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
+
+            String serverId = ContextHolder.getServeId();
+
+            // 生成消息待转发
+            ClientStatus m = MessageBuilder.buildClientStatus(channelId, serverId, false, "");
+
+            // distribute
+            ContextHolder.getMessageSender().sendToAcceptor(m);
+            // 发的消息待确认
+            ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
         }
-
-
-        String serverId = SpringContextHolder.getBean(ClientToGateAcceptor.class).getServeId();
-
-        // ProtobufMessage.Message m = (MessageTypeA.Message) MessageBuilder.buildClientStatus(channelId, "", channelId, serverId, false);
-
-        // distribute
-        // SpringContextHolder.getBean(MessageSender.class).sendToAcceptor(m);
 
         channelHandlerContext.fireChannelInactive();
 
@@ -111,6 +96,12 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext channelHandlerContext, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            IdleState state = ((IdleStateEvent) evt).state();
+            if (state == IdleState.READER_IDLE) {
+                LOG.error("IdleState.READER_IDLE...");
+            }
+        }
         super.userEventTriggered(channelHandlerContext, evt);
     }
 

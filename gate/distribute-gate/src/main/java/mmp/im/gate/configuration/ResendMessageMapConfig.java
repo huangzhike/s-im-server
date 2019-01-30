@@ -4,6 +4,7 @@ import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class ResendMessageMapConfig {
 
@@ -11,5 +12,4 @@ public class ResendMessageMapConfig {
     public ResendMessageMap resendMessageMap() {
         return new ResendMessageMap();
     }
-
 }

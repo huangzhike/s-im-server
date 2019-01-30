@@ -17,6 +17,10 @@ public class GroupMessageService {
     @Autowired
     private RedisUtil redisUtil;
 
+
+    /*
+    * 暂时用redis 用hbase替换
+    * */
     private final String GROUP_MESSAGE_DATABASE = "GROUP_MESSAGE_DATABASE_";
     private final String GROUP_MESSAGE_UNREAD_DATABASE = "GROUP_MESSAGE_UNREAD_DATABASE_";
 

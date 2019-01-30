@@ -1,6 +1,5 @@
 package mmp.im.gate;
 
-import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.cache.acknowledge.ResendMessageThread;
 import mmp.im.common.util.mq.MQProducer;
 import mmp.im.gate.acceptor.GateToDistAcceptor;
@@ -23,7 +22,7 @@ public class DistributeApplication implements CommandLineRunner {
     private MQProducer mqProducer;
 
     @Autowired
-    private ResendMessageMap resendMessageMap;
+    private ResendMessageThread resendMessageThread;
 
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
@@ -38,8 +37,7 @@ public class DistributeApplication implements CommandLineRunner {
 
         new Thread(() -> gateToDistAcceptor.bind()).start();
 
-        new Thread(new ResendMessageThread(resendMessageMap), "ResendMessageThread").start();
-
+        new Thread(resendMessageThread, "ResendMessageThread").start();
 
         mqProducer.start();
 

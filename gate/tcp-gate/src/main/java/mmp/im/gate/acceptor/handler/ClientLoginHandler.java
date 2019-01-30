@@ -1,26 +1,23 @@
 package mmp.im.gate.acceptor.handler;
 
-import io.netty.channel.ChannelHandlerContext; 
-import mmp.im.common.protocol.handler.IMessageHandler;
-import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
+import com.google.protobuf.MessageLite;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.ReferenceCountUtil;
+import mmp.im.common.protocol.handler.INettyMessageHandler;
+import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.common.server.util.MessageSender;
-import mmp.im.gate.acceptor.ClientToGateAcceptor;
-import mmp.im.gate.service.AuthService;
-import mmp.im.gate.util.SpringContextHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import mmp.im.gate.util.ContextHolder;
 
 import java.util.ArrayList;
 
-
 import static mmp.im.common.protocol.ProtobufMessage.ClientLogin;
+import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
 
-public class ClientLoginHandler  implements IMessageHandler {
+public class ClientLoginHandler extends CheckHandler implements INettyMessageHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = ClientLogin.getDefaultInstance().getClass().toString();
 
@@ -30,40 +27,49 @@ public class ClientLoginHandler  implements IMessageHandler {
     }
 
     @Override
-    public void process(ChannelHandlerContext channelHandlerContext, Object object) {
+    public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         ClientLogin message = (ClientLogin) object;
+        // 回复确认收到消息
+        ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
+        Channel channel = channelHandlerContext.channel();
+        // TODO 从AUTH获取用户TOKEN对比
 
-        // 从AUTH获取用户TOKEN对比
-        SpringContextHolder.getBean(AuthService.class);
+        String userId = message.getUserId();
 
-        String userId = message.getId();
-
-        if (userId != null) {
-
-            channelHandlerContext.channel().attr(AttributeKeyHolder.CHANNEL_ID).set(userId);
-
-            // 如果contains seq，说明是重复发送，不处理，只回复ACK
-            channelHandlerContext.channel().attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
-
-            // 添加进channel map
-            SpringContextHolder.getBean(AcceptorChannelHandlerMap.class).addChannel(userId, channelHandlerContext);
-
-            String serverId = SpringContextHolder.getBean(ClientToGateAcceptor.class).getServeId();
-            // 生成消息
-            // Message m = (Message) MessageBuilder.buildClientStatus(message.getFrom(), message.getTo(), userId, serverId, true);
-
-            // distribute
-            // SpringContextHolder.getBean(MessageSender.class).sendToAcceptor(m);
-
-            // 回复确认
-            // SpringContextHolder.getBean(MessageSender.class).reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
-
-
+        // 已登录
+        if (this.login(channel)) {
+            return;
         }
 
+        channel.attr(AttributeKeyHolder.CHANNEL_ID).set(userId);
+        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
 
+        // 说明是重复发送，不处理，只回复ACK
+        if (this.duplicate(channel, message.getSeq())) {
+            return;
+        }
+
+        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+
+        // 添加进channel map
+        ContextHolder.getAcceptorChannelMap().addChannel(userId, channelHandlerContext);
+
+        String serverId = ContextHolder.getServeId();
+        // 生成消息待转发
+        ClientStatus m = MessageBuilder.buildClientStatus(userId, serverId, true, "");
+        // distribute
+        ContextHolder.getMessageSender().sendToAcceptor(m);
+        // 发的消息待确认
+        ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+
+        ReferenceCountUtil.release(object);
     }
+
+
+
+
+
 }
 

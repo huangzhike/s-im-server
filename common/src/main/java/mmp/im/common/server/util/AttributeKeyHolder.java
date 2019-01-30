@@ -9,6 +9,6 @@ public class AttributeKeyHolder {
     public static AttributeKey<String> CHANNEL_ID = AttributeKey.valueOf("CHANNEL_ID");
 
     // 收到的SEQ列表，用于消息去重
-    public static AttributeKey<List<String>> REV_SEQ_LIST = AttributeKey.valueOf("REV_SEQ_LIST");
+    public static AttributeKey<List<Long>> REV_SEQ_LIST = AttributeKey.valueOf("REV_SEQ_LIST");
 
 }

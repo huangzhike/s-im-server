@@ -48,7 +48,7 @@ public class ProtocolParserHolder {
             return msg;
         });
 
-        parsers.put(ProtocolUtil.PROTOBUF_CLINENT_LOGIN, (bytes) -> {
+        parsers.put(ProtocolUtil.PROTOBUF_CLIENT_LOGIN, (bytes) -> {
             ClientLogin msg = null;
             try {
                 msg = ClientLogin.parseFrom(bytes);

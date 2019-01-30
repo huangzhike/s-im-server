@@ -1,14 +1,10 @@
 package mmp.im.logic.configuration;
 
 
-import mmp.im.common.protocol.parser.IMQProtocolParser;
 import mmp.im.common.util.mq.MQConsumer;
-import mmp.im.logic.protocol.ProtocolParserHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Arrays;
 
 @Configuration
 public class MQConfig {

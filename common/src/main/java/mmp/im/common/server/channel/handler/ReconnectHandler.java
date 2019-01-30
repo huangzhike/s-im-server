@@ -4,12 +4,17 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.EventLoop;
-import mmp.im.common.server.server.AbstractTCPConnector;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import mmp.im.common.server.server.AbstractConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+
+@Data
+@Accessors(chain = true)
 @ChannelHandler.Sharable
 public class ReconnectHandler extends ChannelInboundHandlerAdapter {
 
@@ -17,9 +22,9 @@ public class ReconnectHandler extends ChannelInboundHandlerAdapter {
 
     private int attempts;
 
-    private AbstractTCPConnector connector;
+    private AbstractConnector connector;
 
-    public ReconnectHandler(AbstractTCPConnector connector) {
+    public ReconnectHandler(AbstractConnector connector) {
         this.connector = connector;
     }
 

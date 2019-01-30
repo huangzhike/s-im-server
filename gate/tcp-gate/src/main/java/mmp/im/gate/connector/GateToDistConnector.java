@@ -1,71 +1,39 @@
 package mmp.im.gate.connector;
 
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.server.channel.handler.ConnectorIdleStateTrigger;
 import mmp.im.common.server.channel.handler.ReconnectHandler;
 import mmp.im.common.server.channel.listener.ConnectionListener;
-import mmp.im.common.server.codec.decode.MessageDecoder;
-import mmp.im.common.server.codec.encode.MessageEncoder;
-import mmp.im.common.server.server.AbstractTCPConnector;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.TimeUnit;
+import mmp.im.common.server.server.AbstractConnector;
 
 
 @Data
 @Accessors(chain = true)
-public class GateToDistConnector extends AbstractTCPConnector {
-
-
-    @Autowired
-    private GateToDistConnectorHandler gateToDistConnectorHandler;
+public class GateToDistConnector extends AbstractConnector {
 
     public GateToDistConnector(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    private ChannelInitializer channelInitializer;
 
     @Override
     public void connect() {
-
-         ChannelHandler[] handlerHolder = new ChannelHandler[]{
-                 new MessageDecoder(),
-                 new MessageEncoder(),
-                 // 每隔30s触发一次userEventTriggered的方法，并且指定IdleState的状态位是WRITER_IDLE
-                 new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
-                 // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
-                 new ConnectorIdleStateTrigger(),
-                 gateToDistConnectorHandler,
-                 new ReconnectHandler(this)
-         };
 
         ChannelFuture future;
 
         try {
             synchronized (bootstrapLock()) {
-                this.bootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
-                    @Override
-                    protected void initChannel(NioSocketChannel ch) {
-                        ch.pipeline().addLast(handlerHolder);
-                    }
-                });
-
+                this.bootstrap.handler(channelInitializer);
                 LOG.warn("connect... host... {} port... {}", host, port);
                 // 连接（服务端bind，客户端connect）
                 // future = this.bootstrap.connect(host, port).sync();
                 future = this.bootstrap.connect(host, port);
-
                 LOG.warn("connect... addListener... ");
-
                 future.addListener(new ConnectionListener(this));
-
             }
             // 当链路关闭
             LOG.warn("closeFuture... sync... ");

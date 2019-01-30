@@ -1,13 +1,12 @@
 package mmp.im.common.server.util;
 
 import com.google.protobuf.MessageLite;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
-import mmp.im.common.server.cache.connection.AcceptorChannelHandlerMap;
+import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.common.server.cache.connection.ConnectorChannelHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,73 +21,52 @@ public class MessageSender {
 
     private ResendMessageMap resendMessageMap;
 
-    private AcceptorChannelHandlerMap acceptorChannelHandlerMap;
+    private AcceptorChannelMap acceptorChannelMap;
 
     private ConnectorChannelHolder connectorChannelHolder;
 
-    public void reply(ChannelHandlerContext channelHandlerContext, Object object) {
-        MessageLite messageLite = (MessageLite) object;
-        channelHandlerContext.channel().writeAndFlush(messageLite);
-        toBeAcknowledgedIfNeed(channelHandlerContext, object);
 
+    public void reply(ChannelHandlerContext channelHandlerContext, MessageLite messageLite) {
+        channelHandlerContext.channel().writeAndFlush(messageLite);
     }
 
+    public void sendToConnector(MessageLite messageLite, String key) {
 
-    public void sendToConnector(Object object, String key) {
-
-        if (this.acceptorChannelHandlerMap != null) {
-            ChannelHandlerContext channelHandlerContext = this.acceptorChannelHandlerMap.getChannel(key);
-
+        if (this.acceptorChannelMap != null) {
+            ChannelHandlerContext channelHandlerContext = this.acceptorChannelMap.getChannel(key);
             if (channelHandlerContext != null) {
-                sendTo(object, channelHandlerContext);
+                this.sendTo(messageLite, channelHandlerContext);
             }
         }
 
     }
 
 
-    public void sendToAcceptor(Object object) {
+    public void sendToAcceptor(MessageLite messageLite) {
 
         if (this.connectorChannelHolder != null) {
             ChannelHandlerContext channelHandlerContext = this.connectorChannelHolder.getChannelHandlerContext();
 
             if (channelHandlerContext != null) {
-                sendTo(object, channelHandlerContext);
+                this.sendTo(messageLite, channelHandlerContext);
             }
         }
 
     }
 
-    public void sendTo(Object object, ChannelHandlerContext channelHandlerContext) {
-
-        MessageLite messageLite = (MessageLite) object;
-        // 连在同一个Gate
+    private void sendTo(MessageLite messageLite, ChannelHandlerContext channelHandlerContext) {
 
         // 发送
-        channelHandlerContext.channel().writeAndFlush(messageLite)
-                .addListener(ChannelFutureListener.CLOSE).addListener((channelFuture) -> {
-            LOG.warn("sendToClient...channelFuture {}");
-        });
+        channelHandlerContext.channel().writeAndFlush(messageLite);
 
+        LOG.warn("sendTo... {}", messageLite);
 
-        LOG.warn("sendToClient... {}", messageLite);
-        // 需要ACK
-        toBeAcknowledgedIfNeed(channelHandlerContext, object);
     }
 
 
-    private void toBeAcknowledgedIfNeed(ChannelHandlerContext channelHandlerContext, Object object) {
-        if (object instanceof MessageLite) {
-            MessageLite messageLite = (MessageLite) object;
+    public void toBeAcknowledged(ChannelHandlerContext channelHandlerContext, MessageLite messageLite, Long seq) {
 
-        }
-
-        // if (messageLite instanceof MessageTypeA.Message) {
-        //     LOG.warn("messageLite... instanceof MessageTypeA.Message...");
-        //     MessageTypeA.Message msg = (MessageTypeA.Message) messageLite;
-        //     this.resendMessageMap.put(msg.getSeq(), new ResendMessage(messageLite, channelHandlerContext, msg.getSeq()));
-        // }
-
+        this.resendMessageMap.put(seq, new ResendMessage(seq, messageLite, channelHandlerContext));
 
     }
 

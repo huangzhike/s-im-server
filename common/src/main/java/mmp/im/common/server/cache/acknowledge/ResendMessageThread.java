@@ -37,7 +37,6 @@ public class ResendMessageThread implements Runnable {
                     continue;
                 }
 
-
                 // 10秒没确认
                 if (System.currentTimeMillis() - resendMessage.getLastSendTimeStamp() > SECONDS.toMillis(10)) {
                     // 通道未关闭

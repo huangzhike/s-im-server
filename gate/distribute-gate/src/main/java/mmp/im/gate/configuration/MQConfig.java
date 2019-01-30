@@ -28,12 +28,12 @@ public class MQConfig {
         return new MQProducer(mqURI, produceToQueue) {
             @Override
             public boolean publish(String exchangeName, String routingKey, Object msg) {
+
                 boolean ok = false;
 
-                MessageLite messageLite = (MessageLite) msg;
                 LOG.warn("publish msg... {}", msg);
                 try {
-                    byte[] contents = encode(messageLite);
+                    byte[] contents = encode((MessageLite) msg);
 
                     this.pubChannel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, contents);
 
@@ -52,7 +52,7 @@ public class MQConfig {
             }
 
             private byte[] encode(MessageLite msg) {
-                byte protocolType = ProtocolUtil.encodeProtocolType(msg);
+                byte protocolType = ProtocolUtil.encodeCommandId(msg);
                 byte[] body = msg.toByteArray();
                 ByteBuffer buffer = ByteBuffer.allocate(body.length + 1); // 声明一个缓冲区
                 buffer.put(protocolType);

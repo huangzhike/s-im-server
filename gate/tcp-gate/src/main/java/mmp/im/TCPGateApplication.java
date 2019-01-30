@@ -1,6 +1,5 @@
 package mmp.im;
 
-import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.cache.acknowledge.ResendMessageThread;
 import mmp.im.gate.acceptor.ClientToGateAcceptor;
 import mmp.im.gate.connector.GateToDistConnector;
@@ -23,14 +22,13 @@ public class TCPGateApplication implements CommandLineRunner {
     private ClientToGateAcceptor clientToGateAcceptor;
 
     @Autowired
-    private ResendMessageMap resendMessageMap;
+    private ResendMessageThread resendMessageThread;
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
         SpringApplication.run(TCPGateApplication.class, args);
     }
-
 
     @Override
     public void run(String... args) throws Exception {
@@ -39,10 +37,9 @@ public class TCPGateApplication implements CommandLineRunner {
 
         new Thread(() -> clientToGateAcceptor.bind()).start();
 
-
         LOG.warn("starting ResendMessageThread... ");
 
-        new Thread(new ResendMessageThread(resendMessageMap), "ResendMessageThread").start();
+        new Thread(resendMessageThread, "ResendMessageThread").start();
 
         LOG.warn("Spring Boot 启动完成");
     }

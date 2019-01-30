@@ -34,9 +34,9 @@ public class StatusService {
             userServerMap.putIfAbsent(key, list);
         }
 
-
         for (Info i : list) {
             if (i.getServerInfo().equals(info.getServerInfo())) {
+                // 已经有了
                 return;
             }
         }
@@ -49,6 +49,7 @@ public class StatusService {
         while (iterator.hasNext()) {
             Info i = (Info) iterator.next();
             if (i.getServerInfo().equals(info.getServerInfo())) {
+                // 登出 删除
                 iterator.remove();
             }
         }

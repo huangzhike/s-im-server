@@ -15,12 +15,10 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.server.channel.handler.AcceptorIdleStateTrigger;
 import mmp.im.common.server.codec.decode.WebsocketMessageDecoder;
 import mmp.im.common.server.codec.encode.WebsocketMessageEncoder;
 import mmp.im.common.server.event.EventHandler;
-import mmp.im.common.server.server.AbstractTCPAcceptor;
-import org.springframework.beans.factory.annotation.Autowired;
+import mmp.im.common.server.server.AbstractAcceptor;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -28,14 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 @Data
 @Accessors(chain = true)
-public class ClientToGateAcceptor extends AbstractTCPAcceptor {
+public class ClientToGateAcceptor extends AbstractAcceptor {
 
     public ClientToGateAcceptor(Integer port) {
         this.port = port;
     }
 
-    @Autowired
-    private ClientToGateAcceptorHandler clientToGateAcceptorHandler;
 
     private String serveId;
 
@@ -71,8 +67,8 @@ public class ClientToGateAcceptor extends AbstractTCPAcceptor {
                         // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
                         // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
                         pipeline.addLast(new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS));
-                        pipeline.addLast(new AcceptorIdleStateTrigger());
-                        pipeline.addLast(clientToGateAcceptorHandler);
+
+
                         pipeline.addLast(new EventHandler(null));
 
                     }

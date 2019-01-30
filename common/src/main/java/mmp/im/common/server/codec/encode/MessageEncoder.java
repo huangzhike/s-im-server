@@ -49,8 +49,8 @@ public class MessageEncoder extends MessageToByteEncoder<MessageLite> {
         header[2] = (byte) ((ProtocolHeader.FLAG_NUM >> 8) & 0xff);
         header[3] = (byte) (ProtocolHeader.FLAG_NUM & 0xff);
 
-        byte protocolType = ProtocolUtil.encodeProtocolType(msg);
-        header[4] = protocolType;
+        byte commandId = ProtocolUtil.encodeCommandId(msg);
+        header[4] = commandId;
 
         header[5] = (byte) ((bodyLength >> 8) & 0xff);
 

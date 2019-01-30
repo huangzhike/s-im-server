@@ -1,9 +1,13 @@
 package mmp.im.common.server.codec.decode;
 
+import com.google.protobuf.MessageLite;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import mmp.im.common.protocol.parser.IProtocolParser;
+import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.protocol.util.ProtocolHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 
+@Data
+@Accessors(chain = true)
 public class MessageDecoder extends ByteToMessageDecoder {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    /*
-     * 加个对象池
-     * */
+    private ProtocolParserHolder protocolParserHolder = new ProtocolParserHolder();
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> out) throws Exception {
@@ -45,7 +49,7 @@ public class MessageDecoder extends ByteToMessageDecoder {
         }
 
         // 获取包头中的类型
-        byte protocolType = in.readByte();
+        byte commandId = in.readByte();
 
         // 获取包头中的body长度，高低位，大端模式
         byte high = in.readByte();
@@ -56,21 +60,23 @@ public class MessageDecoder extends ByteToMessageDecoder {
         // 如果可读长度小于body长度，恢复读指针，退出
         if (in.readableBytes() < bodyLength) {
             in.resetReaderIndex();
-            LOG.warn("可读长度不对...小于body长度...");
+            LOG.warn("可读长度不对... 小于body长度...");
             return;
         }
 
         LOG.warn("decode bodyLength...{}", bodyLength);
 
-        ByteBuf frame = Unpooled.buffer(bodyLength + 1);
+        ByteBuf frame = in.readBytes(bodyLength);
 
+        IProtocolParser protocolParser = protocolParserHolder.get(commandId);
+        if (protocolParser != null) {
+            MessageLite msg = (MessageLite) protocolParser.parse(frame.array());
+            out.add(msg);
+            LOG.warn("decode finished...");
+        } else {
+            LOG.warn("无法识别，通道关闭");
+        }
 
-
-        // todo
-
-
-        out.add(frame.array());
-        LOG.warn("decode finished...");
 
     }
 
