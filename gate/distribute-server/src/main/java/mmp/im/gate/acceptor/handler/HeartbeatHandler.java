@@ -13,7 +13,6 @@ public class HeartbeatHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private final String name = Heartbeat.getDefaultInstance().getClass().toString();
 
     @Override
@@ -25,6 +24,7 @@ public class HeartbeatHandler implements INettyMessageHandler {
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Heartbeat message = (Heartbeat) object;
+
         LOG.warn("Heartbeat... {}", message);
         ReferenceCountUtil.release(object);
     }

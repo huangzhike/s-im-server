@@ -1,12 +1,19 @@
 package mmp.im.gate.connector;
 
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import mmp.im.common.server.channel.handler.ReconnectHandler;
 import mmp.im.common.server.channel.listener.ConnectionListener;
+import mmp.im.common.server.codec.decode.MessageDecoder;
+import mmp.im.common.server.codec.encode.MessageEncoder;
 import mmp.im.common.server.server.AbstractConnector;
+
+import java.util.concurrent.TimeUnit;
 
 
 @Data
@@ -18,16 +25,35 @@ public class GateToDistConnector extends AbstractConnector {
         this.port = port;
     }
 
-    private ChannelInitializer channelInitializer;
+
+    private GateToDistConnectorHandler gateToDistConnectorHandler;
 
     @Override
     public void connect() {
 
         ChannelFuture future;
 
+        ChannelHandler[] channelHandlers = new ChannelHandler[]{
+                new MessageDecoder(),
+                new MessageEncoder(),
+                // 每隔30s触发一次userEventTriggered的方法，并且指定IdleState的状态位是WRITER_IDLE
+                new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
+                // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
+                gateToDistConnectorHandler,
+                new ReconnectHandler(this)
+        };
+
+
         try {
             synchronized (bootstrapLock()) {
-                this.bootstrap.handler(channelInitializer);
+                this.bootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
+                    @Override
+                    protected void initChannel(NioSocketChannel channel) throws Exception {
+                        channel.pipeline().addLast(
+                                channelHandlers
+                        );
+                    }
+                });
                 LOG.warn("connect... host... {} port... {}", host, port);
                 // 连接（服务端bind，客户端connect）
                 // future = this.bootstrap.connect(host, port).sync();

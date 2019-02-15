@@ -4,8 +4,9 @@ package mmp.im.gate.configuration;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.protocol.handler.MessageHandlerHolder;
 import mmp.im.common.server.cache.connection.AcceptorChannelMap;
-import mmp.im.gate.acceptor.ClientToGateAcceptor;
-import mmp.im.gate.acceptor.ClientToGateAcceptorHandler;
+import mmp.im.gate.acceptor.GateToDistAcceptor;
+import mmp.im.gate.acceptor.GateToDistAcceptorHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,37 +14,41 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AcceptorConfig {
 
-
+    //////////////
 
     @Bean
     public AcceptorChannelMap acceptorChannelHandlerMap() {
         return new AcceptorChannelMap();
     }
 
-    //////////////
-    @Value("${clientToGateAcceptor.bind.port}")
-    private Integer clientToGateAcceptorPort;
 
+
+    //////////////
+
+    @Value("${gateToDistAcceptor.bind.port}")
+    private Integer gateToDistAcceptorPort;
 
     @Value("${acceptor.serverId}")
     private String serverId;
 
 
+
     @Bean
-    public ClientToGateAcceptorHandler clientToGateAcceptorHandler(AcceptorChannelMap acceptorChannelMap) {
-        ClientToGateAcceptorHandler acceptorHandler = new ClientToGateAcceptorHandler();
-        acceptorHandler.setAcceptorChannelMap(acceptorChannelMap);
+    public GateToDistAcceptorHandler gateToDistAcceptorHandler(AcceptorChannelMap acceptorChannelMap){
+        GateToDistAcceptorHandler acceptorHandler = new GateToDistAcceptorHandler();
         acceptorHandler.setMessageHandlerHolder(new MessageHandlerHolder("mmp.im.gate.acceptor.handler", INettyMessageHandler.class));
+        acceptorHandler.setAcceptorChannelMap(acceptorChannelMap);
         return acceptorHandler;
     }
 
+
     @Bean
-    public ClientToGateAcceptor clientToGateAcceptor(ClientToGateAcceptorHandler acceptorHandler) {
-        ClientToGateAcceptor clientToGateAcceptor = new ClientToGateAcceptor(clientToGateAcceptorPort);
+    public GateToDistAcceptor clientToGateAcceptor(GateToDistAcceptorHandler gateToDistAcceptorHandler) {
+        GateToDistAcceptor clientToGateAcceptor = new GateToDistAcceptor(gateToDistAcceptorPort);
+        clientToGateAcceptor.setAcceptorHandler(gateToDistAcceptorHandler);
+
         clientToGateAcceptor.setServeId(serverId);
-        clientToGateAcceptor.setAcceptorHandler(acceptorHandler);
         return clientToGateAcceptor;
     }
-
 
 }

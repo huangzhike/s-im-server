@@ -19,6 +19,7 @@ import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
 public class ClientLogoutHandler  extends CheckHandler implements INettyMessageHandler {
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = ClientLogout.getDefaultInstance().getClass().toString();
 
@@ -38,35 +39,32 @@ public class ClientLogoutHandler  extends CheckHandler implements INettyMessageH
         }
 
 
-
         ClientLogout message = (ClientLogout) object;
+
+        LOG.warn("ClientLogout... {}", message);
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
+            // release
             return;
         }
-        // 不需回复确认
+        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+
 
         String userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
-
-
+        // 不需回复确认
         // 移除并关闭
         SpringContextHolder.getBean(AcceptorChannelMap.class).removeChannel(userId);
-
 
         String serverId = ContextHolder.getServeId();
 
         // 生成消息待转发
-
         ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), serverId, false, "");
-
 
         // distribute
         ContextHolder.getMessageSender().sendToAcceptor(m);
         // 发的消息待确认
         ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
-
-
 
         ReferenceCountUtil.release(object);
     }

@@ -68,7 +68,7 @@ public class XService {
     }
 
     public User getUser(User user) {
-        return userDao.getUser(user);
+        return userDao.getUser(user.getId());
     }
 
     public User getUser(String userId) {

@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
 
 public class FriendMessageHandler  extends CheckHandler implements INettyMessageHandler {
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = FriendMessage.getDefaultInstance().getClass().toString();
 
@@ -35,15 +37,16 @@ public class FriendMessageHandler  extends CheckHandler implements INettyMessage
         }
 
         FriendMessage message = (FriendMessage) object;
-
+        LOG.warn("FriendMessage... {}", message);
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
-
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
+            // release
             return;
         }
+        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
         FriendMessage m = MessageBuilder.buildTransFriendMessage(message);
         // 转发单聊消息

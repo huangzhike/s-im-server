@@ -1,4 +1,4 @@
-package mmp.im.gate.acceptor.handler;
+package mmp.im.gate.connector.handler;
 
 import io.netty.channel.Channel;
 import mmp.im.common.server.util.AttributeKeyHolder;

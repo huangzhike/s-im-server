@@ -9,6 +9,8 @@ import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.gate.util.ContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,7 @@ import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
 public class ClientLoginHandler extends CheckHandler implements INettyMessageHandler {
 
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = ClientLogin.getDefaultInstance().getClass().toString();
 
@@ -30,6 +33,8 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         ClientLogin message = (ClientLogin) object;
+
+        LOG.warn("ClientLogin... {}", message);
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
@@ -40,6 +45,8 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
 
         // 已登录
         if (this.login(channel)) {
+            // release
+            LOG.warn("已登录");
             return;
         }
 
@@ -48,6 +55,8 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
 
         // 说明是重复发送，不处理，只回复ACK
         if (this.duplicate(channel, message.getSeq())) {
+            LOG.warn("重复消息");
+            // release
             return;
         }
 

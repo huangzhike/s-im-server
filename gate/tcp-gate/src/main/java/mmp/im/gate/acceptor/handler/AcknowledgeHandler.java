@@ -6,11 +6,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.gate.util.ContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.Acknowledge;
 
 public class AcknowledgeHandler extends CheckHandler implements INettyMessageHandler {
 
+
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = Acknowledge.getDefaultInstance().getClass().toString();
 

@@ -14,7 +14,7 @@
     <modules>
         <module>websocket-gate</module>
         <module>tcp-gate</module>
-        <module>distribute-gate</module>
+        <module>distribute-server</module>
     </modules>
 
 

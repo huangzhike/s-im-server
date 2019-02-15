@@ -1,9 +1,12 @@
 package mmp.im.gate.connector.handler;
 
 import com.google.protobuf.MessageLite;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
+import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.spring.SpringContextHolder;
@@ -15,7 +18,7 @@ import java.util.List;
 
 import static mmp.im.common.protocol.ProtobufMessage.GroupMessage;
 
-public class BroadcastGroupMessageHandler implements INettyMessageHandler {
+public class BroadcastGroupMessageHandler  extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -30,10 +33,21 @@ public class BroadcastGroupMessageHandler implements INettyMessageHandler {
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
+        Channel channel = channelHandlerContext.channel();
         GroupMessage message = (GroupMessage) object;
+
+        LOG.warn("GroupMessage... {}", message);
+
 
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
+
+        if (this.duplicate(channel, message.getSeq())) {
+            LOG.warn("重复消息");
+            // release
+            return;
+        }
+        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
         List<String> idList = message.getBroadcastIdListList();
 
@@ -44,6 +58,10 @@ public class BroadcastGroupMessageHandler implements INettyMessageHandler {
         for (String id : idList) {
             GroupMessage m = MessageBuilder.buildTransGroupMessage(message);
             ContextHolder.getMessageSender().sendToConnector(m, id);
+            // 发的消息待确认
+            ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+            LOG.warn("m... {}", m);
+
         }
 
         ReferenceCountUtil.release(object);

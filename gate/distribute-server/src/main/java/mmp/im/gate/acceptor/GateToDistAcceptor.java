@@ -17,38 +17,39 @@ import java.util.concurrent.TimeUnit;
 
 @Data
 @Accessors(chain = true)
-public class ClientToGateAcceptor extends AbstractAcceptor {
+public class GateToDistAcceptor extends AbstractAcceptor {
 
-    public ClientToGateAcceptor(Integer port) {
+    public GateToDistAcceptor(Integer port) {
         this.port = port;
     }
 
     private String serveId;
 
-    private  ClientToGateAcceptorHandler acceptorHandler;
-
+    private GateToDistAcceptorHandler acceptorHandler;
 
     @Override
     public void bind() {
-        this.serverBootstrap.childHandler(new  ChannelInitializer<SocketChannel>(){
+
+        ChannelHandler[] channelHandler = new ChannelHandler[]{
+                new MessageEncoder(),
+                new MessageDecoder(),
+                // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
+                // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
+                new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS),
+                this.acceptorHandler
+        };
+
+        this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel channel) throws Exception {
-                channel.pipeline().addLast(
-                        new ChannelHandler[]{
-                                new MessageDecoder(),
-                                new MessageEncoder(),
-                                // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
-                                // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
-                                acceptorHandler,
-                                new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS),
-
-                        }
-                );
+                channel.pipeline().addLast(channelHandler);
             }
         });
 
+        LOG.warn("childHandler... {}");
+
         try {
-            LOG.warn("binding port... {}", this.port);
+            LOG.warn("bind...port {}", this.port);
             ChannelFuture future = this.serverBootstrap.bind(new InetSocketAddress(this.port)).sync();
             LOG.warn("closeFuture sync...");
             future.channel().closeFuture().sync();
@@ -61,5 +62,6 @@ public class ClientToGateAcceptor extends AbstractAcceptor {
         }
 
     }
+
 
 }

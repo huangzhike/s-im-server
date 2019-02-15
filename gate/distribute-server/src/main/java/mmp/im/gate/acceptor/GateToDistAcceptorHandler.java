@@ -1,4 +1,4 @@
-package mmp.im.gate.connector;
+package mmp.im.gate.acceptor;
 
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
@@ -11,33 +11,26 @@ import io.netty.util.ReferenceCountUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import mmp.im.common.protocol.handler.MessageHandlerHolder;
-import mmp.im.common.server.cache.connection.ConnectorChannelHolder;
+import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.SocketAddress;
-import java.util.ArrayList;
 
 
 @Data
 @Accessors(chain = true)
 @ChannelHandler.Sharable
-public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
+public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private MessageHandlerHolder messageHandlerHolder;
 
-    private ConnectorChannelHolder connectorChannelHolder;
-
+    private AcceptorChannelMap acceptorChannelMap;
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
-
         Channel channel = channelHandlerContext.channel();
 
         if (message instanceof MessageLite) {
@@ -47,17 +40,12 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
             // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
             ReferenceCountUtil.release(message);
         }
-
     }
+
 
     @Override
     public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
-        LOG.warn("channelActive... remoteAddress... {} ", channelHandlerContext.channel().remoteAddress());
-
-        Channel channel = channelHandlerContext.channel();
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
-
-        channelHandlerContext.channel().writeAndFlush(MessageBuilder.buildHeartbeat());
+        LOG.warn("channelActive... remoteAddress... {}", channelHandlerContext.channel().remoteAddress());
 
         channelHandlerContext.fireChannelActive();
     }
@@ -66,21 +54,18 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         Channel channel = channelHandlerContext.channel();
 
-        if (channel != null) {
+        // 标识
+        String channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
-            channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
-            SocketAddress socketAddress = channel.remoteAddress();
-            if (socketAddress != null) {
+        if (channel.isOpen()) {
+            LOG.warn("channelInactive... close remoteAddress... {}" + channel.remoteAddress());
+        }
 
-                LOG.warn("channelInactive... remove remoteAddress... {}", channel.remoteAddress());
-                connectorChannelHolder.setChannelHandlerContext(null);
-
-            }
-            // 关闭连接
-            if (channel.isOpen()) {
-                channel.close();
-                LOG.warn("channelInactive... close remoteAddress... {}", channel.remoteAddress());
-            }
+        if (null != channelId) {
+            // 移除连接 关闭连接
+            ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
+            LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
         }
 
         channelHandlerContext.fireChannelInactive();
@@ -95,16 +80,12 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext channelHandlerContext, Object evt) throws Exception {
-
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
-            if (state == IdleState.WRITER_IDLE) {
-                LOG.warn("IdleState.WRITER_IDLE");
-                // 发送心跳
-                ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildHeartbeat());
+            if (state == IdleState.READER_IDLE) {
+                LOG.error("IdleState.READER_IDLE...");
             }
         }
-
         super.userEventTriggered(channelHandlerContext, evt);
     }
 

@@ -42,7 +42,7 @@ public class MessageBuilder {
         return builder.build();
     }
 
-    public static FriendMessage buildTransFriendMessage(FriendMessage friendMessage,   Long seqId) {
+    public static FriendMessage buildTransFriendMessage(FriendMessage friendMessage, Long seqId) {
 
         FriendMessage.Builder builder = friendMessage.toBuilder();
         builder.setSeqId(seqId);
