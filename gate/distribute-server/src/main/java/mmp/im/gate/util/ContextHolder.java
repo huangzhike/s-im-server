@@ -21,7 +21,7 @@ public class ContextHolder {
         return SpringContextHolder.getBean(MessageSender.class);
     }
 
-    public static String getServeId() {
+    public static Long getServeId() {
         return SpringContextHolder.getBean(GateToDistAcceptor.class).getServeId();
     }
 
@@ -29,14 +29,13 @@ public class ContextHolder {
         return SpringContextHolder.getBean(MQProducer.class);
     }
 
-    public static StatusService getStatusService(){
+    public static StatusService getStatusService() {
         return SpringContextHolder.getBean(StatusService.class);
     }
 
-    public static XService getXService(){
+    public static XService getXService() {
         return SpringContextHolder.getBean(XService.class);
     }
-
 
 
 }

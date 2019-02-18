@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.Acknowledge;
 
-public class AcknowledgeHandler   extends CheckHandler implements INettyMessageHandler {
+public class AcknowledgeHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 

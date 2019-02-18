@@ -15,7 +15,7 @@ public class ProtocolParserHolder {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private Map<Integer, IProtocolParser> parsers = new ConcurrentHashMap<>();
+    private final Map<Integer, IProtocolParser> parsers = new ConcurrentHashMap<>();
 
     public ProtocolParserHolder() {
 

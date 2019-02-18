@@ -15,17 +15,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TCPGateApplication implements CommandLineRunner {
 
 
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
     @Autowired
     private GateToDistConnector gateToDistConnector;
-
     @Autowired
     private ClientToGateAcceptor clientToGateAcceptor;
-
     @Autowired
     private ResendMessageThread resendMessageThread;
-
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
-
     public static void main(String[] args) {
         SpringApplication.run(TCPGateApplication.class, args);
     }

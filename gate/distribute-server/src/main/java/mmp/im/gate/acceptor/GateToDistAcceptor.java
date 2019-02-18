@@ -19,14 +19,12 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class GateToDistAcceptor extends AbstractAcceptor {
 
+    private Long serveId;
+    private GateToDistAcceptorHandler acceptorHandler;
+
     public GateToDistAcceptor(Integer port) {
         this.port = port;
     }
-
-    private String serveId;
-
-    private GateToDistAcceptorHandler acceptorHandler;
-
     @Override
     public void bind() {
 

@@ -26,16 +26,16 @@ public class Test {
 
         // System.out.println(person.getData().getTypeUrl());
 
-        AddressBookProtos.Person b=person.build();
-        AddressBookProtos.Person c=person.setData(Any.pack(phoneNumber2)).build();
+        AddressBookProtos.Person b = person.build();
+        AddressBookProtos.Person c = person.setData(Any.pack(phoneNumber2)).build();
 
         try {
             AddressBookProtos.Person.PhoneNumber p = b.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
             AddressBookProtos.Person.PhoneNumber e = c.getData().unpack(AddressBookProtos.Person.PhoneNumber.class);
             // System.out.println(p.getNumber());
             System.out.println(b.getClass());
-            System.out.println( AddressBookProtos.Person.getDescriptor());
-            System.out.println( AddressBookProtos.Person.getDefaultInstance().getClass());
+            System.out.println(AddressBookProtos.Person.getDescriptor());
+            System.out.println(AddressBookProtos.Person.getDefaultInstance().getClass());
             System.out.println("type====");
 
         } catch (Exception e) {

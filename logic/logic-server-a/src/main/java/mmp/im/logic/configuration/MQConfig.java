@@ -2,6 +2,9 @@ package mmp.im.logic.configuration;
 
 
 import com.google.protobuf.MessageLite;
+import mmp.im.common.protocol.handler.IMessageHandler;
+import mmp.im.common.protocol.handler.MessageHandlerHolder;
+import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.util.mq.MQConsumer;
@@ -21,11 +24,15 @@ public class MQConfig {
     @Value("${mq.mqURI}")
     private String mqURI;
 
+
     @Bean
     public MQConsumer mqConsumer() {
 
 
         ProtocolParserHolder protocolParserHolder = new ProtocolParserHolder();
+
+        MessageHandlerHolder messageHandlerHolder = new MessageHandlerHolder("mmp.im.logic.handler", IMessageHandler.class);
+
 
         return new MQConsumer(mqURI, consumeFromQueue) {
 
@@ -41,6 +48,10 @@ public class MQConfig {
                 IProtocolParser protocolParser = protocolParserHolder.get(commandId);
                 if (protocolParser != null) {
                     MessageLite msg = (MessageLite) protocolParser.parse(Arrays.copyOfRange(contentBody, 1, contentBody.length));
+
+                    if (msg != null) {
+                        messageHandlerHolder.assignHandler(msg);
+                    }
 
                     LOG.warn("decode finished... {}", msg);
                 }

@@ -13,7 +13,7 @@ public class Info {
     private String token;
     private String protocolInfo;
     private String clientInfo;
-    private String serverInfo;
+    private Long serverId;
     private Date lastLogin = new Date(System.currentTimeMillis());
 
 }

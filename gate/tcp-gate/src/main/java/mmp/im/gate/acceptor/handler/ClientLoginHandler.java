@@ -41,7 +41,7 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
         Channel channel = channelHandlerContext.channel();
         // TODO 从AUTH获取用户TOKEN对比
 
-        String userId = message.getUserId();
+        Long userId = message.getUserId();
 
         // 已登录
         if (this.login(channel)) {
@@ -65,7 +65,7 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
         // 添加进channel map
         ContextHolder.getAcceptorChannelMap().addChannel(userId, channelHandlerContext);
 
-        String serverId = ContextHolder.getServeId();
+        Long serverId = ContextHolder.getServeId();
         // 生成消息待转发
         ClientStatus m = MessageBuilder.buildClientStatus(userId, serverId, true, "");
         // distribute
@@ -75,9 +75,6 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
 
         ReferenceCountUtil.release(object);
     }
-
-
-
 
 
 }

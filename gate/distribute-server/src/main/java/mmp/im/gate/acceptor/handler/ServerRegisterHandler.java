@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import static mmp.im.common.protocol.ProtobufMessage.ServerRegister;
 
-public class ServerRegisterHandler  extends CheckHandler  implements INettyMessageHandler {
+public class ServerRegisterHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -40,14 +40,13 @@ public class ServerRegisterHandler  extends CheckHandler  implements INettyMessa
         ServerRegister message = (ServerRegister) object;
 
         LOG.warn("ServerRegister... {}", message);
-        String serverId = message.getSeverId();
+        Long serverId = message.getSeverId();
 
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         channel.attr(AttributeKeyHolder.CHANNEL_ID).set(serverId);
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
-
 
 
         // 说明是重复发送，不处理，只回复ACK

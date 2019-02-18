@@ -13,11 +13,11 @@ public class XService {
     @Autowired
     private XDao xDao;
 
-    public List<String> getUserFriendIdList(String userId) {
+    public List<Long> getUserFriendIdList(Long userId) {
         return xDao.getUserFriendIdList(userId);
     }
 
-    public List<String> getGroupUserIdList(String groupId) {
+    public List<Long> getGroupUserIdList(Long groupId) {
         return xDao.getGroupUserIdList(groupId);
     }
 

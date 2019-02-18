@@ -10,7 +10,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.protocol.handler.MessageHandlerHolder;
+import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.common.server.util.AttributeKeyHolder;
@@ -31,7 +31,7 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
-    private MessageHandlerHolder messageHandlerHolder;
+    private NettyMessageHandlerHolder NettyMessageHandlerHolder;
 
     private AcceptorChannelMap acceptorChannelMap;
 
@@ -42,7 +42,7 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
         Channel channel = channelHandlerContext.channel();
 
         if (message instanceof MessageLite) {
-            channel.eventLoop().execute(() -> messageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
+            channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
         } else {
             // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
             // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
@@ -62,7 +62,7 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         Channel channel = channelHandlerContext.channel();
         // 标识
-        String channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        Long channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
         LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
         if (channel.isOpen()) {
@@ -74,7 +74,7 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
             ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
             LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
 
-            String serverId = ContextHolder.getServeId();
+            Long serverId = ContextHolder.getServeId();
 
             // 生成消息待转发
             ClientStatus m = MessageBuilder.buildClientStatus(channelId, serverId, false, "");

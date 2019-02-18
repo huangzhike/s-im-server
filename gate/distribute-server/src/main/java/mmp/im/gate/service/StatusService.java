@@ -19,15 +19,15 @@ public class StatusService {
     private RedisUtil redisUtil;
 
 
-    private ConcurrentHashMap<String, List<Info>> userServerMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Long, List<Info>> userServerMap = new ConcurrentHashMap<>();
 
 
-    public List<Info> getUserServerList(String key) {
+    public List<Info> getUserServerList(Long key) {
         return userServerMap.get(key);
     }
 
 
-    public void putUserServerList(String key, Info info) {
+    public void putUserServerList(Long key, Info info) {
         List<Info> list = userServerMap.get(key);
         if (list == null) {
             list = new ArrayList<>();
@@ -35,7 +35,7 @@ public class StatusService {
         }
 
         for (Info i : list) {
-            if (i.getServerInfo().equals(info.getServerInfo())) {
+            if (i.getServerId().equals(info.getServerId())) {
                 // 已经有了
                 return;
             }
@@ -43,12 +43,12 @@ public class StatusService {
         list.add(info);
     }
 
-    public void removeUserServerList(String key, Info info) {
+    public void removeUserServerList(Long key, Info info) {
         List<Info> list = userServerMap.get(key);
         Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             Info i = (Info) iterator.next();
-            if (i.getServerInfo().equals(info.getServerInfo())) {
+            if (i.getServerId().equals(info.getServerId())) {
                 // 登出 删除
                 iterator.remove();
             }
@@ -74,7 +74,7 @@ public class StatusService {
         Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             Info i = (Info) iterator.next();
-            if (i.getServerInfo().equals(info.getServerInfo())) {
+            if (i.getServerId().equals(info.getServerId())) {
                 iterator.remove();
             }
         }

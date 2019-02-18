@@ -30,7 +30,7 @@ public class MessageSender {
         channelHandlerContext.channel().writeAndFlush(messageLite);
     }
 
-    public void sendToConnector(MessageLite messageLite, String key) {
+    public void sendToConnector(MessageLite messageLite, Long key) {
 
         if (this.acceptorChannelMap != null) {
             ChannelHandlerContext channelHandlerContext = this.acceptorChannelMap.getChannel(key);

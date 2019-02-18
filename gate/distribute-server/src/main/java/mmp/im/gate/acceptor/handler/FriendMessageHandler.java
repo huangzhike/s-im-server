@@ -18,7 +18,7 @@ import java.util.List;
 
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
-public class FriendMessageHandler  extends CheckHandler  implements INettyMessageHandler {
+public class FriendMessageHandler extends CheckHandler implements INettyMessageHandler {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
@@ -65,12 +65,11 @@ public class FriendMessageHandler  extends CheckHandler  implements INettyMessag
         friendServerList.addAll(selfServerList);
 
 
-
         if (friendServerList != null) {
             for (Info info : friendServerList) {
                 // 生成序列号
                 FriendMessage m = MessageBuilder.buildTransFriendMessage(message, SeqGenerator.get());
-                ContextHolder.getMessageSender().sendToConnector(m, info.getServerInfo());
+                ContextHolder.getMessageSender().sendToConnector(m, info.getServerId());
                 // 发的消息待确认
                 ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
                 LOG.warn("m... {}", m);

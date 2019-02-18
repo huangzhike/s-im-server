@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import static mmp.im.common.protocol.ProtobufMessage.ClientLogout;
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-public class ClientLogoutHandler  extends CheckHandler implements INettyMessageHandler {
+public class ClientLogoutHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -51,12 +51,12 @@ public class ClientLogoutHandler  extends CheckHandler implements INettyMessageH
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
 
-        String userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        Long userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
         // 不需回复确认
         // 移除并关闭
         SpringContextHolder.getBean(AcceptorChannelMap.class).removeChannel(userId);
 
-        String serverId = ContextHolder.getServeId();
+        Long serverId = ContextHolder.getServeId();
 
         // 生成消息待转发
         ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), serverId, false, "");

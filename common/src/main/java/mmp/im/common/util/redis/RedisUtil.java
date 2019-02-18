@@ -35,7 +35,6 @@ public class RedisUtil {
     }
 
 
-
     public void setMapValue(String mapkey, String key, Object value) {
 
         try (Jedis jedis = jedisPool.getResource()) {
@@ -113,6 +112,28 @@ public class RedisUtil {
 
     }
 
+    public void addSet(String key, String  value) {
+
+        try (Jedis jedis = jedisPool.getResource()) {
+            long status = jedis.sadd(key, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public Set<String> getSet(String key) {
+        Set<String> result = null;
+        try (Jedis jedis = jedisPool.getResource()) {
+            result = jedis.smembers(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
 
     // 单个加入
     public void addSortedSet(String key, Long id, Object object) {
@@ -126,7 +147,7 @@ public class RedisUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public Set<byte[]> getSortedSet(String key, Long start, Long end)  {
+    public Set<byte[]> getSortedSet(String key, Long start, Long end) {
         Set<byte[]> set = null;
         try (Jedis jedis = jedisPool.getResource()) {
             set = jedis.zrange(key.getBytes(), start, end);
@@ -140,7 +161,7 @@ public class RedisUtil {
 
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> getSortedSet(String key, Long start, Long end, Class<T> clazz)   {
+    public <T> List<T> getSortedSet(String key, Long start, Long end, Class<T> clazz) {
         List<T> list = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
             Set<byte[]> set = jedis.zrange(key.getBytes(), start, end);

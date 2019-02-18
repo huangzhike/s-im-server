@@ -19,7 +19,7 @@ import java.util.List;
 
 import static mmp.im.common.protocol.ProtobufMessage.GroupMessage;
 
-public class GroupMessageHandler  extends CheckHandler  implements INettyMessageHandler {
+public class GroupMessageHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -58,32 +58,29 @@ public class GroupMessageHandler  extends CheckHandler  implements INettyMessage
 
         LOG.warn("GroupMessage... {}", message);
         // server列表 推送到server
-        List<String> serverList = ContextHolder.getAcceptorChannelMap().getChannelMapKeyList();
+        List<Long> serverList = ContextHolder.getAcceptorChannelMap().getChannelMapKeyList();
 
 
         LOG.warn("serverList... {}", serverList);
         // 查找群好友列表
-        List<String> userFriendList = ContextHolder.getXService().getGroupUserIdList(message.getTo());
+        // 自己的别的端也要同步
+        List<Long> userFriendList = ContextHolder.getXService().getGroupUserIdList(message.getTo());
 
 
         LOG.warn("userFriendList... {}", userFriendList);
-        // 自己的别的端也要同步
-        // List<Info> selfServerList = ContextHolder.getStatusService().getUserServerList(message.getFrom());
-        // if (selfServerList != null) {
-        //     selfServerList.forEach(i -> userFriendList.add(i.getServerInfo()));
-        // }
-        // LOG.warn("selfServerList... {}", selfServerList);
+
+
 
         if (serverList != null) {
-            for (String serverId : serverList) {
+            for (Long gateId : serverList) {
                 // 某个Gate
-                List<String> serverUserList = new ArrayList<>();
+                List<Long> serverUserList = new ArrayList<>();
                 if (userFriendList != null) {
-                    for (String userId : userFriendList) {
+                    for (Long userId : userFriendList) {
                         List<Info> userServerList = ContextHolder.getStatusService().getUserServerList(userId);
                         if (userServerList != null) {
                             for (Info i : userServerList) {
-                                if (serverId.equals(i.getServerInfo())) {
+                                if (gateId.equals(i.getServerId())) {
                                     // Gate连接某个用户
                                     serverUserList.add(userId);
                                 }
@@ -94,7 +91,7 @@ public class GroupMessageHandler  extends CheckHandler  implements INettyMessage
                 }
                 // 生成序列号
                 GroupMessage m = MessageBuilder.buildTransGroupMessage(message, serverUserList, SeqGenerator.get());
-                ContextHolder.getMessageSender().sendToConnector(m, serverId);
+                ContextHolder.getMessageSender().sendToConnector(m, gateId);
                 // 发的消息待确认
                 ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
                 LOG.warn("m... {}", m);

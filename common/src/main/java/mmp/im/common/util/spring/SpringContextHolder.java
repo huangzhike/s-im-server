@@ -15,31 +15,18 @@ import org.springframework.stereotype.Component;
 public class SpringContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
-        SpringContextHolder.applicationContext = applicationContext;
-
-    }
-
     private static ApplicationContext getContext() {
         return applicationContext;
     }
-
     public static Object getBean(String name) {
         return getContext().getBean(name);
     }
-
     public static <T> T getBean(Class<T> clazz) {
         return getContext().getBean(clazz);
     }
-
     public static <T> T getBean(String name, Class<T> clazz) {
         return getContext().getBean(name, clazz);
     }
-
-
     public static <T> void setBean(T object) {
         getContext().getAutowireCapableBeanFactory().applyBeanPostProcessorsAfterInitialization(object, object.getClass().getName());
         DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) getContext().getAutowireCapableBeanFactory();
@@ -47,8 +34,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         beanFactory.registerSingleton(object.getClass().getName(), object);
 
     }
-
-
     /**
      * 直接创建bean，不设置属性
      *
@@ -62,8 +47,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         getRegistry().registerBeanDefinition(beanId, definition);
         return true;
     }
-
-
     /**
      * 为已知的class创建bean，可以设置bean的属性，可以用作动态代理对象的bean扩展
      *
@@ -80,7 +63,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         getRegistry().registerBeanDefinition(beanId, definition);
         return true;
     }
-
     /**
      * 为已知的class创建bean，可以设置bean的属性，可以用作动态代理对象的bean扩展
      *
@@ -98,7 +80,6 @@ public class SpringContextHolder implements ApplicationContextAware {
         getRegistry().registerBeanDefinition(beanId, definition);
         return true;
     }
-
     /**
      * 获取注册者
      * context->beanfactory->registry
@@ -108,6 +89,12 @@ public class SpringContextHolder implements ApplicationContextAware {
     public static BeanDefinitionRegistry getRegistry() {
         ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext;
         return (DefaultListableBeanFactory) configurableApplicationContext.getBeanFactory();
+    }
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+
+        SpringContextHolder.applicationContext = applicationContext;
+
     }
 
 

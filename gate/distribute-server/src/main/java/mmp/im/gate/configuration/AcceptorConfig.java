@@ -2,7 +2,7 @@ package mmp.im.gate.configuration;
 
 
 import mmp.im.common.protocol.handler.INettyMessageHandler;
-import mmp.im.common.protocol.handler.MessageHandlerHolder;
+import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.gate.acceptor.GateToDistAcceptor;
 import mmp.im.gate.acceptor.GateToDistAcceptorHandler;
@@ -16,27 +16,21 @@ public class AcceptorConfig {
 
     //////////////
 
+    @Value("${gateToDistAcceptor.bind.port}")
+    private Integer gateToDistAcceptorPort;
+
+
+    //////////////
+    @Value("${acceptor.serverId}")
+    private Long serverId;
     @Bean
     public AcceptorChannelMap acceptorChannelHandlerMap() {
         return new AcceptorChannelMap();
     }
-
-
-
-    //////////////
-
-    @Value("${gateToDistAcceptor.bind.port}")
-    private Integer gateToDistAcceptorPort;
-
-    @Value("${acceptor.serverId}")
-    private String serverId;
-
-
-
     @Bean
-    public GateToDistAcceptorHandler gateToDistAcceptorHandler(AcceptorChannelMap acceptorChannelMap){
+    public GateToDistAcceptorHandler gateToDistAcceptorHandler(AcceptorChannelMap acceptorChannelMap) {
         GateToDistAcceptorHandler acceptorHandler = new GateToDistAcceptorHandler();
-        acceptorHandler.setMessageHandlerHolder(new MessageHandlerHolder("mmp.im.gate.acceptor.handler", INettyMessageHandler.class));
+        acceptorHandler.setNettyMessageHandlerHolder(new NettyMessageHandlerHolder("mmp.im.gate.acceptor.handler", INettyMessageHandler.class));
         acceptorHandler.setAcceptorChannelMap(acceptorChannelMap);
         return acceptorHandler;
     }

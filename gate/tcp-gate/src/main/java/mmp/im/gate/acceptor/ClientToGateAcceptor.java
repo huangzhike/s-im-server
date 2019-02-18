@@ -19,18 +19,15 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class ClientToGateAcceptor extends AbstractAcceptor {
 
+    private Long serveId;
+    private ClientToGateAcceptorHandler acceptorHandler;
+
     public ClientToGateAcceptor(Integer port) {
         this.port = port;
     }
-
-    private String serveId;
-
-    private  ClientToGateAcceptorHandler acceptorHandler;
-
-
     @Override
     public void bind() {
-        this.serverBootstrap.childHandler(new  ChannelInitializer<SocketChannel>(){
+        this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel channel) throws Exception {
                 channel.pipeline().addLast(

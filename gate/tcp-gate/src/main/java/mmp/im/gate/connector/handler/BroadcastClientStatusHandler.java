@@ -16,7 +16,7 @@ import java.util.List;
 
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-public class BroadcastClientStatusHandler  extends CheckHandler implements INettyMessageHandler {
+public class BroadcastClientStatusHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -49,13 +49,13 @@ public class BroadcastClientStatusHandler  extends CheckHandler implements INett
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
 
-        List<String> idList = message.getBroadcastIdListList();
+        List<Long> idList = message.getBroadcastIdListList();
 
         if (idList == null) {
             return;
         }
         // 收到distribute推送，好友广播
-        for (String id : idList) {
+        for (Long id : idList) {
             ClientStatus m = MessageBuilder.buildTransClientStatus(message);
             ContextHolder.getMessageSender().sendToConnector(m, id);
             // 发的消息待确认

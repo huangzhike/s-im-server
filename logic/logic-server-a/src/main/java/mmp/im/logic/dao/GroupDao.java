@@ -13,7 +13,6 @@ import java.util.List;
 public interface GroupDao {
 
 
-
     @Insert("insert into group(name) values(#{name})")
     Integer addGroup(Group group);
 

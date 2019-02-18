@@ -14,11 +14,11 @@ public interface XDao {
     @Select("select id from user left join friend on " +
             "friend.idFrom = #{userId} or friend.idTo = #{userId} " +
             "where user.id = friend.idTo or user.id = friend.idFrom")
-    List<String> getUserFriendIdList(String userId);
+    List<Long> getUserFriendIdList(Long userId);
 
 
     @Select("select userId from group_user where group_user.groupId = #{groupId}")
-    List<String> getGroupUserIdList(String groupId);
+    List<Long> getGroupUserIdList(Long groupId);
 
 
 }

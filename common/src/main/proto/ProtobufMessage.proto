@@ -15,44 +15,42 @@ message Acknowledge {
 message FriendMessage {
     int64 seq = 1;
     int64 seqId = 2;
-    string from = 3;
-    string to = 4;
+    int64 from = 3;
+    int64 to = 4;
     string type = 5;
     string content = 6;
-    // 仅用于转发
-    repeated string broadcastIdList = 7;
 }
 
 // 群消息
 message GroupMessage {
     int64 seq = 1;
     int64 seqId = 2;
-    string from = 3;
-    string to = 4;
+    int64 from = 3;
+    int64 to = 4;
     string type = 5;
     string content = 6;
     // 仅用于转发
-    repeated string broadcastIdList = 7;
+    repeated int64 broadcastIdList = 7;
 }
 
 //
 message ServerRegister {
     int64 seq = 1;
-    string severId = 2;
+    int64 severId = 2;
     string token = 3;
 }
 
 //
 message ClientLogin {
     int64 seq = 1;
-    string userId = 2;
+    int64 userId = 2;
     string token = 3;
     string clientInfo = 4;
 }
 
 message ClientLogout {
     int64 seq = 1;
-    string userId = 2;
+    int64 userId = 2;
     string token = 3;
     string clientInfo = 4;
 }
@@ -60,32 +58,41 @@ message ClientLogout {
 // 在线状态
 message ClientStatus {
     int64 seq = 1;
-    string userId = 2;
-    string serverId = 3;
+    int64 userId = 2;
+    int64 serverId = 3;
     bool status = 4;
     string clientInfo = 5;
     // 仅用于转发
-    repeated string broadcastIdList = 6;
+    repeated int64 broadcastIdList = 6;
 }
 
 // 已读
 message ReadMessage {
-    string from = 1;
-    string to = 2;
+    int64 from = 1;
+    int64 to = 2;
+
     int64 seqId = 3;
+
+    Type type = 4;
+    enum Type {
+        FRIEND = 0;
+        GROUP = 1;
+
+    }
+
 }
 
 // 正在输入
 message Inputting {
-    string from = 1;
-    string to = 2;
+    int64 from = 1;
+    int64 to = 2;
 }
 
 // 发起好友申请
 message ApplyFriend {
     int64 seq = 1;
-    string from = 2;
-    string to = 3;
+    int64 from = 2;
+    int64 to = 3;
 }
 
 // ...

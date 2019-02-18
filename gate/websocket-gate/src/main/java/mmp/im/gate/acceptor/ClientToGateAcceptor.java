@@ -28,13 +28,12 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class ClientToGateAcceptor extends AbstractAcceptor {
 
+    private String serveId;
+
+
     public ClientToGateAcceptor(Integer port) {
         this.port = port;
     }
-
-
-    private String serveId;
-
     @Override
     public void bind() {
         this.serverBootstrap

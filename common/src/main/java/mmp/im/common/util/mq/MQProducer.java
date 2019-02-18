@@ -11,22 +11,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class MQProducer {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
-
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
-
-    protected Connection connection = null;
-
-    protected Channel pubChannel = null;
-
-    // 队列的生产者，将消息发送至此
-    private String publishToQueue;
-
     // 发送消息失败，下次连接恢复时再发送
     protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
-
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
     // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
     private final Timer startAgainTimer = new Timer();
-
+    protected Connection connection = null;
+    protected Channel pubChannel = null;
+    // 队列的生产者，将消息发送至此
+    private String publishToQueue;
     // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行
     private boolean startRunning = false;
 

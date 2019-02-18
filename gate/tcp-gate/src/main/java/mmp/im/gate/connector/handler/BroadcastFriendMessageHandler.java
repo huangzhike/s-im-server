@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
-public class BroadcastFriendMessageHandler  extends CheckHandler implements INettyMessageHandler {
+public class BroadcastFriendMessageHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 

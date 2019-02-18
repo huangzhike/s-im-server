@@ -18,7 +18,7 @@ import java.util.List;
 
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-public class ClientStatusHandler  extends CheckHandler  implements INettyMessageHandler {
+public class ClientStatusHandler extends CheckHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -56,7 +56,7 @@ public class ClientStatusHandler  extends CheckHandler  implements INettyMessage
 
         Info info = new Info();
         // 在哪个Gate
-        info.setServerInfo(message.getServerId());
+        info.setServerId(message.getServerId());
 
         // 修改本地状态
         if (message.getStatus()) {
@@ -70,36 +70,30 @@ public class ClientStatusHandler  extends CheckHandler  implements INettyMessage
         LOG.warn("ClientStatus... {}", message);
 
         // 获取所有连接的Gate id列表
-        List<String> serverList = ContextHolder.getAcceptorChannelMap().getChannelMapKeyList();
-
+        List<Long> serverList = ContextHolder.getAcceptorChannelMap().getChannelMapKeyList();
 
         LOG.warn("serverList... {}", serverList);
 
-        // 查找好友id列表
-        List<String> userFriendList = ContextHolder.getXService().getUserFriendIdList(message.getUserId());
 
+        // 查找好友id列表
+        List<Long> userFriendList = ContextHolder.getXService().getUserFriendIdList(message.getUserId());
         LOG.warn("userFriendList... {}", userFriendList);
 
-        // 自己别的端登录情况
-        List<Info> selfServerList = ContextHolder.getStatusService().getUserServerList(message.getUserId());
-        LOG.warn("selfServerList... {}", selfServerList);
-
-        if (selfServerList != null) {
-            selfServerList.forEach(i -> userFriendList.add(i.getServerInfo()));
-        }
+        // 自己别的端登录
+        userFriendList.add(message.getUserId());
 
 
         if (serverList != null) {
-            for (String serverId : serverList) {
+            for (Long gateId : serverList) {
                 // 某个Gate需要下发的用户列表
-                List<String> serverUserList = new ArrayList<>();
+                List<Long> serverUserList = new ArrayList<>();
                 if (userFriendList != null) {
-                    for (String userId : userFriendList) {
+                    for (Long userId : userFriendList) {
                         // 获取好友状态 登录在哪个Gate
                         List<Info> friendServerList = ContextHolder.getStatusService().getUserServerList(userId);
                         if (friendServerList != null) {
                             for (Info i : friendServerList) {
-                                if (serverId.equals(i.getServerInfo())) {
+                                if (gateId.equals(i.getServerId())) {
                                     // 推送的Gate上添加该好友
                                     serverUserList.add(userId);
                                 }
@@ -112,7 +106,7 @@ public class ClientStatusHandler  extends CheckHandler  implements INettyMessage
                 ClientStatus m = MessageBuilder.buildTransClientStatus(message, serverUserList);
 
                 // distribute
-                ContextHolder.getMessageSender().sendToConnector(m, serverId);
+                ContextHolder.getMessageSender().sendToConnector(m, gateId);
                 // 发的消息待确认
                 ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
                 LOG.warn("m... {}", m);

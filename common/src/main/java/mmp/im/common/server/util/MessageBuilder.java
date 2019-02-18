@@ -22,7 +22,7 @@ public class MessageBuilder {
 
 
     ///////////
-    public static FriendMessage buildFriendMessage(String from, String to, String content, String type) {
+    public static FriendMessage buildFriendMessage(Long from, Long to, String content, String type) {
 
         FriendMessage.Builder builder = FriendMessage.newBuilder();
         builder.setSeq(seqGenerator.getAndIncrement());
@@ -55,7 +55,7 @@ public class MessageBuilder {
     ///////////
 
 
-    public static GroupMessage buildGroupMessage(String from, String to, String content, String type) {
+    public static GroupMessage buildGroupMessage(Long from, Long to, String content, String type) {
 
         GroupMessage.Builder builder = GroupMessage.newBuilder();
         builder.setSeq(seqGenerator.getAndIncrement());
@@ -75,7 +75,7 @@ public class MessageBuilder {
         return builder.build();
     }
 
-    public static GroupMessage buildTransGroupMessage(GroupMessage groupMessage, List<String> broadcastIdList, Long seqId) {
+    public static GroupMessage buildTransGroupMessage(GroupMessage groupMessage, List<Long> broadcastIdList, Long seqId) {
 
         GroupMessage.Builder builder = groupMessage.toBuilder();
         builder.setSeqId(seqId);
@@ -90,7 +90,7 @@ public class MessageBuilder {
 
     //////////////
 
-    public static ClientStatus buildClientStatus(String userId, String serverId, Boolean status, String clientInfo) {
+    public static ClientStatus buildClientStatus(Long userId, Long serverId, Boolean status, String clientInfo) {
 
         ClientStatus.Builder builder = ClientStatus.newBuilder();
         builder.setUserId(userId);
@@ -109,7 +109,7 @@ public class MessageBuilder {
         return builder.build();
     }
 
-    public static ClientStatus buildTransClientStatus(ClientStatus clientStatus, List<String> broadcastIdList) {
+    public static ClientStatus buildTransClientStatus(ClientStatus clientStatus, List<Long> broadcastIdList) {
 
         ClientStatus.Builder builder = clientStatus.toBuilder();
 
@@ -124,7 +124,7 @@ public class MessageBuilder {
 
     // ////////////
 //
-    public static ServerRegister buildServerRegister(String serverId, String token) {
+    public static ServerRegister buildServerRegister(Long serverId, String token) {
         ServerRegister.Builder builder = ServerRegister.newBuilder();
         builder.setSeverId(serverId);
         builder.setToken(token);
@@ -133,7 +133,7 @@ public class MessageBuilder {
     }
 
 
-    public static ClientLogin buildClientLogin(String userId, String token, String clientInfo) {
+    public static ClientLogin buildClientLogin(Long userId, String token, String clientInfo) {
 
         ClientLogin.Builder builder = ClientLogin.newBuilder();
         builder.setUserId(userId);
@@ -144,7 +144,7 @@ public class MessageBuilder {
     }
 
 
-    public static ClientLogout buildClientLogout(String userId, String token, String clientInfo) {
+    public static ClientLogout buildClientLogout(Long userId, String token, String clientInfo) {
         ClientLogout.Builder builder = ClientLogout.newBuilder();
         builder.setUserId(userId);
         builder.setToken(token);
@@ -155,12 +155,13 @@ public class MessageBuilder {
 
 ///////////////
 
-    public static ReadMessage buildReadMessage(String from, String to, Long seqId) {
+    public static ReadMessage buildReadMessage(Long from, Long to, Long seqId,ReadMessage.Type type) {
 
         ReadMessage.Builder builder = ReadMessage.newBuilder();
         builder.setFrom(from);
         builder.setTo(to);
         builder.setSeqId(seqId);
+        builder.setType(type);
 
         return builder.build();
     }
@@ -168,6 +169,21 @@ public class MessageBuilder {
     public static ReadMessage buildTransReadMessage(ReadMessage readMessage) {
 
         ReadMessage.Builder builder = readMessage.toBuilder();
+
+        return builder.build();
+    }
+
+    public static Inputting buildInputting(Long from, Long to) {
+        Inputting.Builder builder = Inputting.newBuilder();
+        builder.setFrom(from);
+        builder.setTo(to);
+
+
+        return builder.build();
+    }
+
+    public static Inputting buildTransInputting(Inputting inputting) {
+        Inputting.Builder builder = inputting.toBuilder();
 
         return builder.build();
     }

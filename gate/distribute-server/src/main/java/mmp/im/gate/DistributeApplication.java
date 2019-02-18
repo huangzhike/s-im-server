@@ -15,19 +15,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DistributeApplication implements CommandLineRunner {
 
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
     @Autowired
     private GateToDistAcceptor gateToDistAcceptor;
-
-
     @Autowired
     private MQProducer mqProducer;
-
     @Autowired
     private ResendMessageThread resendMessageThread;
-
-
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
-
     public static void main(String[] args) {
         SpringApplication.run(DistributeApplication.class, args);
     }

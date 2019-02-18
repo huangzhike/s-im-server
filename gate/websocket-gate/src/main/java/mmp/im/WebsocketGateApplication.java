@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebsocketGateApplication implements CommandLineRunner {
 
 
-
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     public static void main(String[] args) {
@@ -21,7 +20,6 @@ public class WebsocketGateApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
 
 
         LOG.warn("Spring Boot 启动完成");

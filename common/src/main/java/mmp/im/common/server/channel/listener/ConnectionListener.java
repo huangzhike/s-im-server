@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 
 
-
 @Data
 @Accessors(chain = true)
 public class ConnectionListener implements ChannelFutureListener {

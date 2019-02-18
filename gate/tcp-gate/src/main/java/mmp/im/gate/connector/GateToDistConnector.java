@@ -20,14 +20,13 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class GateToDistConnector extends AbstractConnector {
 
+    private GateToDistConnectorHandler gateToDistConnectorHandler;
+
+
     public GateToDistConnector(String host, int port) {
         this.host = host;
         this.port = port;
     }
-
-
-    private GateToDistConnectorHandler gateToDistConnectorHandler;
-
     @Override
     public void connect() {
 
