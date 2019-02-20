@@ -28,8 +28,14 @@ public class ReadMessageHandler implements IMessageHandler {
 
         LOG.warn("ReadMessage... {}", message);
 
-        ContextHolder.getGroupMessageService();
 
-        ContextHolder.getFriendMessageService();
+        if (message.getType().equals(ReadMessage.Type.FRIEND)) {
+
+            ContextHolder.getFriendMessageService().updateOfflineUserFriendMessage(message.getFrom(), message.getTo(), message.getSeqId());
+        } else if (message.getType().equals(ReadMessage.Type.GROUP)) {
+            ContextHolder.getGroupMessageService().updateOfflineUserGroupMessage(message.getFrom(), message.getTo(), message.getSeqId());
+
+        }
+
     }
 }

@@ -30,7 +30,7 @@ public class FriendMessageHandler implements IMessageHandler {
         ContextHolder.getFriendMessageService().saveFriendMessage(message);
 
 
-        ContextHolder.getSessionService();
+        ContextHolder.getSessionService().addRecentFriendSession(message.getFrom(),message.getTo());
     }
 }
 

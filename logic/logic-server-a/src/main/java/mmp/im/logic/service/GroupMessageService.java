@@ -38,15 +38,15 @@ public class GroupMessageService {
 
 
     // 群成员未读群消息，默认未读
-    public void updateOfflineUserGroupMessage(String userId, String groupId, String lastReadMessageId) {
+    public void updateOfflineUserGroupMessage(Long from, Long to, Long lastReadMessageId) {
 
-        redisUtil.hset(GROUP_MESSAGE_UNREAD_DATABASE + userId, groupId, lastReadMessageId);
+        redisUtil.hset(GROUP_MESSAGE_UNREAD_DATABASE + from, String.valueOf(to), String.valueOf(lastReadMessageId));
     }
 
 
-    public String getOfflineUserGroupMessage(String userId, String groupId) {
+    public String getOfflineUserGroupMessage(Long from, Long to) {
 
-        return redisUtil.hget(GROUP_MESSAGE_UNREAD_DATABASE + userId, groupId);
+        return redisUtil.hget(GROUP_MESSAGE_UNREAD_DATABASE + from, String.valueOf(to));
     }
 
 }

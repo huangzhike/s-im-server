@@ -5,6 +5,8 @@ import mmp.im.common.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class SessionService {
 
@@ -12,25 +14,25 @@ public class SessionService {
     private final String RECENT_GROUP_SESSION_DATABASE = "RECENT_GROUP_SESSION_DATABASE_";
 
 
-
     @Autowired
     private RedisUtil redisUtil;
 
-    public void addRecentFriendSession(Long userId, String sessionId) {
+    public void addRecentFriendSession(Long from, Long to) {
 
-        redisUtil.addSet(RECENT_FRIEND_SESSION_DATABASE + userId, sessionId);
-
-    }
-
-    public void getRecentFriendSession(Long userId) {
-
-        redisUtil.getSet(RECENT_FRIEND_SESSION_DATABASE + userId);
+        redisUtil.addSet(RECENT_FRIEND_SESSION_DATABASE + from, String.valueOf(to));
+        redisUtil.addSet(RECENT_FRIEND_SESSION_DATABASE + to, String.valueOf(from));
 
     }
 
-    public void addRecentGroupSession(Long userId, String sessionId) {
+    public Set<String> getRecentFriendSession(Long userId) {
 
-        redisUtil.addSet(RECENT_GROUP_SESSION_DATABASE + userId, sessionId);
+        return redisUtil.getSet(RECENT_FRIEND_SESSION_DATABASE + userId);
+
+    }
+
+    public void addRecentGroupSession(Long userId, Long groupId) {
+
+        redisUtil.addSet(RECENT_GROUP_SESSION_DATABASE + userId, String.valueOf(groupId));
 
     }
 

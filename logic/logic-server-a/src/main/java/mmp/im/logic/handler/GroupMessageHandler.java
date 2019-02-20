@@ -30,7 +30,7 @@ public class GroupMessageHandler implements IMessageHandler {
 
         ContextHolder.getGroupMessageService().saveGroupMessage(message);
 
-        ContextHolder.getSessionService();
+        ContextHolder.getSessionService().addRecentGroupSession(message.getFrom(),message.getTo());
     }
 }
 
