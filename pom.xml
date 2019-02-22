@@ -161,6 +161,21 @@
                 <version>5.4.3</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+
+
+            <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.auth0/auth0 &ndash;&gt;-->
+            <!--<dependency>-->
+                <!--<groupId>com.auth0</groupId>-->
+                <!--<artifactId>auth0</artifactId>-->
+                <!--<version>1.10.0</version>-->
+            <!--</dependency>-->
+
 
         </dependencies>
     </dependencyManagement>

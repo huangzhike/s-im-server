@@ -1,11 +1,10 @@
 package mmp.im.logic.util;
 
+import mmp.im.common.service.service.FriendMessageService;
+import mmp.im.common.service.service.GroupMessageService;
+import mmp.im.common.service.service.SessionService;
+import mmp.im.common.service.service.XService;
 import mmp.im.common.util.spring.SpringContextHolder;
-import mmp.im.logic.service.FriendMessageService;
-import mmp.im.logic.service.GroupMessageService;
-import mmp.im.logic.service.SessionService;
-import mmp.im.logic.service.XService;
-
 public class ContextHolder {
 
     public static XService getXService() {

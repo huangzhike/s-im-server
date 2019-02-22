@@ -1,4 +1,4 @@
-package mmp.im.logic.service;
+package mmp.im.common.service.service;
 
 
 import mmp.im.common.util.redis.RedisUtil;
@@ -36,9 +36,9 @@ public class SessionService {
 
     }
 
-    public void getRecentGroupSession(Long userId) {
+    public Set<String>  getRecentGroupSession(Long userId) {
 
-        redisUtil.getSet(RECENT_GROUP_SESSION_DATABASE + userId);
+     return    redisUtil.getSet(RECENT_GROUP_SESSION_DATABASE + userId);
 
     }
 

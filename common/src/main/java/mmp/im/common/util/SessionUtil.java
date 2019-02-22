@@ -1,4 +1,4 @@
-package mmp.im.logic.util;
+package mmp.im.common.util;
 
 public class SessionUtil {
 

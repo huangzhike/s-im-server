@@ -1,4 +1,4 @@
-package mmp.im.logic.dao;
+package mmp.im.common.service.dao;
 
 import mmp.im.common.model.User;
 import org.apache.ibatis.annotations.Delete;
@@ -16,15 +16,15 @@ public interface FriendDao {
     @Select("select * from user left join friend on " +
             "friend.idFrom = #{userId} or friend.idTo = #{userId} " +
             "where user.id = friend.idTo or user.id = friend.idFrom")
-    List<User> getFriendList(String userId);
+    List<User> getFriendList(Long userId);
 
 
     @Insert("insert into friend(idFrom,idTo) values(#{idFrom},#{idTo})")
-    Integer addFriend(String idFrom, String idTo);
+    Integer addFriend(Long idFrom, Long idTo);
 
 
     @Delete("delete from friend where (idFrom=#{idFrom} and idTo=#{idTo}) or (idFrom=#{idTo} and idTo=#{idFrom})")
-    Integer removeFriend(String idFrom, String idTo);
+    Integer removeFriend(Long idFrom, Long idTo);
 
 
 }

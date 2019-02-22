@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-@MapperScan("mmp.im.auth.dao")
+@MapperScan("mmp.im.common.service.dao")
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync
 @EnableScheduling

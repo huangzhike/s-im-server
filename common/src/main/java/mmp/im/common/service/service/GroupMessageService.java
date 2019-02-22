@@ -1,4 +1,4 @@
-package mmp.im.logic.service;
+package mmp.im.common.service.service;
 
 import mmp.im.common.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
-package mmp.im.logic.service;
+package mmp.im.common.service.service;
 
+import mmp.im.common.service.dao.FriendDao;
+import mmp.im.common.service.dao.GroupDao;
+import mmp.im.common.service.dao.GroupUserDao;
+import mmp.im.common.service.dao.UserDao;
 import mmp.im.common.model.Group;
 import mmp.im.common.model.User;
-import mmp.im.logic.dao.FriendDao;
-import mmp.im.logic.dao.GroupDao;
-import mmp.im.logic.dao.GroupUserDao;
-import mmp.im.logic.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ import java.util.List;
 public class XService {
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private GroupDao groupDao;
 
     @Autowired
@@ -24,18 +27,16 @@ public class XService {
     @Autowired
     private GroupUserDao groupUserDao;
 
-    @Autowired
-    private UserDao userDao;
 
-    public List<User> getFriendList(String userId) {
+    public List<User> getFriendList(Long userId) {
         return friendDao.getFriendList(userId);
     }
 
-    public Integer addFriend(String idFrom, String idTo) {
+    public Integer addFriend(Long idFrom, Long idTo) {
         return friendDao.addFriend(idFrom, idTo);
     }
 
-    public Integer removeFriend(String idFrom, String idTo) {
+    public Integer removeFriend(Long idFrom, Long idTo) {
         return friendDao.removeFriend(idFrom, idTo);
     }
 
@@ -43,35 +44,37 @@ public class XService {
         return groupDao.addGroup(group);
     }
 
-    public Integer removeGroup(String groupId) {
+    public Integer removeGroup(Long groupId) {
         return groupDao.removeGroup(groupId);
     }
 
-    public List<User> getGroupUserList(String groupId) {
+    public List<User> getGroupUserList(Long groupId) {
         return groupUserDao.getGroupUserList(groupId);
     }
 
-    public List<String> getGroupUserIdList(String groupId) {
+    public List<Long> getGroupUserIdList(Long groupId) {
         return groupUserDao.getGroupUserIdList(groupId);
     }
 
-    public List<Group> getUserGroupList(String userId) {
+    public List<Group> getUserGroupList(Long userId) {
         return groupUserDao.getUserGroupList(userId);
     }
 
-    public Integer quitGroup(String userId, String groupId) {
+    public Integer quitGroup(Long userId, Long groupId) {
         return groupUserDao.quitGroup(userId, groupId);
     }
 
-    public Integer joinGroup(String userId, String groupId) {
+    public Integer joinGroup(Long userId, Long groupId) {
         return groupUserDao.joinGroup(userId, groupId);
     }
+
+
 
     public User getUser(User user) {
         return userDao.getUser(user.getId());
     }
 
-    public User getUser(String userId) {
+    public User getUser(Long userId) {
         return userDao.getUser(userId);
     }
 
@@ -86,4 +89,5 @@ public class XService {
     public Integer removeUser(User user) {
         return userDao.removeUser(user);
     }
+
 }

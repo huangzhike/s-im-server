@@ -1,13 +1,10 @@
-package mmp.im.logic.dao;
+package mmp.im.common.service.dao;
 
 
 import mmp.im.common.model.Group;
-import mmp.im.common.model.User;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public interface GroupDao {
@@ -18,8 +15,7 @@ public interface GroupDao {
 
 
     @Delete("delete from group where id=#{groupId}")
-    Integer removeGroup(String groupId);
-
+    Integer removeGroup(Long groupId);
 
 }
 

@@ -1,8 +1,8 @@
-package mmp.im.logic.service;
+package mmp.im.common.service.service;
 
 
+import mmp.im.common.util.SessionUtil;
 import mmp.im.common.util.redis.RedisUtil;
-import mmp.im.logic.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +12,7 @@ import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
 @Service
 public class FriendMessageService {
+
 
 
     /*
