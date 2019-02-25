@@ -18,7 +18,6 @@ public class MessageSenderConfig {
     @Autowired
     private AcceptorChannelMap acceptorChannelMap;
 
-
     @Bean
     public MessageSender messageSender() {
 

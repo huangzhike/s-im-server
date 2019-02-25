@@ -13,8 +13,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
-@SpringBootApplication
-@MapperScan("mmp.im.logic.dao")
+@SpringBootApplication(scanBasePackages = "mmp.im")
+@MapperScan("mmp.im.logic.database.dao")
 @EnableCaching(proxyTargetClass = true)
 @EnableAsync
 @EnableScheduling

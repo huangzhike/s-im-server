@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessageSenderConfig {
 
-
     @Autowired
     private ResendMessageMap resendMessageMap;
 
@@ -21,7 +20,6 @@ public class MessageSenderConfig {
 
     @Autowired
     private AcceptorChannelMap acceptorChannelMap;
-
 
     @Bean
     public MessageSender messageSender() {

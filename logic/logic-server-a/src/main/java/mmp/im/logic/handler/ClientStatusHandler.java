@@ -24,6 +24,7 @@ public class ClientStatusHandler implements IMessageHandler {
         ClientStatus message = (ClientStatus) object;
 
         LOG.warn("ClientStatus... {}", message);
+        // 保存用户登录记录
 
     }
 }

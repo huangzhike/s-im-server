@@ -1,9 +1,9 @@
 package mmp.im.logic.util;
 
-import mmp.im.common.service.service.FriendMessageService;
-import mmp.im.common.service.service.GroupMessageService;
-import mmp.im.common.service.service.SessionService;
-import mmp.im.common.service.service.XService;
+import im.database.service.FriendMessageService;
+import im.database.service.GroupMessageService;
+import im.database.service.SessionService;
+import im.database.service.XService;
 import mmp.im.common.util.spring.SpringContextHolder;
 public class ContextHolder {
 

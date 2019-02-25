@@ -22,11 +22,13 @@ public class AcceptorConfig {
 
     //////////////
     @Value("${acceptor.serverId}")
-    private Long serverId;
+    private String serverId;
     @Bean
     public AcceptorChannelMap acceptorChannelHandlerMap() {
         return new AcceptorChannelMap();
     }
+
+
     @Bean
     public GateToDistAcceptorHandler gateToDistAcceptorHandler(AcceptorChannelMap acceptorChannelMap) {
         GateToDistAcceptorHandler acceptorHandler = new GateToDistAcceptorHandler();
@@ -40,7 +42,6 @@ public class AcceptorConfig {
     public GateToDistAcceptor clientToGateAcceptor(GateToDistAcceptorHandler gateToDistAcceptorHandler) {
         GateToDistAcceptor clientToGateAcceptor = new GateToDistAcceptor(gateToDistAcceptorPort);
         clientToGateAcceptor.setAcceptorHandler(gateToDistAcceptorHandler);
-
         clientToGateAcceptor.setServeId(serverId);
         return clientToGateAcceptor;
     }

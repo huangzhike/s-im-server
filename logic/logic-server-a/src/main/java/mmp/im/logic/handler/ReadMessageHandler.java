@@ -12,7 +12,6 @@ public class ReadMessageHandler implements IMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private final String name = ReadMessage.getDefaultInstance().getClass().toString();
 
     @Override
@@ -22,18 +21,18 @@ public class ReadMessageHandler implements IMessageHandler {
 
     @Override
     public void process(MessageLite object) {
-
-
+        // 已读消息
         ReadMessage message = (ReadMessage) object;
 
         LOG.warn("ReadMessage... {}", message);
 
-
         if (message.getType().equals(ReadMessage.Type.FRIEND)) {
+            // 私聊
+            ContextHolder.getFriendMessageService().updateReadUserFriendMessageId(message.getFrom(), message.getTo(), message.getSeqId());
 
-            ContextHolder.getFriendMessageService().updateOfflineUserFriendMessage(message.getFrom(), message.getTo(), message.getSeqId());
         } else if (message.getType().equals(ReadMessage.Type.GROUP)) {
-            ContextHolder.getGroupMessageService().updateOfflineUserGroupMessage(message.getFrom(), message.getTo(), message.getSeqId());
+            // 群聊
+            ContextHolder.getGroupMessageService().updateReadUserGroupMessageId(message.getFrom(), message.getTo(), message.getSeqId());
 
         }
 

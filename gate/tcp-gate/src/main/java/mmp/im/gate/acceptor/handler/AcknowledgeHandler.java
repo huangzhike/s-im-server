@@ -31,9 +31,8 @@ public class AcknowledgeHandler extends CheckHandler implements INettyMessageHan
             LOG.warn("未登录");
         }
 
-
         Acknowledge message = (Acknowledge) object;
-
+        // 移除待重发消息
         ContextHolder.getResendMessageMap().remove(message.getAck());
 
         LOG.warn("receive acknowledge... {}", message);

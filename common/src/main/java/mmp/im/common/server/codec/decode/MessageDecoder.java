@@ -68,9 +68,31 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
         ByteBuf frame = in.readBytes(bodyLength);
 
+
+        int readableLen = frame.readableBytes(); // 获取可读取字节数量
+        byte[] array;
+
+        int offset;
+
+        if (frame.hasArray()) {
+            // 堆缓冲区(基于数组实现)，通过hasArray判断是否支持数组
+            array = frame.array();
+            offset = frame.arrayOffset() + frame.readerIndex();
+        } else {
+            // 直接缓冲区
+            array = new byte[readableLen];
+            frame.getBytes(frame.readerIndex(), array, 0, readableLen);
+            offset = 0;
+        }
+
+        // byte[] bytes = new byte[bodyLength];
+        //
+        // in.readBytes(bytes);
+
+
         IProtocolParser protocolParser = protocolParserHolder.get(commandId);
         if (protocolParser != null) {
-            MessageLite msg = (MessageLite) protocolParser.parse(frame.array());
+            MessageLite msg = (MessageLite) protocolParser.parse(array);
             out.add(msg);
             LOG.warn("decode finished...");
         } else {

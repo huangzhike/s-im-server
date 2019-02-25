@@ -38,22 +38,28 @@ public class GroupMessageHandler extends CheckHandler implements INettyMessageHa
         }
 
         GroupMessage message = (GroupMessage) object;
+
         LOG.warn("GroupMessage... {}", message);
+
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
+
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
         GroupMessage m = MessageBuilder.buildTransGroupMessage(message);
+
         // 转发到中心server
         ContextHolder.getMessageSender().sendToAcceptor(m);
+
         // 发的消息待确认
         ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+
         ReferenceCountUtil.release(object);
     }
 }

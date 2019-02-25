@@ -19,6 +19,8 @@ import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
 @Data
@@ -30,11 +32,9 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private NettyMessageHandlerHolder NettyMessageHandlerHolder;
 
     private AcceptorChannelMap acceptorChannelMap;
-
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
@@ -54,15 +54,20 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
+
         LOG.warn("channelActive... remoteAddress... {}", channelHandlerContext.channel().remoteAddress());
+
+        // 登录后维护一个已接收的消息列表 避免重传造成的重复接收
+
         channelHandlerContext.fireChannelActive();
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         Channel channel = channelHandlerContext.channel();
-        // 标识
-        Long channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        // 客户端用户
+        String channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+
         LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
         if (channel.isOpen()) {
@@ -72,15 +77,18 @@ public class ClientToGateAcceptorHandler extends ChannelInboundHandlerAdapter {
         if (null != channelId) {
             // 移除连接 关闭连接
             ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
+
             LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
 
-            Long serverId = ContextHolder.getServeId();
+            // 用户连接的Gate
+            String serverId = ContextHolder.getServeId();
 
             // 生成消息待转发
             ClientStatus m = MessageBuilder.buildClientStatus(channelId, serverId, false, "");
 
             // distribute
             ContextHolder.getMessageSender().sendToAcceptor(m);
+
             // 发的消息待确认
             ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
         }

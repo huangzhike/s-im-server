@@ -4,49 +4,47 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import mmp.im.common.util.serializer.IOSerializer;
 import mmp.im.common.util.serializer.SerializerHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
 @Accessors(chain = true)
 public class RedisUtil {
 
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
+
     private JedisPool jedisPool;
 
-    @SuppressWarnings("unchecked")
+    // *******
     public <T> T getMapValue(String mapkey, String key, Class<T> requiredType) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            List<byte[]> result = jedis.hmget(mapkey.getBytes(), key.getBytes());
-            if (null != result && result.size() > 0) {
-                byte[] x = result.get(0);
-                T resultObj = IOSerializer.deserialize(x, requiredType);
-                return resultObj;
-            }
+            byte[] result = jedis.hget(mapkey.getBytes(), key.getBytes());
+            return SerializerHolder.getSerializer().deserialize(result, requiredType);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
         return null;
     }
 
 
-    public void setMapValue(String mapkey, String key, Object value) {
+    public void addMapValue(String mapkey, String key, Object value) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            byte[] keyValue = IOSerializer.serialize(value);
+            byte[] keyValue = SerializerHolder.getSerializer().serialize(value);
             jedis.hset(mapkey.getBytes(), key.getBytes(), keyValue);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
     }
 
-
-    public Object delMapValue(String mapKey, String... dkey) {
+    public Long removeMapValue(String mapKey, String... dkey) {
         Long result = null;
         try (Jedis jedis = jedisPool.getResource()) {
             byte[][] dx = new byte[dkey.length][];
@@ -54,130 +52,114 @@ public class RedisUtil {
                 dx[i] = dkey[i].getBytes();
             }
             result = jedis.hdel(mapKey.getBytes(), dx);
-
-
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
         return result;
     }
 
-    @SuppressWarnings("unchecked")
+
+    public <T> Map<String, T> getMap(String mapkey, Class<T> requiredType) {
+
+        Map<String, T> map = new HashMap<>();
+        try (Jedis jedis = jedisPool.getResource()) {
+            Map<byte[], byte[]> result = jedis.hgetAll(mapkey.getBytes());
+            result.forEach((k, v) -> map.put(new String(k), SerializerHolder.getSerializer().deserialize(v, requiredType)));
+        } catch (Exception e) {
+            LOG.error("Exception... {}", e);
+        }
+        return map;
+    }
+
+
+    // *******
+
     public <T> List<T> getList(String listKey, int start, int end, Class<T> requiredType) {
         List<T> list = new ArrayList<>();
         try (Jedis jedis = jedisPool.getResource()) {
-
             List<byte[]> xx = jedis.lrange(listKey.getBytes(), start, end);
-            for (byte[] bs : xx) {
-                T t = IOSerializer.deserialize(bs, requiredType);
-                list.add(t);
-            }
-
+            xx.forEach(bytes -> list.add(SerializerHolder.getSerializer().deserialize(bytes, requiredType)));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     public <T> List<T> getList(String listKey, Class<T> requiredType) {
-        List<T> list = new ArrayList<>();
-        try (Jedis jedis = jedisPool.getResource()) {
-
-            // 取全部
-            List<byte[]> xx = jedis.lrange(listKey.getBytes(), 0, -1);
-            for (byte[] bs : xx) {
-                T t = IOSerializer.deserialize(bs, requiredType);
-                list.add(t);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
+        return this.getList(listKey, 0, -1, requiredType);
     }
 
-
-    public void addList(String listKey, Object value) {
-
+    public void addListValue(String listKey, Object value) {
         try (Jedis jedis = jedisPool.getResource()) {
-
-            byte[] listItem = IOSerializer.serialize(value);
-            jedis.lpush(listKey.getBytes(), listItem);
-
+            jedis.lpush(listKey.getBytes(), SerializerHolder.getSerializer().serialize(value));
         } catch (Exception e) {
-
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
 
     }
 
-    public void addSet(String key, String  value) {
+    // *******
+    public void addSetValue(String key, Object value) {
 
         try (Jedis jedis = jedisPool.getResource()) {
-            long status = jedis.sadd(key, value);
+            long status = jedis.sadd(SerializerHolder.getSerializer().serialize(key), SerializerHolder.getSerializer().serialize(value));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
 
     }
 
+    public Long removeSetValue(String key, Object value) {
 
-    public Set<String> getSet(String key) {
-        Set<String> result = null;
+        Long result = null;
         try (Jedis jedis = jedisPool.getResource()) {
-            result = jedis.smembers(key);
+            result = jedis.srem(key.getBytes(), SerializerHolder.getSerializer().serialize(value));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
         return result;
 
     }
 
+    public <T> Set<T> getSet(String key, Class<T> clazz) {
 
-    // 单个加入
-    public void addSortedSet(String key, Long id, Object object) {
+        Set<T> hashSet = new HashSet<>();
+        try (Jedis jedis = jedisPool.getResource()) {
+            Set<byte[]> bytes = jedis.smembers(SerializerHolder.getSerializer().serialize(key));
+            Optional.ofNullable(bytes).orElse(new HashSet<>()).forEach(b -> hashSet.add(SerializerHolder.getSerializer().deserialize(b, clazz)));
+        } catch (Exception e) {
+            LOG.error("Exception... {}", e);
+        }
+        return hashSet;
+
+    }
+
+
+    // *******
+
+    public void addSortedSetValue(String key, Long id, Object object) {
 
         try (Jedis jedis = jedisPool.getResource()) {
             byte[] bytes = SerializerHolder.getSerializer().serialize(object);
             jedis.zadd(key.getBytes(), id, bytes);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public Set<byte[]> getSortedSet(String key, Long start, Long end) {
-        Set<byte[]> set = null;
-        try (Jedis jedis = jedisPool.getResource()) {
-            set = jedis.zrange(key.getBytes(), start, end);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return set;
-
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getSortedSet(String key, Long start, Long end, Class<T> clazz) {
-        List<T> list = new ArrayList<>();
+    public <T> Set<T> getSortedSet(String key, Long start, Long end, Class<T> clazz) {
+        Set<T> hashSet = new HashSet<>();
         try (Jedis jedis = jedisPool.getResource()) {
             Set<byte[]> set = jedis.zrange(key.getBytes(), start, end);
-
-            if (set != null) {
-                set.forEach(bytes -> {
-                    list.add(SerializerHolder.getSerializer().deserialize(bytes, clazz));
-                });
-            }
-
+            Optional.ofNullable(set).orElse(new HashSet<>()).forEach(bytes -> hashSet.add(SerializerHolder.getSerializer().deserialize(bytes, clazz)));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("Exception... {}", e);
         }
-        return list;
-
+        return hashSet;
     }
+
+    // *******
 
     public String hget(String hkey, String key) {
         Jedis jedis = jedisPool.getResource();

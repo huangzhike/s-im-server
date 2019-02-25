@@ -8,6 +8,7 @@ import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.common.util.token.JWTUtil;
 import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +40,14 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         Channel channel = channelHandlerContext.channel();
-        // TODO 从AUTH获取用户TOKEN对比
 
-        Long userId = message.getUserId();
+        String userId = (String) JWTUtil.parseJWT(message.getToken()).get("id");
+
+        LOG.warn("用户登录... {}", userId);
 
         // 已登录
         if (this.login(channel)) {
-            // release
+            ReferenceCountUtil.release(object);
             LOG.warn("已登录");
             return;
         }
@@ -56,7 +58,7 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
         // 说明是重复发送，不处理，只回复ACK
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
 
@@ -65,9 +67,8 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
         // 添加进channel map
         ContextHolder.getAcceptorChannelMap().addChannel(userId, channelHandlerContext);
 
-        Long serverId = ContextHolder.getServeId();
         // 生成消息待转发
-        ClientStatus m = MessageBuilder.buildClientStatus(userId, serverId, true, "");
+        ClientStatus m = MessageBuilder.buildClientStatus(userId, ContextHolder.getServeId(), true, message.getClientInfo());
         // distribute
         ContextHolder.getMessageSender().sendToAcceptor(m);
         // 发的消息待确认

@@ -9,6 +9,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class GroupMessage {
+    private Long seqId;
     private String id;
     private String from;
     private String to;

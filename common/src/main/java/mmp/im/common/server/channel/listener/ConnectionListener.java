@@ -29,7 +29,7 @@ public class ConnectionListener implements ChannelFutureListener {
         if (!channelFuture.isSuccess()) {
             final EventLoop eventLoop = channelFuture.channel().eventLoop();
             eventLoop.schedule(() -> {
-                connector.initBootstrap(eventLoop);
+
                 connector.connect();
 
                 LOG.warn("ChannelFuture operationComplete failed");

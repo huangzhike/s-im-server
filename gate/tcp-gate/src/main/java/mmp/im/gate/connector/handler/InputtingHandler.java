@@ -20,7 +20,6 @@ public class InputtingHandler extends CheckHandler implements INettyMessageHandl
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private final String name = Inputting.getDefaultInstance().getClass().toString();
 
     @Override
@@ -28,11 +27,11 @@ public class InputtingHandler extends CheckHandler implements INettyMessageHandl
         return this.name;
     }
 
-
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
+
         Inputting message = (Inputting) object;
 
         LOG.warn("Inputting... {}", message);

@@ -1,6 +1,10 @@
 package mmp.im.auth.configuration;
 
 
+import im.database.service.FriendMessageService;
+import im.database.service.GroupMessageService;
+import im.database.service.ServerService;
+import im.database.service.SessionService;
 import mmp.im.common.util.redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
@@ -29,6 +33,23 @@ public class RedisConfig {
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port);
         redisUtil.setJedisPool(jedisPool);
         return redisUtil;
+    }
+
+    @Bean
+    public FriendMessageService friendMessageService(RedisUtil redisUtil) {
+        return new FriendMessageService(redisUtil);
+    }
+    @Bean
+    public GroupMessageService groupMessageService(RedisUtil redisUtil) {
+        return new GroupMessageService(redisUtil);
+    }
+    @Bean
+    public SessionService sessionService(RedisUtil redisUtil) {
+        return new SessionService(redisUtil);
+    }
+    @Bean
+    public ServerService serverService(RedisUtil redisUtil) {
+        return new ServerService(redisUtil);
     }
 
 

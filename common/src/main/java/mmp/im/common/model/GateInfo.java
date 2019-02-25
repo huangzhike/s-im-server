@@ -10,9 +10,11 @@ public class GateInfo {
 
     private String ip;
     private int port;
-    private int serverId;
+    private String serverId;
 
     private TYPE type;
+
+    private boolean status;
 
 
     public enum TYPE {

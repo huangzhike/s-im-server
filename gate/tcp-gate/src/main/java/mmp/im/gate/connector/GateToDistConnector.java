@@ -22,11 +22,15 @@ public class GateToDistConnector extends AbstractConnector {
 
     private GateToDistConnectorHandler gateToDistConnectorHandler;
 
+    private int port;
+
+    private String host;
 
     public GateToDistConnector(String host, int port) {
         this.host = host;
         this.port = port;
     }
+
     @Override
     public void connect() {
 
@@ -38,19 +42,16 @@ public class GateToDistConnector extends AbstractConnector {
                 // 每隔30s触发一次userEventTriggered的方法，并且指定IdleState的状态位是WRITER_IDLE
                 new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
                 // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
-                gateToDistConnectorHandler,
+                this.gateToDistConnectorHandler,
                 new ReconnectHandler(this)
         };
 
-
         try {
-            synchronized (bootstrapLock()) {
+            synchronized (this) {
                 this.bootstrap.handler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
-                    protected void initChannel(NioSocketChannel channel) throws Exception {
-                        channel.pipeline().addLast(
-                                channelHandlers
-                        );
+                    protected void initChannel(NioSocketChannel channel) {
+                        channel.pipeline().addLast(channelHandlers);
                     }
                 });
                 LOG.warn("connect... host... {} port... {}", host, port);
@@ -72,7 +73,6 @@ public class GateToDistConnector extends AbstractConnector {
         }
 
     }
-
 
 }
 

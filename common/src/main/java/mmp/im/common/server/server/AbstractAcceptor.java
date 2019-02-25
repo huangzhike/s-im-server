@@ -12,24 +12,20 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAcceptor extends AbstractServer {
 
-
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     protected ServerBootstrap serverBootstrap;
     protected EventLoopGroup bossEventLoopGroup;
     protected EventLoopGroup workerEventLoopGroup;
-    protected int port;
 
     public AbstractAcceptor() {
         this.initBootstrap();
     }
 
-    private void initBootstrap(EventLoopGroup bossEventLoopGroup, EventLoopGroup workerEventLoopGroup) {
-        this.bossEventLoopGroup = bossEventLoopGroup;
-        this.workerEventLoopGroup = workerEventLoopGroup;
-        // bossEventLoopGroup = new NioEventLoopGroup();
-        // workerEventLoopGroup = new NioEventLoopGroup();
-        this.serverBootstrap = new ServerBootstrap().group(bossEventLoopGroup, workerEventLoopGroup);
+    private void initBootstrap() {
+        this.bossEventLoopGroup = new NioEventLoopGroup();
+        this.workerEventLoopGroup = new NioEventLoopGroup();
+        this.serverBootstrap = new ServerBootstrap().group(this.bossEventLoopGroup, this.workerEventLoopGroup);
 
         this.serverBootstrap
                 .option(ChannelOption.SO_BACKLOG, 1024)
@@ -45,14 +41,8 @@ public abstract class AbstractAcceptor extends AbstractServer {
          * 缺点是容易发生堆外内存OOM
          */
         this.serverBootstrap.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()));
+
     }
-
-
-    private void initBootstrap() {
-
-        this.initBootstrap(new NioEventLoopGroup(), new NioEventLoopGroup());
-    }
-
 
     public abstract void bind();
 

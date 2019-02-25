@@ -29,37 +29,41 @@ public class BroadcastGroupMessageHandler extends CheckHandler implements INetty
         return this.name;
     }
 
-
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
+
         GroupMessage message = (GroupMessage) object;
 
         LOG.warn("GroupMessage... {}", message);
-
 
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
+        // 加入已收到的消息
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
-        List<Long> idList = message.getBroadcastIdListList();
+        List<String> idList = message.getBroadcastIdListList();
 
         if (idList == null) {
+            ReferenceCountUtil.release(object);
             return;
         }
         // 收到distribute推送，好友广播
-        for (Long id : idList) {
+        for (String id : idList) {
+
             GroupMessage m = MessageBuilder.buildTransGroupMessage(message);
+            // 下发
             ContextHolder.getMessageSender().sendToConnector(m, id);
             // 发的消息待确认
             ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+
             LOG.warn("m... {}", m);
 
         }

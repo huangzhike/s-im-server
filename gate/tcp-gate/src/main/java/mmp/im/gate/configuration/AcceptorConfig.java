@@ -18,11 +18,13 @@ public class AcceptorConfig {
     @Value("${clientToGateAcceptor.bind.port}")
     private Integer clientToGateAcceptorPort;
     @Value("${acceptor.serverId}")
-    private Long serverId;
+    private String serverId;
+
     @Bean
     public AcceptorChannelMap acceptorChannelHandlerMap() {
         return new AcceptorChannelMap();
     }
+
     @Bean
     public ClientToGateAcceptorHandler clientToGateAcceptorHandler(AcceptorChannelMap acceptorChannelMap) {
         ClientToGateAcceptorHandler acceptorHandler = new ClientToGateAcceptorHandler();

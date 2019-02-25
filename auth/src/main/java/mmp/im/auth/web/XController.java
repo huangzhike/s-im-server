@@ -2,29 +2,26 @@ package mmp.im.auth.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import mmp.im.common.service.service.FriendMessageService;
-import mmp.im.common.service.service.GroupMessageService;
-import mmp.im.common.service.service.SessionService;
-import mmp.im.common.service.service.XService;
-import mmp.im.common.model.GateInfo;
-import mmp.im.common.model.Group;
-import mmp.im.common.model.Response;
-import mmp.im.common.model.User;
-import mmp.im.common.protocol.ProtobufMessage;
-import mmp.im.common.util.SessionUtil;
+
+import im.database.service.FriendMessageService;
+import im.database.service.GroupMessageService;
+import im.database.service.ServerService;
+import im.database.service.SessionService;
+import mmp.im.auth.database.service.XService;
+import mmp.im.common.model.*;
+import mmp.im.common.util.session.SessionUtil;
+import mmp.im.common.util.spring.SpringContextHolder;
 import mmp.im.common.util.token.JWTUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 @Controller
@@ -32,7 +29,7 @@ public class XController {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
-    private final CopyOnWriteArraySet<GateInfo> copyOnWriteArraySet = new CopyOnWriteArraySet<>();
+
     private final String JWT_HEADER = "JWT_HEADER";
 
     @Autowired
@@ -47,6 +44,8 @@ public class XController {
     @Autowired
     private SessionService sessionService;
 
+    @Autowired
+    private ServerService serverService;
 
     @Autowired
     private HttpServletRequest request;
@@ -54,8 +53,8 @@ public class XController {
     @GetMapping("/list")
     @ResponseBody
     public Object list(
-                       @RequestParam(value = "currentPage", defaultValue = "1") Integer currentPage,
-                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+            @RequestParam(value = "currentPage", defaultValue = "1") Integer currentPage,
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Response response = new Response();
         PageHelper.startPage(currentPage, pageSize);
 
@@ -63,44 +62,57 @@ public class XController {
     }
 
 
+    @GetMapping("/")
+    @ResponseBody
+    public Object test(){
+
+        friendMessageService.updateReadUserFriendMessageId("dd", "dd",666L);
+        LOG.warn("--- {}", friendMessageService.getReadUserFriendMessageId("dd", "dd"));
+
+        return new JSONObject();
+    }
+
+
+
     @GetMapping("/getSessionList")
     @ResponseBody
     public Object getSessionList() {
         String token = request.getHeader(this.JWT_HEADER);
 
-
-        Long id = Optional.ofNullable(token)
+        String id = Optional.ofNullable(token)
                 .map(JWTUtil::parseJWT)
-                .map(map -> (Long) map.get("id"))
+                .map(map -> (String) map.get("id"))
                 .orElse(null);
 
         JSONObject jsonObject = new JSONObject();
+
         if (id != null) {
-            Set<String> friendIdList = sessionService.getRecentFriendSession(id);
-            Set<String> groupIdList = sessionService.getRecentGroupSession(id);
+            Set<String> friendIdList = sessionService.getUserRecentFriendSession(id);
+            Set<String> groupIdList = sessionService.getUserRecentGroupSession(id);
+
+            JSONObject friendSessionMap = new JSONObject();
+            jsonObject.put("friendSession", friendSessionMap);
 
             friendIdList.forEach(friendId -> {
-
-                String sessionId = SessionUtil.getSessionId(id, Long.valueOf(friendId));
-
-                List<ProtobufMessage.FriendMessage> friendMessageList = friendMessageService.getFriendMessage(sessionId, 0L, 30L);
-
-                String readMessageId = friendMessageService.getOfflineUserFriendMessage(id, Long.valueOf(friendId));
-
+                JSONObject map = new JSONObject();
+                friendSessionMap.put(friendId, map);
+                Set<FriendMessage> friendMessageList = friendMessageService.getFriendMessageList(SessionUtil.getSessionId(id, friendId), 0L, 30L);
+                map.put("friendMessageList", friendMessageList);
+                String readMessageId = friendMessageService.getReadUserFriendMessageId(id, friendId);
+                map.put("readMessageId", readMessageId);
             });
+
+            JSONObject groupSessionMap = new JSONObject();
+            jsonObject.put("groupSessionMap", groupSessionMap);
 
             groupIdList.forEach(groupId -> {
-
-                List<ProtobufMessage.GroupMessage> groupMessageList = groupMessageService.getGroupMessage(Long.valueOf(groupId), 0L, 30L);
-
-                String readMessageId = groupMessageService.getOfflineUserGroupMessage(id, Long.valueOf(groupId));
-
+                JSONObject map = new JSONObject();
+                groupSessionMap.put(groupId, map);
+                Set<GroupMessage> groupMessageList = groupMessageService.getGroupMessageList(groupId, 0L, 30L);
+                map.put("groupMessageList", groupMessageList);
+                String readMessageId = groupMessageService.getReadUserGroupMessageId(id, groupId);
+                map.put("readMessageId", readMessageId);
             });
-
-            // List<ProtobufMessage.GroupMessage> groupMessageList = groupIdList.stream().map(groupId -> {
-            //     return groupMessageService.getGroupMessage(Long.valueOf(groupId), 0L, 30L);
-            // }).collect(Collectors.toList());
-
 
         }
 
@@ -117,17 +129,16 @@ public class XController {
     public Object getFriendList() {
         String token = request.getHeader(this.JWT_HEADER);
 
-        List<User> groupList = Optional.ofNullable(token)
+        List<User> friendList = Optional.ofNullable(token)
                 .map(JWTUtil::parseJWT)
-                .map(map -> (Long) map.get("id"))
+                .map(map -> (String) map.get("id"))
                 .map(id -> xService.getFriendList(id))
                 .orElse(null);
-
 
         Response response = new Response();
         response.setSuccess(true);
 
-        response.setData(groupList);
+        response.setData(friendList);
 
         return response;
     }
@@ -140,7 +151,7 @@ public class XController {
 
         List<Group> groupList = Optional.ofNullable(token)
                 .map(JWTUtil::parseJWT)
-                .map(map -> (Long) map.get("id"))
+                .map(map -> (String) map.get("id"))
                 .map(id -> xService.getUserGroupList(id))
                 .orElse(null);
 
@@ -159,16 +170,16 @@ public class XController {
 
         String token = request.getHeader(this.JWT_HEADER);
 
-        List<User> groupList = Optional.ofNullable(token)
+        List<User> groupMemberList = Optional.ofNullable(token)
                 .map(JWTUtil::parseJWT)
-                .map(map -> (Long) map.get("id"))
+                .map(map -> (String) map.get("id"))
                 .map(id -> xService.getGroupUserList(id))
                 .orElse(null);
 
         Response response = new Response();
         response.setSuccess(true);
 
-        response.setData(groupList);
+        response.setData(groupMemberList);
 
         return response;
     }
@@ -179,7 +190,7 @@ public class XController {
 
         Response response = new Response();
         response.setSuccess(true);
-        response.setData(this.copyOnWriteArraySet);
+        response.setData(serverService.getGateList());
         return response;
     }
 

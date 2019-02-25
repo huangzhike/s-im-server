@@ -25,34 +25,35 @@ public class BroadcastFriendMessageHandler extends CheckHandler implements INett
         return this.name;
     }
 
-
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
 
         FriendMessage message = (FriendMessage) object;
+
         LOG.warn("FriendMessage... {}", message);
+
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
+        // 加入已收到的消息
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
-
-        // 单聊消息
         FriendMessage m = MessageBuilder.buildTransFriendMessage(message);
+        // 下发
         ContextHolder.getMessageSender().sendToConnector(m, message.getTo());
         // 发的消息待确认
-
         ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
-        LOG.warn("m... {}", m);
-        ReferenceCountUtil.release(object);
 
+        LOG.warn("m... {}", m);
+
+        ReferenceCountUtil.release(object);
 
     }
 }

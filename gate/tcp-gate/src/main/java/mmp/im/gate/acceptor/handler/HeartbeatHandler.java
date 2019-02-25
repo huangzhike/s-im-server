@@ -25,7 +25,9 @@ public class HeartbeatHandler implements INettyMessageHandler {
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Heartbeat message = (Heartbeat) object;
+
         LOG.warn("Heartbeat... {}", message);
+
         ReferenceCountUtil.release(object);
     }
 }

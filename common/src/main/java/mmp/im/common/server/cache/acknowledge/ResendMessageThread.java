@@ -4,6 +4,7 @@ import io.netty.channel.ChannelFutureListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
@@ -30,10 +31,13 @@ public class ResendMessageThread implements Runnable {
 
         while (true) {
 
-            for (ResendMessage resendMessage : messageToAckMap.values()) {
+            Iterator iterator = messageToAckMap.values().iterator();
 
+            while (iterator.hasNext()) {
+                ResendMessage resendMessage = (ResendMessage) iterator.next();
                 // 五分钟没发成功，删除
                 if (System.currentTimeMillis() - resendMessage.getTimestamp() > MINUTES.toMillis(5)) {
+                    iterator.remove();
                     continue;
                 }
 
@@ -41,12 +45,9 @@ public class ResendMessageThread implements Runnable {
                 if (System.currentTimeMillis() - resendMessage.getLastSendTimeStamp() > SECONDS.toMillis(10)) {
                     // 通道未关闭
                     if (resendMessage.getChannelHandlerContext().channel().isActive()) {
-
                         LOG.warn("重发... {}", resendMessage.getMsg());
                         // 重发
-                        resendMessage.getChannelHandlerContext()
-                                .channel()
-                                .writeAndFlush(resendMessage.getMsg())
+                        resendMessage.getChannelHandlerContext().channel().writeAndFlush(resendMessage.getMsg())
                                 .addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
                         // 更新时间戳
                         resendMessage.setLastSendTimeStamp(System.currentTimeMillis());
@@ -54,8 +55,9 @@ public class ResendMessageThread implements Runnable {
                 }
             }
 
+
             try {
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch (Exception e) {
                 LOG.error("Thread Exception... {}", e);
             }

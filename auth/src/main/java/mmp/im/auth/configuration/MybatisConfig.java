@@ -12,4 +12,6 @@ public class MybatisConfig {
         // 设置驼峰命名规则
         return (configuration) -> configuration.setMapUnderscoreToCamelCase(true);
     }
+
+
 }

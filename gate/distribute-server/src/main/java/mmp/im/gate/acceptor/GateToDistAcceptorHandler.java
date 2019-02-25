@@ -54,8 +54,9 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
     public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         Channel channel = channelHandlerContext.channel();
 
-        // 标识
-        Long channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        // GateId
+        String channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+
         LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
         if (channel.isOpen()) {

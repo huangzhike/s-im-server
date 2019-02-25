@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="auth" />
+        <module name="common" />
+        <module name="database" />
+        <module name="distribute-gate" />
+        <module name="distribute-server" />
+        <module name="logic-server-a" />
+        <module name="logic-server-b" />
+        <module name="tcp-client" />
+        <module name="tcp-gate" />
+        <module name="websocket-client" />
+        <module name="websocket-gate" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="auth" target="1.8" />
+      <module name="client" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="database" target="1.8" />
+      <module name="distribute-gate" target="1.8" />
+      <module name="distribute-server" target="1.8" />
+      <module name="gate" target="1.8" />
+      <module name="im" target="1.8" />
+      <module name="logic" target="1.8" />
+      <module name="logic-server-a" target="1.8" />
+      <module name="logic-server-b" target="1.8" />
+      <module name="protocol" target="1.8" />
+      <module name="server" target="1.8" />
+      <module name="tcp-client" target="1.8" />
+      <module name="tcp-gate" target="1.8" />
+      <module name="tcp-server" target="1.8" />
+      <module name="util" target="1.8" />
+      <module name="websocket-client" target="1.8" />
+      <module name="websocket-gate" target="1.8" />
+      <module name="websocket-server" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="database" options="-parameters" />
+      <module name="distribute-gate" options="-parameters" />
+      <module name="distribute-server" options="-parameters" />
+      <module name="logic-server-a" options="-parameters" />
+      <module name="logic-server-b" options="-parameters" />
+      <module name="protocol" options="-parameters" />
+      <module name="tcp-client" options="-parameters" />
+      <module name="tcp-gate" options="-parameters" />
+      <module name="tcp-server" options="-parameters" />
+      <module name="util" options="-parameters" />
+      <module name="websocket-client" options="-parameters" />
+      <module name="websocket-gate" options="-parameters" />
+      <module name="websocket-server" options="-parameters" />
+    </option>
+  </component>
+</project>

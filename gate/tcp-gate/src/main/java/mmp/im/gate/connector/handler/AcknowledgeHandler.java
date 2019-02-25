@@ -27,6 +27,7 @@ public class AcknowledgeHandler extends CheckHandler implements INettyMessageHan
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
+
         Acknowledge message = (Acknowledge) object;
 
         // 移除

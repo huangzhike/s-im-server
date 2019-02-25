@@ -20,7 +20,6 @@ public class BroadcastClientStatusHandler extends CheckHandler implements INetty
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     private final String name = ClientStatus.getDefaultInstance().getClass().toString();
 
     @Override
@@ -33,35 +32,38 @@ public class BroadcastClientStatusHandler extends CheckHandler implements INetty
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
+
         ClientStatus message = (ClientStatus) object;
 
         LOG.warn("ClientStatus... {}", message);
-
 
         // 回复确认收到消息
         ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
+        // 加入已收到的消息
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
-
-        List<Long> idList = message.getBroadcastIdListList();
+        // Gate需要转发的对象
+        List<String> idList = message.getBroadcastIdListList();
 
         if (idList == null) {
+            ReferenceCountUtil.release(object);
             return;
         }
         // 收到distribute推送，好友广播
-        for (Long id : idList) {
+        for (String id : idList) {
             ClientStatus m = MessageBuilder.buildTransClientStatus(message);
+            // 下发
             ContextHolder.getMessageSender().sendToConnector(m, id);
             // 发的消息待确认
             ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
-            LOG.warn("m... {}", m);
 
+            LOG.warn("m... {}", m);
         }
 
         ReferenceCountUtil.release(object);

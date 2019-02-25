@@ -9,19 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "mmp.im")
 public class TCPGateApplication implements CommandLineRunner {
 
-
     private final Logger LOG = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private GateToDistConnector gateToDistConnector;
     @Autowired
     private ClientToGateAcceptor clientToGateAcceptor;
     @Autowired
     private ResendMessageThread resendMessageThread;
+
     public static void main(String[] args) {
         SpringApplication.run(TCPGateApplication.class, args);
     }
@@ -32,8 +34,6 @@ public class TCPGateApplication implements CommandLineRunner {
         new Thread(() -> gateToDistConnector.connect()).start();
 
         new Thread(() -> clientToGateAcceptor.bind()).start();
-
-        LOG.warn("starting ResendMessageThread... ");
 
         new Thread(resendMessageThread, "ResendMessageThread").start();
 

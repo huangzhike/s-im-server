@@ -11,23 +11,23 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AcceptorChannelMap {
 
-    private final ConcurrentHashMap<Long, ChannelHandlerContext> handlerContextConcurrentHashMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ChannelHandlerContext> handlerContextConcurrentHashMap = new ConcurrentHashMap<>();
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
-    public List<Long> getChannelMapKeyList() {
-        Set<Long> keys = this.handlerContextConcurrentHashMap.keySet();
+    public List<String> getChannelMapKeyList() {
+        Set<String> keys = this.handlerContextConcurrentHashMap.keySet();
 
         return new ArrayList<>(keys);
     }
 
-    public ChannelHandlerContext getChannel(Long key) {
+    public ChannelHandlerContext getChannel(String key) {
         return handlerContextConcurrentHashMap.get(key);
     }
 
 
-    public ChannelHandlerContext addChannel(Long key, ChannelHandlerContext channelHandlerContext) {
+    public ChannelHandlerContext addChannel(String key, ChannelHandlerContext channelHandlerContext) {
 
         // 之后重复登录需要踢掉原来的连接
         if (handlerContextConcurrentHashMap.containsKey(key)) {
@@ -41,7 +41,7 @@ public class AcceptorChannelMap {
 
     }
 
-    public ChannelHandlerContext removeChannel(Long key) {
+    public ChannelHandlerContext removeChannel(String key) {
         ChannelHandlerContext channelHandlerContext = handlerContextConcurrentHashMap.remove(key);
         LOG.warn("remove key... {}", key);
         if (channelHandlerContext.channel().isOpen()) {

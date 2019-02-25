@@ -50,7 +50,7 @@ public class ReconnectHandler extends ChannelInboundHandlerAdapter {
             // 重连
             final EventLoop eventLoop = channelHandlerContext.channel().eventLoop();
             eventLoop.schedule(() -> {
-                connector.initBootstrap(eventLoop);
+
                 connector.connect();
             }, 1L, TimeUnit.SECONDS);
 

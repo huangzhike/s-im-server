@@ -14,6 +14,7 @@ public class ResendMessageConfig {
     public ResendMessageMap resendMessageMap() {
         return new ResendMessageMap();
     }
+
     @Bean
     public ResendMessageThread resendMessageThread(ResendMessageMap resendMessageMap) {
         return new ResendMessageThread(resendMessageMap);

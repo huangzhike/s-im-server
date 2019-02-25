@@ -3,11 +3,12 @@ package mmp.im.gate.util;
 import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
 import mmp.im.common.server.cache.connection.AcceptorChannelMap;
 import mmp.im.common.server.util.MessageSender;
+import im.database.service.ServerService;
 import mmp.im.common.util.mq.MQProducer;
 import mmp.im.common.util.spring.SpringContextHolder;
 import mmp.im.gate.acceptor.GateToDistAcceptor;
-import mmp.im.gate.service.StatusService;
-import mmp.im.gate.service.XService;
+import im.database.service.StatusService;
+import mmp.im.gate.database.service.XService;
 
 public class ContextHolder {
 
@@ -21,7 +22,7 @@ public class ContextHolder {
         return SpringContextHolder.getBean(MessageSender.class);
     }
 
-    public static Long getServeId() {
+    public static String getServeId() {
         return SpringContextHolder.getBean(GateToDistAcceptor.class).getServeId();
     }
 
@@ -36,6 +37,11 @@ public class ContextHolder {
     public static XService getXService() {
         return SpringContextHolder.getBean(XService.class);
     }
+
+    public static ServerService getServerService() {
+        return SpringContextHolder.getBean(ServerService.class);
+    }
+
 
 
 }

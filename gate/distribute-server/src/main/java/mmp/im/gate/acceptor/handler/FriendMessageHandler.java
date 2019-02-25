@@ -10,11 +10,11 @@ import mmp.im.common.server.cache.acknowledge.ResendMessage;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.gate.util.ContextHolder;
-import mmp.im.gate.util.SeqGenerator;
+import mmp.im.common.util.seq.SeqGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.*;
 
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
@@ -44,36 +44,42 @@ public class FriendMessageHandler extends CheckHandler implements INettyMessageH
         // 说明是重复发送，不处理，只回复ACK
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
+        // 已收到消息列表
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
         // 推送到logic处理，数据库操作等
         ContextHolder.getMQProducer().pub(message);
 
         // 单聊消息
-
         LOG.warn("FriendMessage... {}", message);
 
         // 查找好友登陆server列表 推送到server
-        List<Info> friendServerList = ContextHolder.getStatusService().getUserServerList(message.getTo());
+        Set<String> friendServerList = ContextHolder.getStatusService().getUserServerList(message.getTo());
+
         LOG.warn("friendServerList... {}", friendServerList);
+
         // 自己的别的端也要同步
-        List<Info> selfServerList = ContextHolder.getStatusService().getUserServerList(message.getFrom());
+        Set<String> selfServerList = ContextHolder.getStatusService().getUserServerList(message.getFrom());
+
         LOG.warn("selfServerList... {}", selfServerList);
+
+        friendServerList = Optional.ofNullable(friendServerList).orElse(new HashSet<>());
+
+        selfServerList = Optional.ofNullable(selfServerList).orElse(new HashSet<>());
+
         friendServerList.addAll(selfServerList);
 
-
-        if (friendServerList != null) {
-            for (Info info : friendServerList) {
-                // 生成序列号
-                FriendMessage m = MessageBuilder.buildTransFriendMessage(message, SeqGenerator.get());
-                ContextHolder.getMessageSender().sendToConnector(m, info.getServerId());
-                // 发的消息待确认
-                ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
-                LOG.warn("m... {}", m);
-            }
+        for (String serverId : friendServerList) {
+            // 生成序列号
+            FriendMessage m = MessageBuilder.buildTransFriendMessage(message, SeqGenerator.get());
+            // 发送
+            ContextHolder.getMessageSender().sendToConnector(m, serverId);
+            // 发的消息待确认
+            ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+            LOG.warn("m... {}", m);
         }
 
         ReferenceCountUtil.release(object);

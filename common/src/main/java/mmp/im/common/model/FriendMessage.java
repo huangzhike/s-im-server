@@ -10,6 +10,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class FriendMessage {
     private String id;
+    private Long seqId;
     private String from;
     private String to;
     private String type;

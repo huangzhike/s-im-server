@@ -24,10 +24,12 @@ public class AcknowledgeHandler extends CheckHandler implements INettyMessageHan
 
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
+
         Channel channel = channelHandlerContext.channel();
         if (!this.login(channel)) {
             LOG.warn("未登录");
         }
+
         Acknowledge message = (Acknowledge) object;
 
         // 移除

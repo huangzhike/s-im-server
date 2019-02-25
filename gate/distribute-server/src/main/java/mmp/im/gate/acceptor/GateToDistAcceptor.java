@@ -19,12 +19,16 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class GateToDistAcceptor extends AbstractAcceptor {
 
-    private Long serveId;
+    private String serveId;
+
+    private int port;
+
     private GateToDistAcceptorHandler acceptorHandler;
 
     public GateToDistAcceptor(Integer port) {
         this.port = port;
     }
+
     @Override
     public void bind() {
 
@@ -34,12 +38,12 @@ public class GateToDistAcceptor extends AbstractAcceptor {
                 // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
                 // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
                 new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS),
-                this.acceptorHandler
+                this.acceptorHandler,
         };
 
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
-            protected void initChannel(SocketChannel channel) throws Exception {
+            protected void initChannel(SocketChannel channel) {
                 channel.pipeline().addLast(channelHandler);
             }
         });

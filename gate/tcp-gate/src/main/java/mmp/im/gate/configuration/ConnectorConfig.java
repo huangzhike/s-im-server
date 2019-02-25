@@ -21,17 +21,18 @@ public class ConnectorConfig {
     //////////////
     @Value("${gateToDistConnector.connect.host}")
     private String gateToDistConnectorHost;
+
     //////////////
     @Bean
     public ConnectorChannelHolder connectorChannelHolder() {
         return new ConnectorChannelHolder();
     }
+
     @Bean
     public GateToDistConnectorHandler gateToDistConnectorHandler(ConnectorChannelHolder connectorChannelHolder) {
         GateToDistConnectorHandler connectorHandler = new GateToDistConnectorHandler();
         connectorHandler.setNettyMessageHandlerHolder(new NettyMessageHandlerHolder("mmp.im.gate.connector.handler", INettyMessageHandler.class));
         connectorHandler.setConnectorChannelHolder(connectorChannelHolder);
-
         return connectorHandler;
     }
 
@@ -39,7 +40,6 @@ public class ConnectorConfig {
     public GateToDistConnector gateToDistConnector(GateToDistConnectorHandler connectorHandler) {
         GateToDistConnector gateToDistConnector = new GateToDistConnector(gateToDistConnectorHost, gateToDistAcceptorPort);
         gateToDistConnector.setGateToDistConnectorHandler(connectorHandler);
-
         return gateToDistConnector;
     }
 

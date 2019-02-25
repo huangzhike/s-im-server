@@ -38,31 +38,29 @@ public class ClientLogoutHandler extends CheckHandler implements INettyMessageHa
             LOG.warn("未登录");
         }
 
-
         ClientLogout message = (ClientLogout) object;
 
         LOG.warn("ClientLogout... {}", message);
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            // release
+            ReferenceCountUtil.release(object);
             return;
         }
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
-
-        Long userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        String userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
         // 不需回复确认
-        // 移除并关闭
-        SpringContextHolder.getBean(AcceptorChannelMap.class).removeChannel(userId);
 
-        Long serverId = ContextHolder.getServeId();
+        // 移除并关闭
+        ContextHolder.getAcceptorChannelMap().removeChannel(userId);
 
         // 生成消息待转发
-        ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), serverId, false, "");
+        ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), ContextHolder.getServeId(), false, message.getClientInfo());
 
         // distribute
         ContextHolder.getMessageSender().sendToAcceptor(m);
+
         // 发的消息待确认
         ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
 

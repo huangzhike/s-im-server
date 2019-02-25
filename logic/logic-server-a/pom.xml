@@ -14,7 +14,10 @@
 
     <dependencies>
 
-
+        <dependency>
+            <groupId>mmp</groupId>
+            <artifactId>database</artifactId>
+        </dependency>
         <dependency>
             <groupId>mmp</groupId>
             <artifactId>common</artifactId>

@@ -11,14 +11,16 @@ public class ContextHolder {
     public static ResendMessageMap getResendMessageMap() {
         return SpringContextHolder.getBean(ResendMessageMap.class);
     }
+
     public static AcceptorChannelMap getAcceptorChannelMap() {
         return SpringContextHolder.getBean(AcceptorChannelMap.class);
     }
+
     public static MessageSender getMessageSender() {
         return SpringContextHolder.getBean(MessageSender.class);
     }
 
-    public static Long getServeId() {
+    public static String getServeId() {
         return SpringContextHolder.getBean(ClientToGateAcceptor.class).getServeId();
     }
 

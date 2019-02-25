@@ -15,22 +15,22 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public abstract class AbstractConnector extends AbstractServer {
 
-
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     protected Bootstrap bootstrap;
-    protected int port;
-    protected String host;
+
     protected EventLoopGroup workerEventLoopGroup;
 
     public AbstractConnector() {
         this.initBootstrap();
     }
 
-    public void initBootstrap(EventLoopGroup workerEventLoopGroup) {
-        this.workerEventLoopGroup = workerEventLoopGroup;
 
-        this.bootstrap = new Bootstrap().group(workerEventLoopGroup);
+    private void initBootstrap() {
+
+        this.workerEventLoopGroup = new NioEventLoopGroup();
+
+        this.bootstrap = new Bootstrap().group(this.workerEventLoopGroup);
         this.bootstrap.option(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()))
                 .option(ChannelOption.MESSAGE_SIZE_ESTIMATOR, DefaultMessageSizeEstimator.DEFAULT)
                 .option(ChannelOption.SO_REUSEADDR, true)
@@ -39,17 +39,6 @@ public abstract class AbstractConnector extends AbstractServer {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.ALLOW_HALF_CLOSURE, false)
                 .channel(NioSocketChannel.class);
-    }
-
-    private void initBootstrap() {
-
-        this.initBootstrap(new NioEventLoopGroup());
-
-    }
-
-
-    protected Object bootstrapLock() {
-        return this.bootstrap;
     }
 
     public abstract void connect();

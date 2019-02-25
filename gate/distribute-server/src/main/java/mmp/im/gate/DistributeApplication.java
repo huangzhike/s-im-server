@@ -11,17 +11,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@MapperScan("mmp.im.gate.dao")
-@SpringBootApplication
+@MapperScan("mmp.im.gate.database.dao")
+@SpringBootApplication(scanBasePackages = "mmp.im")
 public class DistributeApplication implements CommandLineRunner {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private GateToDistAcceptor gateToDistAcceptor;
     @Autowired
     private MQProducer mqProducer;
     @Autowired
     private ResendMessageThread resendMessageThread;
+
     public static void main(String[] args) {
         SpringApplication.run(DistributeApplication.class, args);
     }
