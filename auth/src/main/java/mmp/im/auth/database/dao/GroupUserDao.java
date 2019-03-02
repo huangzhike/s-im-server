@@ -28,9 +28,9 @@ public interface GroupUserDao {
 
 
     @Delete("delete from group_user where userId=#{userId} and groupId=#{groupId}")
-    Integer quitGroup(String userId, String groupId);
+    Integer removeGroupUser(String userId, String groupId);
 
-    @Insert("insert into group_user(userId,groupId) values(#{userId},#{groupId})")
-    Integer joinGroup(String userId, String groupId);
+    @Insert("insert into group_user(userId, groupId) values(#{userId}, #{groupId})")
+    Integer addGroupUser(String userId, String groupId);
 
 }

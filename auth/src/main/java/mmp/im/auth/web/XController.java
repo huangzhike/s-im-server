@@ -64,14 +64,11 @@ public class XController {
 
     @GetMapping("/")
     @ResponseBody
-    public Object test(){
-
-        friendMessageService.updateReadUserFriendMessageId("dd", "dd",666L);
-        LOG.warn("--- {}", friendMessageService.getReadUserFriendMessageId("dd", "dd"));
-
+    public Object test() {
+        friendMessageService.updateReadUserFriendMessageId("mmp", "mmp", 666L);
+        LOG.warn("test--- {}", friendMessageService.getReadUserFriendMessageId("mmp", "mmp"));
         return new JSONObject();
     }
-
 
 
     @GetMapping("/getSessionList")
@@ -120,7 +117,6 @@ public class XController {
         Response response = new Response();
         response.setSuccess(true);
         response.setData(jsonObject);
-
         return response;
     }
 
@@ -137,9 +133,7 @@ public class XController {
 
         Response response = new Response();
         response.setSuccess(true);
-
         response.setData(friendList);
-
         return response;
     }
 
@@ -157,9 +151,7 @@ public class XController {
 
         Response response = new Response();
         response.setSuccess(true);
-
         response.setData(groupList);
-
         return response;
     }
 
@@ -178,8 +170,15 @@ public class XController {
 
         Response response = new Response();
         response.setSuccess(true);
-
         response.setData(groupMemberList);
+        return response;
+    }
+
+    @GetMapping("/getUserInfo")
+    @ResponseBody
+    public Object getUserInfo() {
+        Response response = new Response();
+        response.setSuccess(true);
 
         return response;
     }
@@ -187,24 +186,30 @@ public class XController {
     @GetMapping("/getGateList")
     @ResponseBody
     public Object getGateList() {
-
         Response response = new Response();
         response.setSuccess(true);
         response.setData(serverService.getGateList());
         return response;
     }
 
+
     @PostMapping("getToken")
     @ResponseBody
     public Object getToken(User user) {
         Response response = new Response();
-        User u = xService.getUser(user.getId());
-        if (u != null && user.getPassword().equals(u.getPassword())) {
-            response.setSuccess(true);
+        User u = xService.getUser(user);
+        if (u != null) {
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", u.getId());
             String token = JWTUtil.createJWT(jsonObject);
-            response.setData(token);
+
+            JSONObject resp = new JSONObject();
+            resp.put("id", u.getId());
+            resp.put("token", token);
+            resp.put("gateList", serverService.getGateList());
+            response.setSuccess(true);
+            response.setData(resp);
         }
         response.setSuccess(false);
         return response;

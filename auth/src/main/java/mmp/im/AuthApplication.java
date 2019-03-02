@@ -35,8 +35,6 @@ public class AuthApplication extends SpringBootServletInitializer implements Com
 
         LOG.warn("Spring Boot 启动完成");
 
-
-
     }
 
 

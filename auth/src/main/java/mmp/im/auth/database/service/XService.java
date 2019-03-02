@@ -68,11 +68,11 @@ public class XService {
     }
 
     public Integer quitGroup(String userId, String groupId) {
-        return groupUserDao.quitGroup(userId, groupId);
+        return groupUserDao.removeGroupUser(userId, groupId);
     }
 
     public Integer joinGroup(String userId, String groupId) {
-        return groupUserDao.joinGroup(userId, groupId);
+        return groupUserDao.addGroupUser(userId, groupId);
     }
 
     ///////////

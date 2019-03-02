@@ -16,6 +16,7 @@ public class Group {
     private Date createTime;
     private String ownerId;
     private String remark;
-    private List<User> groupUser;
+    private List<User> groupUserList;
+    private List<String> groupUserIdList;
 
 }

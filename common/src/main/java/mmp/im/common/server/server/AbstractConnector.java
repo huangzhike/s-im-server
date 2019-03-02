@@ -25,7 +25,6 @@ public abstract class AbstractConnector extends AbstractServer {
         this.initBootstrap();
     }
 
-
     private void initBootstrap() {
 
         this.workerEventLoopGroup = new NioEventLoopGroup();

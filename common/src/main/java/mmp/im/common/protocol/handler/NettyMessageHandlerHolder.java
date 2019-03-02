@@ -22,8 +22,8 @@ public class NettyMessageHandlerHolder {
 
         classList.forEach(v -> {
             try {
-                INettyMessageHandler e = (INettyMessageHandler) v.newInstance();
-                this.messageHandlers.put(e.getHandlerName(), e);
+                INettyMessageHandler instance = (INettyMessageHandler) v.newInstance();
+                this.messageHandlers.put(instance.getHandlerName(), instance);
             } catch (Exception e) {
                 LOG.error("newInstance Exception... {}", e);
             }

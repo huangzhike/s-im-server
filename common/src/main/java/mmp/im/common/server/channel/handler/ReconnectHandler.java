@@ -44,18 +44,13 @@ public class ReconnectHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext channelHandlerContext) throws Exception {
         LOG.warn("channelInactive...");
-        if (this.attempts < 6) {
+        if (this.attempts < 3) {
             ++this.attempts;
-            LOG.warn("attempts... {}", this.attempts);
+            LOG.warn("attempts time... {}", this.attempts);
             // 重连
             final EventLoop eventLoop = channelHandlerContext.channel().eventLoop();
-            eventLoop.schedule(() -> {
-
-                connector.connect();
-            }, 1L, TimeUnit.SECONDS);
-
+            eventLoop.schedule(() -> connector.connect(), 1L, TimeUnit.SECONDS);
             super.channelInactive(channelHandlerContext);
-
         }
         channelHandlerContext.fireChannelInactive();
     }

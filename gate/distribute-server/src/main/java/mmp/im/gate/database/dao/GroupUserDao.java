@@ -14,7 +14,6 @@ import java.util.List;
 @Component
 public interface GroupUserDao {
 
-
     @Select("select * from user left join group_user on group_user.groupId = #{groupId} and group_user.userId = user.id")
     List<User> getGroupUserList(String groupId);
 
@@ -27,9 +26,9 @@ public interface GroupUserDao {
 
 
     @Delete("delete from group_user where userId=#{userId} and groupId=#{groupId}")
-    Integer quitGroup(String userId, String groupId);
+    Integer removeGroupUser(String userId, String groupId);
 
-    @Insert("insert into group_user(userId,groupId) values(#{userId},#{groupId})")
-    Integer joinGroup(String userId, String groupId);
+    @Insert("insert into group_user(userId, groupId) values(#{userId}, #{groupId})")
+    Integer addGroupUser(String userId, String groupId);
 
 }

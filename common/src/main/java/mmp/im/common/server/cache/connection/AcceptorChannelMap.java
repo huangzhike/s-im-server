@@ -15,10 +15,8 @@ public class AcceptorChannelMap {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-
     public List<String> getChannelMapKeyList() {
         Set<String> keys = this.handlerContextConcurrentHashMap.keySet();
-
         return new ArrayList<>(keys);
     }
 

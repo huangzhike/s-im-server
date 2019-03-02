@@ -21,8 +21,8 @@ public class MessageHandlerHolder {
 
         classList.forEach(v -> {
             try {
-                IMessageHandler e = (IMessageHandler) v.newInstance();
-                this.messageHandlers.put(e.getHandlerName(), e);
+                IMessageHandler instance = (IMessageHandler) v.newInstance();
+                this.messageHandlers.put(instance.getHandlerName(), instance);
             } catch (Exception e) {
                 LOG.error("newInstance Exception... {}", e);
             }

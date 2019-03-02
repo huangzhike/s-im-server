@@ -12,10 +12,10 @@ public class GateInfo {
     private int port;
     private String serverId;
 
+    private String address;
     private TYPE type;
 
     private boolean status;
-
 
     public enum TYPE {
 

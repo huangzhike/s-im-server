@@ -11,9 +11,13 @@ import java.util.Date;
 public class Info {
 
     private String token;
+
     private String protocolInfo;
+
     private String clientInfo;
+
     private String serverId;
+
     private Date lastLogin = new Date(System.currentTimeMillis());
 
 }

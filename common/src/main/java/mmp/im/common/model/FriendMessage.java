@@ -15,6 +15,6 @@ public class FriendMessage {
     private String to;
     private String type;
     private Date time;
-    private String data;
+    private String content;
     private Boolean read;
 }

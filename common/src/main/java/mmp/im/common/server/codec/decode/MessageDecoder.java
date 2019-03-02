@@ -37,6 +37,8 @@ public class MessageDecoder extends ByteToMessageDecoder {
 
         // 读取消息，读的过程中，readIndex的指针也在移动
         int flag = in.readInt();
+
+
         // 标记头不对
         if (flag != ProtocolHeader.FLAG_NUM) {
             // 重置指针

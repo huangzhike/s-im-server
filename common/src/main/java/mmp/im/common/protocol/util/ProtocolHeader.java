@@ -11,5 +11,4 @@ public abstract class ProtocolHeader {
 
     protected short bodyLength;
 
-
 }
