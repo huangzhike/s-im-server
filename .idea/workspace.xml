@@ -1,46 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a62204e9-1a77-4322-a9c9-c59224636fd7" name="Default Changelist" comment=":art: 试试这个">
+    <list default="true" id="a62204e9-1a77-4322-a9c9-c59224636fd7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/auth.iml" beforeDir="false" afterPath="$PROJECT_DIR$/auth/auth.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/AuthApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/AuthApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/FriendDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/FriendDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/GroupUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/GroupUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/service/XService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/database/service/XService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/web/XController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/web/XController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/tcp-client/tcp-client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/tcp-client/tcp-client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/websocket-client/websocket-client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/websocket-client/websocket-client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/common.iml" beforeDir="false" afterPath="$PROJECT_DIR$/common/common.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/FriendMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/FriendMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GateInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GateInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GroupMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GroupMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GroupReadMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Info.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/NettyMessageHandlerHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/NettyMessageHandlerHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/util/ProtocolHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/util/ProtocolHeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/acknowledge/ResendMessageThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/acknowledge/ResendMessageThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/connection/AcceptorChannelMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/connection/AcceptorChannelMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/handler/ReconnectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/handler/ReconnectHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/listener/ConnectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/listener/ConnectionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/MessageDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/MessageDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/server/AbstractConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/server/AbstractConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/bean/ProtobufToBeanUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/bean/ProtobufToBeanUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/token/JWTUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/token/JWTUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/distribute-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/distribute-server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/dao/FriendDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/dao/FriendDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/dao/GroupUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/dao/GroupUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/service/XService.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/database/service/XService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/tcp-gate.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/tcp-gate.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/websocket-gate/websocket-gate.iml" beforeDir="false" afterPath="$PROJECT_DIR$/gate/websocket-gate/websocket-gate.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/logic-server-a.iml" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/logic-server-a.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/dao/FriendDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/dao/FriendDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/dao/GroupUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/dao/GroupUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/service/XService.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/database/service/XService.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/gate/websocket-gate/target/" />
     <ignored path="$PROJECT_DIR$/logic/logic-server-a/target/" />
@@ -76,8 +38,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+            <state relative-caret-position="483">
+              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
             </state>
           </provider>
         </entry>
@@ -93,8 +55,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>　</find>
-      <find> </find>
+      <find></find>
+      <find></find>
       <find>mmp.im.server</find>
       <find>mmp.im.protocol</find>
       <find>mmp.im.util</find>
@@ -251,6 +213,7 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -408,7 +371,7 @@
       <workItem from="1550753117375" duration="1864000" />
       <workItem from="1551104970059" duration="301000" />
       <workItem from="1551445682589" duration="23000" />
-      <workItem from="1551532171084" duration="597000" />
+      <workItem from="1551532171084" duration="647000" />
     </task>
     <task id="LOCAL-00001" summary="好累。。。打会游戏先。。。">
       <created>1547363948510</created>
@@ -550,11 +513,18 @@
       <option name="project" value="LOCAL" />
       <updated>1551105216294</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Grace真好">
+      <created>1551533038716</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1551533038716</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="174632000" />
+    <option name="totallyTimeSpent" value="174682000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -615,7 +585,8 @@
     <MESSAGE value="明天继续" />
     <MESSAGE value="继续" />
     <MESSAGE value=":art: 试试这个" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: 试试这个" />
+    <MESSAGE value="Grace真好" />
+    <option name="LAST_COMMIT_MESSAGE" value="Grace真好" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/util/SeqGenerator.java" />
@@ -860,8 +831,8 @@
     <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/XService.java" />
     <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+        <state relative-caret-position="483">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
         </state>
       </provider>
     </entry>
