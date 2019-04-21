@@ -3,14 +3,13 @@ package mmp.im.gate.acceptor.handler;
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
-import mmp.im.common.server.cache.connection.AcceptorChannelMap;
+import mmp.im.common.server.connection.AcceptorChannelManager;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.common.util.spring.SpringContextHolder;
-import mmp.im.gate.util.ContextHolder;
+import mmp.im.common.server.util.MessageSender;
+import mmp.im.gate.acceptor.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +43,7 @@ public class ClientLogoutHandler extends CheckHandler implements INettyMessageHa
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            ReferenceCountUtil.release(object);
+
             return;
         }
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
@@ -53,18 +52,18 @@ public class ClientLogoutHandler extends CheckHandler implements INettyMessageHa
         // 不需回复确认
 
         // 移除并关闭
-        ContextHolder.getAcceptorChannelMap().removeChannel(userId);
+        AcceptorChannelManager.getInstance().removeChannel(userId);
 
         // 生成消息待转发
-        ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), ContextHolder.getServeId(), false, message.getClientInfo());
+        ClientStatus m = MessageBuilder.buildClientStatus(message.getUserId(), Config.SERVER_ID , false, message.getClientInfo());
 
         // distribute
-        ContextHolder.getMessageSender().sendToAcceptor(m);
+        MessageSender.sendToAcceptor(m);
 
         // 发的消息待确认
-        ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+        ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
-        ReferenceCountUtil.release(object);
+
     }
 }
 

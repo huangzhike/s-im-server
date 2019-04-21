@@ -29,12 +29,10 @@ public class ConnectionListener implements ChannelFutureListener {
         if (!channelFuture.isSuccess()) {
             final EventLoop eventLoop = channelFuture.channel().eventLoop();
             eventLoop.schedule(() -> {
+                LOG.warn("ChannelFuture reconnect failed");
                 connector.connect();
-                LOG.warn("ChannelFuture operationComplete failed");
-                LOG.warn("ChannelFuture start to reconnect....");
             }, 1L, TimeUnit.SECONDS);
         } else {
-            LOG.warn("ChannelFuture operationComplete");
             LOG.warn("ChannelFuture connect successfully....");
         }
     }

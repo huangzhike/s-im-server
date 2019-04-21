@@ -24,7 +24,7 @@ public class ProtocolParserHolder {
             try {
                 msg = Acknowledge.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -34,7 +34,7 @@ public class ProtocolParserHolder {
             try {
                 msg = Heartbeat.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -43,7 +43,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ClientLogout.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -53,7 +53,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ClientLogin.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -63,7 +63,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ApplyFriend.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -73,7 +73,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ClientStatus.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -82,7 +82,7 @@ public class ProtocolParserHolder {
             try {
                 msg = FriendMessage.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -92,7 +92,7 @@ public class ProtocolParserHolder {
             try {
                 msg = GroupMessage.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -102,7 +102,7 @@ public class ProtocolParserHolder {
             try {
                 msg = Inputting.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -111,7 +111,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ReadMessage.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });
@@ -121,7 +121,7 @@ public class ProtocolParserHolder {
             try {
                 msg = ServerRegister.parseFrom(bytes);
             } catch (Exception e) {
-                LOG.error("parseFrom Exception... {}", e);
+                LOG.error("parseFrom Exception...", e);
             }
             return msg;
         });

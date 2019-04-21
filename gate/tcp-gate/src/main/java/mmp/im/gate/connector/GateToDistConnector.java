@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class GateToDistConnector extends AbstractConnector {
 
-    private GateToDistConnectorHandler gateToDistConnectorHandler;
 
     private int port;
 
@@ -42,7 +41,7 @@ public class GateToDistConnector extends AbstractConnector {
                 // 每隔30s触发一次userEventTriggered的方法，并且指定IdleState的状态位是WRITER_IDLE
                 new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
                 // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
-                this.gateToDistConnectorHandler,
+                new GateToDistConnectorHandler(),
                 new ReconnectHandler(this)
         };
 

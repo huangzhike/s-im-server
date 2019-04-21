@@ -5,10 +5,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.gate.util.ContextHolder;
+import mmp.im.common.server.util.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +38,11 @@ public class BroadcastClientStatusHandler extends CheckHandler implements INetty
         LOG.warn("ClientStatus... {}", message);
 
         // 回复确认收到消息
-        ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
+        MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            ReferenceCountUtil.release(object);
+
             return;
         }
         // 加入已收到的消息
@@ -52,21 +52,21 @@ public class BroadcastClientStatusHandler extends CheckHandler implements INetty
         List<String> idList = message.getBroadcastIdListList();
 
         if (idList == null) {
-            ReferenceCountUtil.release(object);
+
             return;
         }
         // 收到distribute推送，好友广播
         for (String id : idList) {
             ClientStatus m = MessageBuilder.buildTransClientStatus(message);
             // 下发
-            ContextHolder.getMessageSender().sendToConnector(m, id);
+            MessageSender.sendToConnector(m, id);
             // 发的消息待确认
-            ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+            ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
             LOG.warn("m... {}", m);
         }
 
-        ReferenceCountUtil.release(object);
+
     }
 }
 

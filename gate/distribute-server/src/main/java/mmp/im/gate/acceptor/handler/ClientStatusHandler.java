@@ -3,12 +3,12 @@ package mmp.im.gate.acceptor.handler;
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
-import mmp.im.common.model.Info;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.connection.AcceptorChannelManager;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
+import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
         }
 
         // 回复确认收到消息
-        ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
+        MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         // 说明是重复发送，不处理，只回复ACK
         if (this.duplicate(channel, message.getSeq())) {
@@ -50,7 +50,7 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
         channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
         // 推送到logic处理，数据库操作等
-        ContextHolder.getMQProducer().pub(message);
+        ContextHolder.getMQProducer().publish(message);
 
 
         // 在哪个Gate
@@ -66,7 +66,7 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
         LOG.warn("ClientStatus... {}", message);
 
         // 获取所有连接的Gate id列表
-        List<String> serverList = ContextHolder.getAcceptorChannelMap().getChannelMapKeyList();
+        List<String> serverList = AcceptorChannelManager.getInstance().getChannelMapKeyList();
         serverList = Optional.ofNullable(serverList).orElse(new ArrayList<>());
         LOG.warn("serverList... {}", serverList);
 
@@ -95,15 +95,15 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
             // 给该Gate下发的消息
             ClientStatus m = MessageBuilder.buildTransClientStatus(message, serverUserList);
 
-            ContextHolder.getMessageSender().sendToConnector(m, gateId);
+            MessageSender.sendToConnector(m, gateId);
 
             // 发的消息待确认
-            ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+            ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
             LOG.warn("m... {}", m);
         }
 
-        ReferenceCountUtil.release(object);
+
 
     }
 }

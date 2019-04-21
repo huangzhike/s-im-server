@@ -38,7 +38,6 @@ public class MessageDecoder extends ByteToMessageDecoder {
         // 读取消息，读的过程中，readIndex的指针也在移动
         int flag = in.readInt();
 
-
         // 标记头不对
         if (flag != ProtocolHeader.FLAG_NUM) {
             // 重置指针
@@ -88,19 +87,27 @@ public class MessageDecoder extends ByteToMessageDecoder {
         }
 
         // byte[] bytes = new byte[bodyLength];
-        //
         // in.readBytes(bytes);
 
+        MessageLite msg = parse(commandId, array);
 
+        if (msg != null) {
+            out.add(msg);
+            return;
+        }
+        LOG.warn("无法识别，通道关闭");
+
+
+    }
+
+    private MessageLite parse(byte commandId, byte[] array) {
         IProtocolParser protocolParser = protocolParserHolder.get(commandId);
         if (protocolParser != null) {
             MessageLite msg = (MessageLite) protocolParser.parse(array);
-            out.add(msg);
-            LOG.warn("decode finished...");
-        } else {
-            LOG.warn("无法识别，通道关闭");
+            LOG.warn("parse finished...");
+            return msg;
         }
-
+        return null;
 
     }
 

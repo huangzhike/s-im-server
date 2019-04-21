@@ -7,21 +7,21 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.ReferenceCountUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
-import mmp.im.common.server.cache.connection.ConnectorChannelHolder;
+import mmp.im.common.server.connection.ConnectorChannelHolder;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.gate.util.ContextHolder;
+import mmp.im.common.server.util.MessageSender;
+import mmp.im.gate.acceptor.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
-
 
 import static mmp.im.common.protocol.ProtobufMessage.ServerRegister;
 
@@ -32,9 +32,9 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private NettyMessageHandlerHolder NettyMessageHandlerHolder;
+    private NettyMessageHandlerHolder NettyMessageHandlerHolder = new NettyMessageHandlerHolder("mmp.im.gate.connector.handler", INettyMessageHandler.class);
 
-    private ConnectorChannelHolder connectorChannelHolder;
+    private ConnectorChannelHolder connectorChannelHolder = ConnectorChannelHolder.getInstance();
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
@@ -43,11 +43,8 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
         // 处理消息
         if (message instanceof MessageLite) {
             channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
-        } else {
-            // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
-            // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
-            ReferenceCountUtil.release(message);
         }
+        channelHandlerContext.fireChannelRead(message);
 
     }
 
@@ -62,13 +59,13 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
 
         channelHandlerContext.channel().writeAndFlush(MessageBuilder.buildHeartbeat());
 
-        ServerRegister m = MessageBuilder.buildServerRegister(ContextHolder.getServeId(), "mmp");
+        ServerRegister m = MessageBuilder.buildServerRegister(Config.SERVER_ID, "mmp");
 
         // 注册
-        ContextHolder.getMessageSender().reply(channelHandlerContext, m);
+        MessageSender.reply(channelHandlerContext, m);
 
         // 发的消息待确认
-        ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+        ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
         channelHandlerContext.fireChannelActive();
     }
@@ -110,10 +107,10 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
             if (state == IdleState.WRITER_IDLE) {
                 LOG.warn("IdleState.WRITER_IDLE");
                 // 发送心跳
-                ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildHeartbeat());
+                MessageSender.reply(channelHandlerContext, MessageBuilder.buildHeartbeat());
             }
         }
-
+        channelHandlerContext.fireUserEventTriggered(evt);
         super.userEventTriggered(channelHandlerContext, evt);
     }
 

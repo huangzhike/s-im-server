@@ -7,13 +7,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.ReferenceCountUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
-import mmp.im.common.server.cache.connection.AcceptorChannelMap;
+import mmp.im.common.server.connection.AcceptorChannelManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
-import mmp.im.common.server.util.MessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +24,9 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private NettyMessageHandlerHolder NettyMessageHandlerHolder;
+    private NettyMessageHandlerHolder NettyMessageHandlerHolder = new NettyMessageHandlerHolder("mmp.im.gate.acceptor.handler", INettyMessageHandler.class);
 
-    private AcceptorChannelMap acceptorChannelMap;
+    private AcceptorChannelManager acceptorChannelMap = AcceptorChannelManager.getInstance();
 
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
@@ -35,11 +34,8 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
 
         if (message instanceof MessageLite) {
             channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
-        } else {
-            // 从InBound里读取的ByteBuf要手动释放，自己创建的ByteBuf要自己负责释放
-            // write Bytebuf到OutBound时由netty负责释放，不需要手动调用release
-            ReferenceCountUtil.release(message);
         }
+        channelHandlerContext.fireChannelRead(message);
     }
 
 
@@ -60,13 +56,13 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
         LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
         if (channel.isOpen()) {
-            LOG.warn("channelInactive... close remoteAddress... {}" + channel.remoteAddress());
+            LOG.warn("channelInactive... close remoteAddress... {}", channel.remoteAddress());
         }
 
         if (null != channelId) {
             // 移除连接 关闭连接
             ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
-            LOG.warn("channelInactive... remove remoteAddress... {}" + channel.remoteAddress());
+            LOG.warn("channelInactive... remove remoteAddress... {}", channel.remoteAddress());
         }
 
         channelHandlerContext.fireChannelInactive();
@@ -87,6 +83,7 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
                 LOG.error("IdleState.READER_IDLE...");
             }
         }
+        channelHandlerContext.fireUserEventTriggered(evt);
         super.userEventTriggered(channelHandlerContext, evt);
     }
 

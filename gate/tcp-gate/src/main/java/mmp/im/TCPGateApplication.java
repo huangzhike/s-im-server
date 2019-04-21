@@ -1,15 +1,14 @@
 package mmp.im;
 
-import mmp.im.common.server.cache.acknowledge.ResendMessageThread;
+import mmp.im.common.server.message.ResendMessageThread;
 import mmp.im.gate.acceptor.ClientToGateAcceptor;
 import mmp.im.gate.connector.GateToDistConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication(scanBasePackages = "mmp.im")
@@ -17,12 +16,14 @@ public class TCPGateApplication implements CommandLineRunner {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private GateToDistConnector gateToDistConnector;
-    @Autowired
-    private ClientToGateAcceptor clientToGateAcceptor;
-    @Autowired
-    private ResendMessageThread resendMessageThread;
+    @Value("${gateToDistAcceptor.connect.port}")
+    private Integer gateToDistAcceptorPort;
+
+    @Value("${gateToDistConnector.connect.host}")
+    private String gateToDistConnectorHost;
+
+    @Value("${clientToGateAcceptor.bind.port}")
+    private Integer clientToGateAcceptorPort;
 
     public static void main(String[] args) {
         SpringApplication.run(TCPGateApplication.class, args);
@@ -31,11 +32,11 @@ public class TCPGateApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        new Thread(() -> gateToDistConnector.connect()).start();
+        new Thread(() -> new GateToDistConnector(gateToDistConnectorHost, gateToDistAcceptorPort).connect()).start();
 
-        new Thread(() -> clientToGateAcceptor.bind()).start();
+        new Thread(() -> new ClientToGateAcceptor(clientToGateAcceptorPort).bind()).start();
 
-        new Thread(resendMessageThread, "ResendMessageThread").start();
+        new Thread(new ResendMessageThread(), "ResendMessageThread").start();
 
         LOG.warn("Spring Boot 启动完成");
     }

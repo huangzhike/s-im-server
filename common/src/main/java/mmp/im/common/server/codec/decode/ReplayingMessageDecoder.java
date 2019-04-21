@@ -12,7 +12,9 @@ import java.util.List;
 public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDecoder.State> {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
     private byte protocolType;
+
     private short bodyLength;
 
     public ReplayingMessageDecoder() {
@@ -24,7 +26,7 @@ public class ReplayingMessageDecoder extends ReplayingDecoder<ReplayingMessageDe
         switch (this.state()) {
             case FLAG:
                 if (ProtocolHeader.FLAG_NUM != in.readInt()) {
-                    throw new IllegalArgumentException();
+                    throw new Exception();
                 }
                 LOG.warn("checkpoint -> PROTOCOL_TYPE");
                 checkpoint(ReplayingMessageDecoder.State.PROTOCOL_TYPE);

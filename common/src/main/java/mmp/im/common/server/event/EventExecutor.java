@@ -3,6 +3,7 @@ package mmp.im.common.server.event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +11,7 @@ public class EventExecutor implements Runnable {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-    private final LinkedBlockingQueue<Event> eventQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Event> eventQueue = new LinkedBlockingQueue<>();
 
     private IEventListener listener;
 

@@ -4,24 +4,24 @@ import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class MQProducer {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
     // 发送消息失败，下次连接恢复时再发送
     protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
+
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
-    // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-    private final Timer startAgainTimer = new Timer();
+
     protected Connection connection = null;
+
     protected Channel pubChannel = null;
+
     // 队列的生产者，将消息发送至此
     private String publishToQueue;
-    // 防止首次连接失败重试时因TimeTask的异步执行而发生重复执行
-    private boolean startRunning = false;
+
 
     public MQProducer(String mqURI, String publishToQueue) {
 
@@ -30,7 +30,7 @@ public abstract class MQProducer {
         try {
             this.connectionFactory.setUri(mqURI);
         } catch (Exception e) {
-            LOG.error("init MQProducer Exception... {}", e);
+            LOG.error("init MQProducer Exception...", e);
         }
 
         this.connectionFactory.setAutomaticRecoveryEnabled(true);
@@ -38,30 +38,25 @@ public abstract class MQProducer {
         this.connectionFactory.setNetworkRecoveryInterval(5000);
         this.connectionFactory.setRequestedHeartbeat(30);
         this.connectionFactory.setConnectionTimeout(30 * 1000);
+
     }
 
 
-    public void start() {
-        if (this.startRunning) {
-            return;
+    public synchronized void start() {
+
+        Connection conn = this.tryGetConnection();
+        if (conn != null) {
+            this.startPublisher(conn);
+        } else {
+            // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
+            try {
+                Thread.sleep(5 * 1000);
+            } catch (Exception e) {
+                LOG.error(e.getMessage());
+            }
+            new Thread(MQProducer.this::start);
         }
 
-        try {
-            Connection conn = this.tryGetConnection();
-            if (conn != null) {
-                this.startPublisher(conn);
-            } else {
-                // 重新启动
-                this.startAgainTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        MQProducer.this.start();
-                    }
-                }, 5 * 1000);
-            }
-        } finally {
-            this.startRunning = false;
-        }
     }
 
     private Connection tryGetConnection() {
@@ -69,9 +64,7 @@ public abstract class MQProducer {
             try {
                 this.connection = this.connectionFactory.newConnection();
 
-                this.connection.addShutdownListener((shutdownSignalException) -> {
-                    LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason());
-                });
+                this.connection.addShutdownListener((shutdownSignalException) -> LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason()));
 
                 // 自动恢复
                 ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
@@ -86,7 +79,7 @@ public abstract class MQProducer {
                     }
                 });
             } catch (Exception e) {
-                LOG.error("tryGetConnection Exception... {}", e);
+                LOG.error("tryGetConnection Exception...", e);
                 this.connection = null;
             }
         }
@@ -100,7 +93,7 @@ public abstract class MQProducer {
             try {
                 this.pubChannel.close();
             } catch (Exception e) {
-                LOG.error("startPublisher close Exception... {}", e);
+                LOG.error("startPublisher close Exception...", e);
             }
         }
 
@@ -114,7 +107,7 @@ public abstract class MQProducer {
             AMQP.Queue.DeclareOk queueDeclare = pubChannel.queueDeclare(this.publishToQueue, true, false, false, null);
 
         } catch (Exception e) {
-            LOG.error("startPublisher pubChannel Exception... {}", e);
+            LOG.error("startPublisher pubChannel Exception...", e);
         }
 
         while (resendQueue.size() > 0) {
@@ -132,6 +125,7 @@ public abstract class MQProducer {
     // 发布
     public abstract boolean publish(String exchangeName, String routingKey, Object msg);
 
-    public abstract boolean pub(Object msg);
+
+    public abstract boolean publish(Object msg);
 
 }

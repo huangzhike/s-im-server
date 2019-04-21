@@ -3,10 +3,9 @@ package mmp.im.gate.acceptor.handler;
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.gate.util.ContextHolder;
+import mmp.im.common.server.util.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +39,8 @@ public class ReadMessageHandler extends CheckHandler implements INettyMessageHan
         ReadMessage m = MessageBuilder.buildTransReadMessage(message);
 
         // distribute
-        ContextHolder.getMessageSender().sendToAcceptor(m);
+        MessageSender.sendToAcceptor(m);
 
-        ReferenceCountUtil.release(object);
+
     }
 }

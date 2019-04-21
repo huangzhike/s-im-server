@@ -4,10 +4,8 @@ import com.google.protobuf.MessageLite;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
-import mmp.im.common.server.cache.acknowledge.ResendMessageMap;
-import mmp.im.common.server.cache.connection.AcceptorChannelMap;
-import mmp.im.common.server.cache.connection.ConnectorChannelHolder;
+import mmp.im.common.server.connection.AcceptorChannelManager;
+import mmp.im.common.server.connection.ConnectorChannelHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,58 +14,44 @@ import org.slf4j.LoggerFactory;
 @Accessors(chain = true)
 public class MessageSender {
 
+    private static final Logger LOG = LoggerFactory.getLogger(MessageSender.class);
 
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
+    private static AcceptorChannelManager acceptorChannelMap = AcceptorChannelManager.getInstance();
 
-    private ResendMessageMap resendMessageMap;
-
-    private AcceptorChannelMap acceptorChannelMap;
-
-    private ConnectorChannelHolder connectorChannelHolder;
+    private static ConnectorChannelHolder connectorChannelHolder = ConnectorChannelHolder.getInstance();
 
 
-    public void reply(ChannelHandlerContext channelHandlerContext, MessageLite messageLite) {
+    public static void reply(ChannelHandlerContext channelHandlerContext, MessageLite messageLite) {
         channelHandlerContext.channel().writeAndFlush(messageLite);
     }
 
-    public void sendToConnector(MessageLite messageLite, String key) {
+    public static void sendToConnector(MessageLite messageLite, String key) {
 
-        if (this.acceptorChannelMap != null) {
-            ChannelHandlerContext channelHandlerContext = this.acceptorChannelMap.getChannel(key);
+        if (acceptorChannelMap != null) {
+            ChannelHandlerContext channelHandlerContext = acceptorChannelMap.getChannel(key);
             if (channelHandlerContext != null) {
-                this.sendTo(messageLite, channelHandlerContext);
+                sendTo(messageLite, channelHandlerContext);
+            }
+        }
+    }
+
+
+    public static void sendToAcceptor(MessageLite messageLite) {
+
+        if (connectorChannelHolder != null) {
+            ChannelHandlerContext channelHandlerContext = connectorChannelHolder.getChannelHandlerContext();
+            if (channelHandlerContext != null) {
+                sendTo(messageLite, channelHandlerContext);
             }
         }
 
     }
 
-
-    public void sendToAcceptor(MessageLite messageLite) {
-
-        if (this.connectorChannelHolder != null) {
-            ChannelHandlerContext channelHandlerContext = this.connectorChannelHolder.getChannelHandlerContext();
-
-            if (channelHandlerContext != null) {
-                this.sendTo(messageLite, channelHandlerContext);
-            }
-        }
-
-    }
-
-    private void sendTo(MessageLite messageLite, ChannelHandlerContext channelHandlerContext) {
-
+    private static void sendTo(MessageLite messageLite, ChannelHandlerContext channelHandlerContext) {
         // 发送
         channelHandlerContext.channel().writeAndFlush(messageLite);
-
         LOG.warn("sendTo... {}", messageLite);
-
     }
 
-
-    public void toBeAcknowledged(ChannelHandlerContext channelHandlerContext, MessageLite messageLite, Long seq) {
-
-        this.resendMessageMap.put(seq, new ResendMessage(seq, messageLite, channelHandlerContext));
-
-    }
 
 }

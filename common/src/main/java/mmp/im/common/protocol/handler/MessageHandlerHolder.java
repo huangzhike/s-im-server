@@ -24,7 +24,7 @@ public class MessageHandlerHolder {
                 IMessageHandler instance = (IMessageHandler) v.newInstance();
                 this.messageHandlers.put(instance.getHandlerName(), instance);
             } catch (Exception e) {
-                LOG.error("newInstance Exception... {}", e);
+                LOG.error("newInstance Exception...", e);
             }
         });
 
@@ -37,7 +37,9 @@ public class MessageHandlerHolder {
     public void assignHandler(MessageLite message) {
 
         String name = message.getClass().toString();
+
         IMessageHandler handler = this.getMessageHandlers().get(name);
+
         if (handler != null) {
             handler.process(message);
         }

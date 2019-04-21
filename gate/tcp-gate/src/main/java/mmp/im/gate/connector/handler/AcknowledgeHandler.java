@@ -5,8 +5,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.gate.acceptor.handler.CheckHandler;
-import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +31,11 @@ public class AcknowledgeHandler extends CheckHandler implements INettyMessageHan
         Acknowledge message = (Acknowledge) object;
 
         // 移除
-        ContextHolder.getResendMessageMap().remove(message.getAck());
+        ResendMessageManager.getInstance().remove(message.getAck());
 
-        LOG.warn("receive acknowledge... {}", message);
+        LOG.warn("receive resend... {}", message);
 
-        ReferenceCountUtil.release(object);
+
 
     }
 

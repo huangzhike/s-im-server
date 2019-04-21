@@ -4,7 +4,6 @@ package mmp.im.gate.acceptor.handler;
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.gate.util.ContextHolder;
 import org.slf4j.Logger;
@@ -34,9 +33,9 @@ public class ReadMessageHandler extends CheckHandler implements INettyMessageHan
         ReadMessage message = (ReadMessage) object;
 
         // 推送到logic处理，数据库操作等
-        ContextHolder.getMQProducer().pub(message);
+        ContextHolder.getMQProducer().publish(message);
 
-        ReferenceCountUtil.release(object);
+
     }
 }
 

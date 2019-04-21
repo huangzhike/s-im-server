@@ -2,11 +2,8 @@ package im.database.service;
 
 
 import mmp.im.common.model.FriendMessage;
-import mmp.im.common.util.session.SessionUtil;
 import mmp.im.common.util.redis.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import mmp.im.common.util.session.SessionUtil;
 
 import java.util.Set;
 

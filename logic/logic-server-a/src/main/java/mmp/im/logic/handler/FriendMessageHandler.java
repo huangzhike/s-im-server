@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
 public class FriendMessageHandler implements IMessageHandler {
+
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private final String name = FriendMessage.getDefaultInstance().getClass().toString();

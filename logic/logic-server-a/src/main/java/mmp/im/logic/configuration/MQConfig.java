@@ -4,7 +4,6 @@ package mmp.im.logic.configuration;
 import com.google.protobuf.MessageLite;
 import mmp.im.common.protocol.handler.IMessageHandler;
 import mmp.im.common.protocol.handler.MessageHandlerHolder;
-import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.protocol.parser.IProtocolParser;
 import mmp.im.common.protocol.parser.ProtocolParserHolder;
 import mmp.im.common.util.mq.MQConsumer;

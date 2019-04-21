@@ -37,8 +37,7 @@ public abstract class AbstractAcceptor extends AbstractServer {
                 .channel(NioServerSocketChannel.class);
         /*
          * 池化的directBuffer
-         * 一般高性能的场景下使用的堆外内存，也就是直接内存，好处就是减少内存的拷贝，和上下文的切换
-         * 缺点是容易发生堆外内存OOM
+         * 堆外内存，直接内存，减少内存的拷贝，和上下文的切换，但是可能发生堆外内存OOM
          */
         this.serverBootstrap.childOption(ChannelOption.ALLOCATOR, new PooledByteBufAllocator(PlatformDependent.directBufferPreferred()));
 

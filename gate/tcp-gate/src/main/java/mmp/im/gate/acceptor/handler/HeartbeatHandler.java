@@ -2,7 +2,6 @@ package mmp.im.gate.acceptor.handler;
 
 import com.google.protobuf.MessageLite;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ public class HeartbeatHandler implements INettyMessageHandler {
 
         LOG.warn("Heartbeat... {}", message);
 
-        ReferenceCountUtil.release(object);
+
     }
 }
 

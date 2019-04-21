@@ -19,12 +19,9 @@ import java.util.concurrent.TimeUnit;
 @Accessors(chain = true)
 public class ClientToGateAcceptor extends AbstractAcceptor {
 
-    private String serveId;
-
 
     private int port;
 
-    private ClientToGateAcceptorHandler acceptorHandler;
 
     public ClientToGateAcceptor(Integer port) {
         this.port = port;
@@ -39,7 +36,7 @@ public class ClientToGateAcceptor extends AbstractAcceptor {
                 // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
                 // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
                 new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS),
-                this.acceptorHandler,
+                new ClientToGateAcceptorHandler(),
         };
 
         this.serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
@@ -56,7 +53,7 @@ public class ClientToGateAcceptor extends AbstractAcceptor {
             future.channel().closeFuture().sync();
             LOG.warn("future...");
         } catch (Exception e) {
-            LOG.error("bind Exception... {}", e);
+            LOG.error("bind Exception...", e);
         } finally {
             this.bossEventLoopGroup.shutdownGracefully().awaitUninterruptibly();
             this.workerEventLoopGroup.shutdownGracefully().awaitUninterruptibly();

@@ -5,10 +5,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
-import mmp.im.common.server.cache.acknowledge.ResendMessage;
+import mmp.im.common.server.message.ResendMessageManager;
 import mmp.im.common.server.util.AttributeKeyHolder;
 import mmp.im.common.server.util.MessageBuilder;
-import mmp.im.gate.util.ContextHolder;
+import mmp.im.common.server.util.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +35,11 @@ public class BroadcastFriendMessageHandler extends CheckHandler implements INett
         LOG.warn("FriendMessage... {}", message);
 
         // 回复确认收到消息
-        ContextHolder.getMessageSender().reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
+        MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         if (this.duplicate(channel, message.getSeq())) {
             LOG.warn("重复消息");
-            ReferenceCountUtil.release(object);
+
             return;
         }
         // 加入已收到的消息
@@ -47,13 +47,13 @@ public class BroadcastFriendMessageHandler extends CheckHandler implements INett
 
         FriendMessage m = MessageBuilder.buildTransFriendMessage(message);
         // 下发
-        ContextHolder.getMessageSender().sendToConnector(m, message.getTo());
+        MessageSender.sendToConnector(m, message.getTo());
         // 发的消息待确认
-        ContextHolder.getResendMessageMap().put(m.getSeq(), new ResendMessage(m.getSeq(), m, channelHandlerContext));
+        ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
         LOG.warn("m... {}", m);
 
-        ReferenceCountUtil.release(object);
+
 
     }
 }

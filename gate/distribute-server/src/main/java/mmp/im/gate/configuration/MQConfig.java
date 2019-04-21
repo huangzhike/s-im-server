@@ -34,20 +34,18 @@ public class MQConfig {
                 LOG.warn("publish msg... {}", msg);
                 try {
                     byte[] contents = encode((MessageLite) msg);
-
                     this.pubChannel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, contents);
-
                     LOG.warn("publish byte... {}", contents);
                     ok = true;
                 } catch (Exception e) {
-                    LOG.error("publish Exception... {}", e);
+                    LOG.error("publish Exception...", e);
                     resendQueue.add(new ResendElement(exchangeName, routingKey, msg));
                 }
                 return ok;
             }
 
-            @Override
-            public boolean pub(Object msg) {
+
+            public boolean publish(Object msg) {
                 return this.publish("", "", msg);
             }
 
