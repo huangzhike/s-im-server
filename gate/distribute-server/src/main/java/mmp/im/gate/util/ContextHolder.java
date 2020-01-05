@@ -8,8 +8,6 @@ import mmp.im.gate.database.service.XService;
 
 public class ContextHolder {
 
-
-
     public static MQProducer getMQProducer() {
         return SpringContextHolder.getBean(MQProducer.class);
     }

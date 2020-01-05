@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.Inputting;
 
-public class InputtingHandler extends CheckHandler implements INettyMessageHandler {
+public class InputtingHandler   implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -28,13 +28,9 @@ public class InputtingHandler extends CheckHandler implements INettyMessageHandl
 
         Channel channel = channelHandlerContext.channel();
 
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
-
         Inputting message = (Inputting) object;
 
-        LOG.warn("ReadMessage... {}", message);
+        LOG.warn("Inputting {}", message);
 
         // 生成消息待转发
         Inputting m = MessageBuilder.buildTransInputting(message);

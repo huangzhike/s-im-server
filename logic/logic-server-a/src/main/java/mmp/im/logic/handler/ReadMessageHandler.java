@@ -21,6 +21,7 @@ public class ReadMessageHandler implements IMessageHandler {
 
     @Override
     public void process(MessageLite object) {
+
         // 已读消息
         ReadMessage message = (ReadMessage) object;
 

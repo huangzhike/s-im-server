@@ -24,7 +24,7 @@ public class HeartbeatHandler implements INettyMessageHandler {
 
         Heartbeat message = (Heartbeat) object;
 
-        LOG.warn("Heartbeat... {}", message);
+        LOG.warn("Heartbeat {}", message);
 
 
     }

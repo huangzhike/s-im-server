@@ -38,9 +38,7 @@ public class GateToDistConnector extends AbstractConnector {
         ChannelHandler[] channelHandlers = new ChannelHandler[]{
                 new MessageDecoder(),
                 new MessageEncoder(),
-                // 每隔30s触发一次userEventTriggered的方法，并且指定IdleState的状态位是WRITER_IDLE
                 new IdleStateHandler(0, 30, 0, TimeUnit.SECONDS),
-                // 实现userEventTriggered方法，并在state是WRITER_IDLE的时候发送一个心跳包到sever端
                 new GateToDistConnectorHandler(),
                 new ReconnectHandler(this)
         };
@@ -53,19 +51,19 @@ public class GateToDistConnector extends AbstractConnector {
                         channel.pipeline().addLast(channelHandlers);
                     }
                 });
-                LOG.warn("connect... host... {} port... {}", host, port);
+                LOG.warn("connect... host {} ...  port {} ... ", host, port);
                 // 连接（服务端bind，客户端connect）
                 // future = this.bootstrap.connect(host, port).sync();
                 future = this.bootstrap.connect(host, port);
-                LOG.warn("connect... addListener... ");
+
                 future.addListener(new ConnectionListener(this));
             }
-            // 当链路关闭
+            // 连接关闭
             LOG.warn("closeFuture... sync... ");
             future.channel().closeFuture().sync();
 
         } catch (Exception e) {
-            LOG.error("connect Exception... {}", e);
+            LOG.error(e.getLocalizedMessage());
         } finally {
             // this.workerEventLoopGroup.shutdownGracefully();
             // LOG.warn("shutdownGracefully... ");

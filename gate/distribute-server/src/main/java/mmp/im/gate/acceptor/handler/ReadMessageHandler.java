@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.ReadMessage;
 
-public class ReadMessageHandler extends CheckHandler implements INettyMessageHandler {
+public class ReadMessageHandler   implements INettyMessageHandler {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
@@ -26,9 +26,7 @@ public class ReadMessageHandler extends CheckHandler implements INettyMessageHan
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
+
 
         ReadMessage message = (ReadMessage) object;
 

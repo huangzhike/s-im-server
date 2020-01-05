@@ -14,7 +14,7 @@ import java.util.Set;
 
 import static mmp.im.common.protocol.ProtobufMessage.Inputting;
 
-public class InputtingHandler extends CheckHandler implements INettyMessageHandler {
+public class InputtingHandler   implements INettyMessageHandler {
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 
@@ -29,9 +29,6 @@ public class InputtingHandler extends CheckHandler implements INettyMessageHandl
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
 
         Inputting message = (Inputting) object;
 

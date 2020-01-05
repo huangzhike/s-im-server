@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.Inputting;
 
-public class InputtingHandler extends CheckHandler implements INettyMessageHandler {
+public class InputtingHandler   implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -29,10 +29,9 @@ public class InputtingHandler extends CheckHandler implements INettyMessageHandl
 
         Inputting message = (Inputting) object;
 
-        LOG.warn("Inputting... {}", message);
+        LOG.warn("Inputting {}", message);
 
         MessageSender.sendToConnector(message, message.getTo());
-
 
     }
 }

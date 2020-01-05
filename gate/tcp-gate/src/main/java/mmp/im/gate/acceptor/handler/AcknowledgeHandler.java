@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import static mmp.im.common.protocol.ProtobufMessage.Acknowledge;
 
-public class AcknowledgeHandler extends CheckHandler implements INettyMessageHandler {
+public class AcknowledgeHandler implements INettyMessageHandler {
 
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -24,18 +24,15 @@ public class AcknowledgeHandler extends CheckHandler implements INettyMessageHan
 
     @Override
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
+
         Channel channel = channelHandlerContext.channel();
 
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
 
         Acknowledge message = (Acknowledge) object;
         // 移除待重发消息
         ResendMessageManager.getInstance().remove(message.getAck());
 
-        LOG.warn("receive resend... {}", message);
-
+        LOG.warn("Acknowledge {}", message);
 
 
     }

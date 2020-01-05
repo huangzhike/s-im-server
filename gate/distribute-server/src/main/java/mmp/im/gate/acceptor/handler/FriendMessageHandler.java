@@ -5,7 +5,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.seq.SeqGenerator;
@@ -14,12 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
-public class FriendMessageHandler extends CheckHandler implements INettyMessageHandler {
+public class FriendMessageHandler   implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -35,22 +36,21 @@ public class FriendMessageHandler extends CheckHandler implements INettyMessageH
     public void process(ChannelHandlerContext channelHandlerContext, MessageLite object) {
 
         Channel channel = channelHandlerContext.channel();
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
 
         FriendMessage message = (FriendMessage) object;
         // 回复确认收到消息
         MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         // 说明是重复发送，不处理，只回复ACK
-        if (this.duplicate(channel, message.getSeq())) {
-            LOG.warn("重复消息");
+        Map<Long, Long> receivedCache = channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).get();
 
+        if (receivedCache.containsKey(message.getSeq())) {
+            LOG.warn("repeat");
             return;
         }
-        // 已收到消息列表
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+
+        // 加入已收到的消息
+        receivedCache.putIfAbsent(message.getSeq(), message.getSeq());
 
         // 推送到logic处理，数据库操作等
         ContextHolder.getMQProducer().publish(message);

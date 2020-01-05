@@ -28,8 +28,9 @@ public class FriendMessageHandler implements IMessageHandler {
         LOG.warn("FriendMessage... {}", message);
         // 持久化
         ContextHolder.getFriendMessageService().saveFriendMessage(ProtobufToBeanUtil.toBean(message));
+
         // 更新最近会话
-        ContextHolder.getSessionService().addUserRecentFriendSession(message.getFrom(),message.getTo());
+        ContextHolder.getSessionService().addUserRecentFriendSession(message.getFrom(), message.getTo());
     }
 }
 

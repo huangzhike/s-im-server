@@ -94,7 +94,7 @@ message Inputting {
     string to = 2;
 }
 
-// 发起好友申请
+// 发起好友申请，废弃，使用HTTP
 message ApplyFriend {
     int64 seq = 1;
     string from = 2;

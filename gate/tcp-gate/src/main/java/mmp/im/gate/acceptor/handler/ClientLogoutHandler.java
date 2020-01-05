@@ -6,17 +6,19 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.connection.AcceptorChannelManager;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
-import mmp.im.gate.acceptor.Config;
+import mmp.im.gate.connector.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 import static mmp.im.common.protocol.ProtobufMessage.ClientLogout;
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-public class ClientLogoutHandler extends CheckHandler implements INettyMessageHandler {
+public class ClientLogoutHandler  implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -33,22 +35,22 @@ public class ClientLogoutHandler extends CheckHandler implements INettyMessageHa
 
         Channel channel = channelHandlerContext.channel();
 
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
 
         ClientLogout message = (ClientLogout) object;
 
         LOG.warn("ClientLogout... {}", message);
 
-        if (this.duplicate(channel, message.getSeq())) {
-            LOG.warn("重复消息");
+        Map<Long, Long> receivedCache = channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).get();
 
+        if (receivedCache.containsKey(message.getSeq())) {
+            LOG.warn("repeat");
             return;
         }
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
 
-        String userId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        // 加入已收到的消息
+        receivedCache.putIfAbsent(message.getSeq(), message.getSeq());
+
+        String userId = channel.attr(AttributeKeyConstant.CHANNEL_ID).get();
         // 不需回复确认
 
         // 移除并关闭

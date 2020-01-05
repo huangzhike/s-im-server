@@ -63,8 +63,6 @@ public class ClientToGateAcceptor extends AbstractAcceptor {
                         pipeline.addLast(new WebsocketMessageDecoder());
                         pipeline.addLast(new WebsocketMessageEncoder());
 
-                        // 60s没有read事件，触发userEventTriggered事件，指定IdleState的类型为READER_IDLE
-                        // client每隔30s发送一个心跳包，如果60s都没有收到心跳，说明链路发生了问题
                         pipeline.addLast(new IdleStateHandler(60, 0, 0, TimeUnit.SECONDS));
 
 

@@ -12,10 +12,15 @@ import lombok.experimental.Accessors;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.server.connection.AcceptorChannelManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static mmp.im.common.protocol.ProtobufMessage.ServerRegister;
 
 @Data
 @Accessors(chain = true)
@@ -28,12 +33,27 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     private AcceptorChannelManager acceptorChannelMap = AcceptorChannelManager.getInstance();
 
+    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
+
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
-        Channel channel = channelHandlerContext.channel();
-
+        // Channel channel = channelHandlerContext.channel();
         if (message instanceof MessageLite) {
-            channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
+
+            Channel channel = channelHandlerContext.channel();
+
+            String userId = channel.attr(AttributeKeyConstant.CHANNEL_ID).get();
+
+            String name = message.getClass().toString();
+
+            if (!ServerRegister.getDefaultInstance().getClass().toString().equals(name) && userId == null) {
+                LOG.warn("not login yet");
+                return;
+            }
+
+            executorService.submit(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
+            // channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
         }
         channelHandlerContext.fireChannelRead(message);
     }
@@ -41,7 +61,12 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext channelHandlerContext) throws Exception {
-        LOG.warn("channelActive... remoteAddress... {}", channelHandlerContext.channel().remoteAddress());
+
+        Channel channel = channelHandlerContext.channel();
+        // 维护一个已接收的消息列表 避免重传造成重复处理
+        channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).set(new ConcurrentHashMap<>());
+
+        LOG.warn("channelActive remoteAddress {}", channelHandlerContext.channel().remoteAddress());
 
         channelHandlerContext.fireChannelActive();
     }
@@ -51,7 +76,7 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
         Channel channel = channelHandlerContext.channel();
 
         // GateId
-        String channelId = channel.attr(AttributeKeyHolder.CHANNEL_ID).get();
+        String channelId = channel.attr(AttributeKeyConstant.CHANNEL_ID).get();
 
         LOG.warn("channelInactive... channelId... {} remoteAddress... {}", channelId, channel.remoteAddress());
 
@@ -64,7 +89,7 @@ public class GateToDistAcceptorHandler extends ChannelInboundHandlerAdapter {
             ChannelHandlerContext context = acceptorChannelMap.removeChannel(channelId);
             LOG.warn("channelInactive... remove remoteAddress... {}", channel.remoteAddress());
         }
-
+        channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).set(null);
         channelHandlerContext.fireChannelInactive();
 
     }

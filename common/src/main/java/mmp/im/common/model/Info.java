@@ -18,6 +18,6 @@ public class Info {
 
     private String serverId;
 
-    private Date lastLogin = new Date(System.currentTimeMillis());
+    private Date lastLogin = new Date();
 
 }

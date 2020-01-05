@@ -30,19 +30,19 @@ public class SessionService {
 
     public Set<String> getUserRecentFriendSession(String userId) {
 
-        return redisUtil.getSet(RECENT_FRIEND_SESSION_DATABASE + userId,String.class);
+        return redisUtil.getSet(RECENT_FRIEND_SESSION_DATABASE + userId, String.class);
 
     }
 
     public void addUserRecentGroupSession(String userId, String groupId) {
 
-        redisUtil.addSetValue(RECENT_GROUP_SESSION_DATABASE + userId,groupId);
+        redisUtil.addSetValue(RECENT_GROUP_SESSION_DATABASE + userId, groupId);
 
     }
 
     public Set<String> getUserRecentGroupSession(String userId) {
 
-        return redisUtil.getSet(RECENT_GROUP_SESSION_DATABASE + userId,String.class);
+        return redisUtil.getSet(RECENT_GROUP_SESSION_DATABASE + userId, String.class);
 
     }
 

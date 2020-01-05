@@ -24,28 +24,30 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     private int port;
 
-
     @Bean
     public RedisUtil redisUtil() {
         RedisUtil redisUtil = new RedisUtil();
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-
         JedisPool jedisPool = new JedisPool(jedisPoolConfig, host, port);
         redisUtil.setJedisPool(jedisPool);
         return redisUtil;
     }
+
     @Bean
     public FriendMessageService friendMessageService(RedisUtil redisUtil) {
         return new FriendMessageService(redisUtil);
     }
+
     @Bean
     public GroupMessageService groupMessageService(RedisUtil redisUtil) {
         return new GroupMessageService(redisUtil);
     }
+
     @Bean
     public SessionService sessionService(RedisUtil redisUtil) {
         return new SessionService(redisUtil);
     }
+
     @Bean
     public ServerService serverService(RedisUtil redisUtil) {
         return new ServerService(redisUtil);

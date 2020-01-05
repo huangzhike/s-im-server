@@ -3,18 +3,19 @@ package mmp.im.gate.connector.handler;
 import com.google.protobuf.MessageLite;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.ReferenceCountUtil;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
+
 import static mmp.im.common.protocol.ProtobufMessage.FriendMessage;
 
-public class BroadcastFriendMessageHandler extends CheckHandler implements INettyMessageHandler {
+public class BroadcastFriendMessageHandler  implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -37,13 +38,15 @@ public class BroadcastFriendMessageHandler extends CheckHandler implements INett
         // 回复确认收到消息
         MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
-        if (this.duplicate(channel, message.getSeq())) {
-            LOG.warn("重复消息");
+        Map<Long, Long> receivedCache = channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).get();
 
+        if (receivedCache.containsKey(message.getSeq())) {
+            LOG.warn("repeat");
             return;
         }
+
         // 加入已收到的消息
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+        receivedCache.putIfAbsent(message.getSeq(), message.getSeq());
 
         FriendMessage m = MessageBuilder.buildTransFriendMessage(message);
         // 下发
@@ -52,7 +55,6 @@ public class BroadcastFriendMessageHandler extends CheckHandler implements INett
         ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
 
         LOG.warn("m... {}", m);
-
 
 
     }

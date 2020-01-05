@@ -14,9 +14,10 @@ public abstract class MQConsumer {
 
     protected Connection connection = null;
 
+    protected Channel consumeChannel = null;
+
     // 队列的消费者，从其中读取消息
     private String consumeFromQueue;
-
 
     public MQConsumer(String mqURI, String consumeFromQueue) {
 
@@ -25,7 +26,7 @@ public abstract class MQConsumer {
         try {
             this.connectionFactory.setUri(mqURI);
         } catch (Exception e) {
-            LOG.error("init MQConsumer Exception...", e);
+            LOG.error(e.getLocalizedMessage());
         }
 
         this.connectionFactory.setAutomaticRecoveryEnabled(true);
@@ -38,84 +39,71 @@ public abstract class MQConsumer {
 
     public synchronized void start() {
 
-        Connection conn = this.tryGetConnection();
-        if (conn != null) {
+        try {
+            Connection conn = this.tryGetConnection();
             this.startProcessor(conn);
-        } else {
+        } catch (Exception e) {
+            LOG.error(e.getLocalizedMessage());
             // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-            try {
-                Thread.sleep(5 * 1000);
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
+            this.sleep(5 * 1000);
             new Thread(MQConsumer.this::start);
         }
+        LOG.warn("start...");
+
     }
 
-    private Connection tryGetConnection() {
+    private Connection tryGetConnection() throws Exception {
         if (this.connection == null) {
-            try {
-                this.connection = this.connectionFactory.newConnection();
+            this.connection = this.connectionFactory.newConnection();
 
-                this.connection.addShutdownListener((shutdownSignalException) -> LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason()));
+            this.connection.addShutdownListener((shutdownSignalException) -> LOG.warn(shutdownSignalException.getLocalizedMessage()));
 
-                // 自动恢复
-                ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
-                    @Override
-                    public void handleRecoveryStarted(Recoverable recoverable) {
-                        LOG.warn("handleRecoveryStarted...");
-                    }
+            // 自动恢复
+            ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
+                @Override
+                public void handleRecoveryStarted(Recoverable recoverable) {
+                    LOG.warn("handleRecoveryStarted...");
+                }
 
-                    @Override
-                    public void handleRecovery(Recoverable recoverable) {
-                        MQConsumer.this.start();
-                    }
-                });
-            } catch (Exception e) {
-                LOG.error("tryGetConnection Exception...", e);
-                this.connection = null;
-            }
+                @Override
+                public void handleRecovery(Recoverable recoverable) {
+                    MQConsumer.this.start();
+                }
+            });
         }
 
         return this.connection;
     }
 
-    private void startProcessor(Connection connection) {
+    private void startProcessor(Connection connection) throws Exception {
 
-        if (this.consumeFromQueue == null || this.consumeFromQueue.equals("")) {
-            return;
-        }
+        this.consumeChannel = connection.createChannel();
 
-        try {
-            final Channel consumeChannel = connection.createChannel();
+        // 取消自动ack
+        this.consumeChannel.basicConsume(this.consumeFromQueue, false, new DefaultConsumer(this.consumeChannel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-            // 取消自动ack
-            consumeChannel.basicConsume(this.consumeFromQueue, false, new DefaultConsumer(consumeChannel) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                boolean ok = MQConsumer.this.process(body);
 
-                    boolean ok = MQConsumer.this.process(body);
-                    // 返回false则消息将被MQ服务器重新放入队列
-                    if (ok) {
-                        consumeChannel.basicAck(envelope.getDeliveryTag(), false);
-                    } else {
-                        consumeChannel.basicReject(envelope.getDeliveryTag(), true);
-                    }
+                if (ok) {
+                    consumeChannel.basicAck(envelope.getDeliveryTag(), false);
                 }
-            });
-
-            LOG.warn("startProcessor...");
-
-        } catch (Exception e) {
-            LOG.error("startProcessor Exception...", e);
-
-            try {
-                Thread.sleep(5 * 1000);
-            } catch (Exception ee) {
-                LOG.error(ee.getMessage());
+                // 重新放入队列
+                else {
+                    consumeChannel.basicReject(envelope.getDeliveryTag(), true);
+                }
             }
-            new Thread(() -> startProcessor(MQConsumer.this.connection));
+        });
 
+
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            LOG.error(e.getLocalizedMessage());
         }
     }
 

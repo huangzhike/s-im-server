@@ -28,6 +28,7 @@ public class GroupMessageHandler implements IMessageHandler {
         LOG.warn("GroupMessage... {}", message);
         // 持久化
         ContextHolder.getGroupMessageService().saveGroupMessage(ProtobufToBeanUtil.toBean(message));
+
         // 更新最近会话
         ContextHolder.getSessionService().addUserRecentGroupSession(message.getFrom(), message.getTo());
     }

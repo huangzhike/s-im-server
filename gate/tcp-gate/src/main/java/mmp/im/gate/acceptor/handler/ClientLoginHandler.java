@@ -6,21 +6,21 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.connection.AcceptorChannelManager;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.common.util.token.JWTUtil;
-import mmp.im.gate.acceptor.Config;
+import mmp.im.gate.connector.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import static mmp.im.common.protocol.ProtobufMessage.ClientLogin;
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
 
-public class ClientLoginHandler extends CheckHandler implements INettyMessageHandler {
+public class ClientLoginHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -36,7 +36,7 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
 
         ClientLogin message = (ClientLogin) object;
 
-        LOG.warn("ClientLogin... {}", message);
+        LOG.warn("ClientLogin {}", message);
         // 回复确认收到消息
         MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
@@ -44,26 +44,25 @@ public class ClientLoginHandler extends CheckHandler implements INettyMessageHan
 
         String userId = (String) JWTUtil.parseJWT(message.getToken()).get("id");
 
-        LOG.warn("用户登录... {}", userId);
+        LOG.warn("login {}", userId);
 
-        // 已登录
-        if (this.login(channel)) {
-
-            LOG.warn("已登录");
+        String uId = channel.attr(AttributeKeyConstant.CHANNEL_ID).get();
+        if (uId != null) {
+            LOG.warn("already login");
             return;
         }
 
-        channel.attr(AttributeKeyHolder.CHANNEL_ID).set(userId);
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
+        channel.attr(AttributeKeyConstant.CHANNEL_ID).set(userId);
 
-        // 说明是重复发送，不处理，只回复ACK
-        if (this.duplicate(channel, message.getSeq())) {
-            LOG.warn("重复消息");
+        Map<Long, Long> receivedCache = channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).get();
 
+        if (receivedCache.containsKey(message.getSeq())) {
+            LOG.warn("repeat");
             return;
         }
 
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+        // 加入已收到的消息
+        receivedCache.putIfAbsent(message.getSeq(), message.getSeq());
 
         // 添加进channel map
         AcceptorChannelManager.getInstance().addChannel(userId, channelHandlerContext);

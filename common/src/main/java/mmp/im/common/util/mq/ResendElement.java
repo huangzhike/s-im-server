@@ -16,10 +16,14 @@ public class ResendElement {
 
     private Object msg;
 
-    public ResendElement(String exchangeName, String routingKey, Object msg) {
-        this.exchangeName = exchangeName;
-        this.routingKey = routingKey;
+    public ResendElement(Object msg) {
+
         this.msg = msg;
+    }
+
+
+    public ResendElement(String exchangeName, String routingKey, Object msg) {
+        this.exchangeName = exchangeName; this.routingKey = routingKey; this.msg = msg;
     }
 
 }

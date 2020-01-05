@@ -1,34 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a62204e9-1a77-4322-a9c9-c59224636fd7" name="Default Changelist" comment="继续">
+    <list default="true" id="a62204e9-1a77-4322-a9c9-c59224636fd7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptorAuthHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_47.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_47.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_4_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_classmate_1_4_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_9_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_9_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_9_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_9_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_9_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_9_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_9_7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_9_7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jsqlparser_jsqlparser_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jsqlparser_jsqlparser_1_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_5_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_5_1_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_autoconfigure_1_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_autoconfigure_1_2_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_starter_1_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_pagehelper_pagehelper_spring_boot_starter_1_2_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_api_grpc_proto_google_common_protos_1_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_api_grpc_proto_google_common_protos_1_0_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_auth_google_auth_library_credentials_0_9_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_auth_google_auth_library_credentials_0_9_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_findbugs_jsr305_3_0_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_errorprone_error_prone_annotations_2_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_errorprone_error_prone_annotations_2_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_26_0_android.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_26_0_android.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_j2objc_j2objc_annotations_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_j2objc_j2objc_annotations_1_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_nano_protobuf_javanano_3_0_0_alpha_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_nano_protobuf_javanano_3_0_0_alpha_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_5_4_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_rabbitmq_amqp_client_5_4_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_3_12_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp3_okhttp_3_12_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp_okhttp_2_5_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okhttp_okhttp_2_5_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_1_15_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_squareup_okio_okio_1_15_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_zaxxer_HikariCP_3_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_zaxxer_HikariCP_3_2_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_all_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_all_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_auth_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_auth_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_context_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_context_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_core_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_core_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_netty_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_netty_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_okhttp_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_okhttp_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_lite_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_lite_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_nano_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_protobuf_nano_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_stub_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_stub_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_testing_1_17_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_grpc_grpc_testing_1_17_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_1_32_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_all_4_1_32_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_buffer_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_buffer_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http2_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http2_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_http_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_socks_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_codec_socks_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_common_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_common_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_proxy_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_handler_proxy_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_resolver_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_resolver_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_4_1_31_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_netty_netty_transport_4_1_31_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_opencensus_opencensus_api_0_17_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_opencensus_opencensus_api_0_17_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_opencensus_opencensus_contrib_grpc_metrics_0_17_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_opencensus_opencensus_contrib_grpc_metrics_0_17_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_api_1_5_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_api_1_5_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_collectionschema_1_5_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_collectionschema_1_5_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_core_1_5_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_core_1_5_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_runtime_1_5_9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_protostuff_protostuff_runtime_1_5_9.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_annotation_javax_annotation_api_1_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_validation_validation_api_2_0_1_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_6_0_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_6_0_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_9_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_9_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_agent_1_9_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_bytebuddy_byte_buddy_agent_1_9_5.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_6_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_6_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_11_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_11_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_11_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_11_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_13.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_13.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_13.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_13.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_9_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_aspectj_aspectjweaver_1_9_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_checkerframework_checker_compat_qual_2_5_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_checkerframework_checker_compat_qual_2_5_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_mojo_animal_sniffer_annotations_1_17.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_codehaus_mojo_animal_sniffer_annotations_1_17.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_0_13_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_0_13_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_2_Final.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_3_2_Final.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_2_23_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_core_2_23_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_3_4_6.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_mybatis_spring_1_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_autoconfigure_1_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_autoconfigure_1_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_starter_1_3_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mybatis_spring_boot_mybatis_spring_boot_starter_1_3_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_22.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_16_22.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_configuration_processor_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_configuration_processor_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_devtools_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_aop_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jdbc_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_jdbc_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_tomcat_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_2_1_1_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_web_2_1_1_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_aop_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_context_support_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_expression_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jcl_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_web_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_1_3_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_webmvc_5_1_3_RELEASE.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_23.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_yaml_snakeyaml_1_23.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/AuthApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/AuthApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/auth.iml" beforeDir="false" afterPath="$PROJECT_DIR$/auth/auth.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/configuration/BeanConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/java/mmp/im/auth/configuration/BeanConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/auth/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/IMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/IMessageHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/NettyMessageHandlerHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/NettyMessageHandlerHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/ProtocolParserHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/ProtocolParserHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/acknowledge/ResendMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/acknowledge/ResendMessageMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/acknowledge/ResendMessageThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/connection/AcceptorChannelMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/cache/connection/ConnectorChannelHolder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Info.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/listener/ConnectionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/listener/ConnectionListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/MessageDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/MessageDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/ReplayingMessageDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/ReplayingMessageDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/WebsocketMessageDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/WebsocketMessageDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/event/EventExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/event/EventExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/server/AbstractAcceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/server/AbstractAcceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/util/AttributeKeyHolder.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/util/MessageSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/util/MessageSender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/MQConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/MQConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/MQProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/MQProducer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/src/main/java/im/database/service/FriendMessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/src/main/java/im/database/service/FriendMessageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/DistributeApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/DistributeApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/ResendElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/mq/ResendElement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/seq/SeqGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/seq/SeqGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/proto/ProtobufMessage.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/proto/ProtobufMessage.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/src/main/java/im/database/service/SessionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/src/main/java/im/database/service/SessionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/GateToDistAcceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/GateToDistAcceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/GateToDistAcceptorHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/GateToDistAcceptorHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/AcknowledgeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/AcknowledgeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/CheckHandler.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ClientStatusHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ClientStatusHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/GroupMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/GroupMessageHandler.java" afterDir="false" />
@@ -36,15 +138,13 @@
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/InputtingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/InputtingHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ReadMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ReadMessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ServerRegisterHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/acceptor/handler/ServerRegisterHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/configuration/AcceptorConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/configuration/MQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/configuration/MQConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/configuration/MessageSenderConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/configuration/ResendMessageConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/util/ContextHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/java/mmp/im/gate/util/ContextHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/TCPGateApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/TCPGateApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/distribute-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gate/distribute-server/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptorHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptorHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/AcknowledgeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/AcknowledgeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/CheckHandler.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLoginHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLoginHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLogoutHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLogoutHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java" afterDir="false" />
@@ -52,81 +152,42 @@
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/HeartbeatHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/HeartbeatHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/InputtingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/InputtingHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ReadMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ReadMessageHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/AcceptorConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/ConnectorConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/MessageSenderConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/ResendMessageConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnectorHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnectorHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/AcknowledgeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/AcknowledgeHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastClientStatusHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastClientStatusHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastFriendMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastFriendMessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastGroupMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/BroadcastGroupMessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/CheckHandler.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/InputtingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/InputtingHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/util/ContextHolder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/tcp-gate/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gate/tcp-gate/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gate/websocket-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gate/websocket-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/MQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/MQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ClientStatusHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ClientStatusHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/FriendMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/FriendMessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/GroupMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/GroupMessageHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/util/ContextHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/util/ContextHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/logic/logic-server-a/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logic/logic-server-a/src/main/resources/mapping/GroupDao.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/gate/websocket-gate/target/" />
-    <ignored path="$PROJECT_DIR$/logic/logic-server-a/target/" />
-    <ignored path="$PROJECT_DIR$/gate/tcp-gate/target/" />
-    <ignored path="$PROJECT_DIR$/client/tcp-client/target/" />
-    <ignored path="$PROJECT_DIR$/logic/logic-server-b/target/" />
-    <ignored path="$PROJECT_DIR$/common/target/" />
-    <ignored path="$PROJECT_DIR$/auth/target/" />
-    <ignored path="$PROJECT_DIR$/gate/target/" />
-    <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/logic/target/" />
-    <ignored path="$PROJECT_DIR$/client/target/" />
-    <ignored path="$PROJECT_DIR$/common/server/target/" />
-    <ignored path="$PROJECT_DIR$/common/server/tcp-server/target/" />
-    <ignored path="$PROJECT_DIR$/common/protocol/target/" />
-    <ignored path="$PROJECT_DIR$/common/server/websocket-server/target/" />
-    <ignored path="$PROJECT_DIR$/common/util/target/" />
-    <ignored path="$PROJECT_DIR$/gate/distribute-gate/target/" />
-    <ignored path="$PROJECT_DIR$/client/websocket-client/target/" />
-    <ignored path="$PROJECT_DIR$/gate/distribute-server/target/" />
-    <ignored path="$PROJECT_DIR$/database/target/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="im" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/Filter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/FilterChain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/InvokeChain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -163,63 +224,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/client/tcp-client/pom.xml" />
-        <option value="$PROJECT_DIR$/client/websocket-client/pom.xml" />
-        <option value="$PROJECT_DIR$/client/tcp-client/src/main/java/mmp/im/client/acceptor/ClientToGateAcceptor.java" />
-        <option value="$PROJECT_DIR$/client/tcp-client/src/main/java/mmp/im/TCPGateApplication.java" />
-        <option value="$PROJECT_DIR$/client/tcp-client/src/main/java/mmp/im/client/connector/ClientToGateConnector.java" />
-        <option value="$PROJECT_DIR$/gate/websocket-gate/pom.xml" />
-        <option value="$PROJECT_DIR$/gate/websocket-gate/src/main/java/mmp/im/gate/configuration/AcceptorConfig.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/WebsocketMessageDecoder.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/encode/WebsocketMessageEncoder.java" />
-        <option value="$PROJECT_DIR$/gate/websocket-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/dao/MessageDao.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/dao/GroupDao.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/dao/FriendDao.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/LogicApplication.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/MybatisConfig.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/dao/UserDao.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/Message.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/User.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GroupReadMessage.java" />
-        <option value="$PROJECT_DIR$/client/tcp-client/src/main/java/mmp/im/client/configuration/MessageSenderConfig.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/util/ProtocolUtil.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/IProtocolParser.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/ProtobufParser.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/ProtocolParserHolder.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/MessageDecoder.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/codec/decode/ReplayingMessageDecoder.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/util/ParserPacket.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/Test.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/MQConfig.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/IMessageHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptorHandler.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/BeanConfig.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/AcknowlageHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/AcknowlegeHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLoginHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLogoutHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/GroupMessageHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/util/SpringContextHolder.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnectorHandler.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/AcceptorConfig.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/ConnectorConfig.java" />
-        <option value="$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnector.java" />
-        <option value="$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/redis/RedisUtil.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/FriendMessageHandler.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/SessionService.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/GroupMessageHandler.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/FriendMessageService.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/GroupMessageService.java" />
-        <option value="$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java" />
-      </list>
-    </option>
-  </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
@@ -239,136 +243,13 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="common" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="common" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Plugins" type="7aea1407:MavenProjectsStructure$PluginsNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="common" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Plugins" type="7aea1407:MavenProjectsStructure$PluginsNode" />
-          <item name="protobuf" type="36feed69:MavenProjectsStructure$PluginNode" />
-        </path>
-      </expand>
-      <select />
-    </treeState>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="width" value="975" />
-    <option name="height" value="1050" />
-  </component>
+  <component name="ProjectId" id="1VsdLqgyWZAyabRTmohts9lSn2V" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="mmp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="mmp" type="462c0819:PsiDirectoryNode" />
-              <item name="im" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="mmp" type="462c0819:PsiDirectoryNode" />
-              <item name="im" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="mmp" type="462c0819:PsiDirectoryNode" />
-              <item name="im" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="im" type="b2602c69:ProjectViewProjectNode" />
-              <item name="s-im-server" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="mmp" type="462c0819:PsiDirectoryNode" />
-              <item name="im" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="filter" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
@@ -376,6 +257,7 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -386,45 +268,33 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="mmp.im.common.protocol" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OneDrive\文档\s-im-server\auth\src\main\java\mmp\im\auth\database\domain" />
+      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\websocket-gate" />
+      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\client\tcp-client" />
+      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\distribute-gate\src\main\java\mmp\im\gate\acceptor" />
+      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\tcp-gate\src\main\java\mmp\im\gate\connector" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="mmp.im.auth.database.repository" />
+      <recent name="mmp.im.auth.database.domain" />
+      <recent name="mmp.im.logic.configuration" />
+      <recent name="mmp.im.common.util.redis" />
+      <recent name="mmp.im.gate.util" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\auth" />
       <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\auth\src" />
       <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\common\util\src\main\java\mmp\im\common\util" />
     </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="mmp.im.common.protocol" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="mmp.im.logic.configuration" />
-      <recent name="mmp.im.common.util.redis" />
-      <recent name="mmp.im.gate.util" />
-      <recent name="mmp.im.auth.configuration" />
-      <recent name="mmp.im.auth.web" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\websocket-gate" />
-      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\client\tcp-client" />
-      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\distribute-gate\src\main\java\mmp\im\gate\acceptor" />
-      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\tcp-gate\src\main\java\mmp\im\gate\connector" />
-      <recent name="C:\Users\huangzhike\Documents\MMP\s-im-server\gate\distribute-gate\src\main\java\mmp\im\gate\configuration" />
-    </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Spring Boot.LogicApplication">
+  <component name="RunManager" selected="Spring Boot.DistributeApplication">
     <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mmp.im.common.protocol.Test" />
       <module name="common" />
@@ -486,6 +356,21 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="a62204e9-1a77-4322-a9c9-c59224636fd7" name="Default Changelist" comment="" />
@@ -536,6 +421,28 @@
       <workItem from="1551445682589" duration="23000" />
       <workItem from="1551532171084" duration="647000" />
       <workItem from="1555160528798" duration="85000" />
+      <workItem from="1555856871635" duration="103000" />
+      <workItem from="1555896391197" duration="2386000" />
+      <workItem from="1555913356295" duration="51000" />
+      <workItem from="1555919830411" duration="164000" />
+      <workItem from="1555924608474" duration="84000" />
+      <workItem from="1556077802381" duration="945000" />
+      <workItem from="1556174163934" duration="136000" />
+      <workItem from="1556180632078" duration="285000" />
+      <workItem from="1556275798693" duration="111000" />
+      <workItem from="1557203737113" duration="265000" />
+      <workItem from="1557204033697" duration="197000" />
+      <workItem from="1557207286812" duration="572000" />
+      <workItem from="1557299829457" duration="13324000" />
+      <workItem from="1557318817631" duration="1374000" />
+      <workItem from="1557710432381" duration="2215000" />
+      <workItem from="1558336698563" duration="631000" />
+      <workItem from="1558862462757" duration="553000" />
+      <workItem from="1559384374551" duration="22000" />
+      <workItem from="1571578381123" duration="3000" />
+      <workItem from="1578045686442" duration="1082000" />
+      <workItem from="1578204185390" duration="406000" />
+      <workItem from="1578205558212" duration="21651000" />
     </task>
     <task id="LOCAL-00001" summary="好累。。。打会游戏先。。。">
       <created>1547363948510</created>
@@ -691,44 +598,15 @@
       <option name="project" value="LOCAL" />
       <updated>1555160581778</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="准备重写。。">
+      <created>1555856952845</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1555856952845</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="174783000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4985755" visible="true" weight="0.19140625" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Web" order="2" side_tool="true" />
-      <window_info id="Designer" order="3" />
-      <window_info id="Favorites" order="4" sideWeight="0.5014245" side_tool="true" weight="0.18229167" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32905984" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.44586894" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32905984" />
-      <window_info anchor="bottom" id="Spring" order="9" weight="0.32905984" />
-      <window_info anchor="bottom" id="Database Changes" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.32905984" />
-      <window_info anchor="bottom" id="Java Enterprise" order="12" />
-      <window_info anchor="bottom" id="Terminal" order="13" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.21937323" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="Maven" order="4" weight="0.3294271" />
-      <window_info anchor="right" id="Bean Validation" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -758,250 +636,8 @@
     <MESSAGE value=":art: 试试这个" />
     <MESSAGE value="Grace真好" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gate/distribute-gate/src/main/java/mmp/im/gate/acceptor/handler/messageTypeA/ClientStatusHandler.java" />
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="37" column="88" selection-start-line="37" selection-start-column="88" selection-end-line="37" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/distribute-gate/src/main/java/mmp/im/gate/acceptor/parser/MessageTypeAParser.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/parser/MessageTypeAParser.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/messageTypeA/MessageTypeAHandler.java" />
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/configuration/MQConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="43" column="20" lean-forward="true" selection-start-line="36" selection-start-column="15" selection-end-line="43" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/IProtocolParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="29" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/IMessageHandler.java" />
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/parser/ProtocolParserHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/protocol/handler/MessageHandlerHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1014">
-          <caret line="62" column="33" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/AcknowlegeHandler.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLoginHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="22" column="63" lean-forward="true" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/ClientLogoutHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/FriendMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="26" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/handler/GroupMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/BeanConfig.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/ResendMessageMapConfig.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/util/SpringContextHolder.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/MessageSenderConfig.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/server/AbstractTCPConnector.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/messageTypeA/BroadcastClientStatusHandler.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/messageTypeA/BroadcastFriendMessageHandler.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/handler/messageTypeA/BroadcastGroupMessageHandler.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/service/AuthService.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/acceptor/ClientToGateAcceptorHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnectorHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="96" column="9" selection-start-line="96" selection-end-line="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/serializer/SerializerHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" column="35" selection-start-line="3" selection-start-column="19" selection-end-line="3" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/serializer/ProtoStuffSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="43" column="57" lean-forward="true" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/model/GroupReadMessage.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/AcceptorConfig.java" />
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/listener/ConnectionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-          <folding>
-            <element signature="e#654#655#0" expanded="true" />
-            <element signature="e#696#697#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/channel/initializer/ConnectorChannelInitializer.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/configuration/ConnectorConfig.java" />
-    <entry file="file://$PROJECT_DIR$/gate/tcp-gate/src/main/java/mmp/im/gate/connector/GateToDistConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="31" column="53" lean-forward="true" selection-start-line="31" selection-start-column="53" selection-end-line="31" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gate/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ClientStatusHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/util/redis/RedisUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="125" column="22" selection-start-line="125" selection-start-column="11" selection-end-line="125" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/FriendMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/target/generated-sources/protobuf/java/mmp/im/common/protocol/ProtobufMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="6677" column="29" selection-start-line="6677" selection-start-column="29" selection-end-line="6677" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/proto/ProtobufMessage.proto">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1612">
-          <caret line="1" column="8" lean-forward="true" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/GroupMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="32" column="97" selection-start-line="32" selection-start-column="97" selection-end-line="32" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/FriendMessageService.java" />
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/GroupMessageService.java" />
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/SessionService.java" />
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/service/XService.java" />
-    <entry file="file://$PROJECT_DIR$/logic/logic-server-a/src/main/java/mmp/im/logic/handler/ReadMessageHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-171">
-          <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/Filter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/FilterChain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/main/java/mmp/im/common/server/filter/InvokeChain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <MESSAGE value="准备重写。。" />
+    <option name="LAST_COMMIT_MESSAGE" value="准备重写。。" />
   </component>
   <component name="masterDetails">
     <states>

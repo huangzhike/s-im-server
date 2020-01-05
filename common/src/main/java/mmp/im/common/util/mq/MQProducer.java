@@ -4,14 +4,14 @@ import com.rabbitmq.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class MQProducer {
 
     protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     // 发送消息失败，下次连接恢复时再发送
-    protected final ConcurrentLinkedQueue<ResendElement> resendQueue = new ConcurrentLinkedQueue<>();
+    protected final LinkedBlockingQueue<ResendElement> resendQueue = new LinkedBlockingQueue<>();
 
     private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -20,17 +20,21 @@ public abstract class MQProducer {
     protected Channel pubChannel = null;
 
     // 队列的生产者，将消息发送至此
-    private String publishToQueue;
+    protected String publishToQueue;
+    protected String exchange;
+    protected String routingKey;
 
 
-    public MQProducer(String mqURI, String publishToQueue) {
+    public MQProducer(String mqURI, String exchange, String routingKey, String publishToQueue) {
 
         this.publishToQueue = publishToQueue;
+        this.exchange = exchange;
+        this.routingKey = routingKey;
 
         try {
             this.connectionFactory.setUri(mqURI);
         } catch (Exception e) {
-            LOG.error("init MQProducer Exception...", e);
+            LOG.error(e.getLocalizedMessage());
         }
 
         this.connectionFactory.setAutomaticRecoveryEnabled(true);
@@ -44,87 +48,87 @@ public abstract class MQProducer {
 
     public synchronized void start() {
 
-        Connection conn = this.tryGetConnection();
-        if (conn != null) {
+
+        try {
+            Connection conn = this.tryGetConnection();
             this.startPublisher(conn);
-        } else {
+        } catch (Exception e) {
+
+            LOG.error(e.getLocalizedMessage());
             // automaticRecovery只在连接成功后才会启动，首次无法成功建立Connection的需要重新start
-            try {
-                Thread.sleep(5 * 1000);
-            } catch (Exception e) {
-                LOG.error(e.getMessage());
-            }
+            this.sleep(5 * 1000);
             new Thread(MQProducer.this::start);
         }
 
+        LOG.warn("start...");
     }
 
-    private Connection tryGetConnection() {
+    private Connection tryGetConnection() throws Exception {
         if (this.connection == null) {
-            try {
-                this.connection = this.connectionFactory.newConnection();
+            this.connection = this.connectionFactory.newConnection();
 
-                this.connection.addShutdownListener((shutdownSignalException) -> LOG.warn("shutdownCompleted... {}", shutdownSignalException.getReason()));
+            this.connection.addShutdownListener((shutdownSignalException) -> LOG.warn(shutdownSignalException.getLocalizedMessage()));
 
-                // 自动恢复
-                ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
-                    @Override
-                    public void handleRecoveryStarted(Recoverable recoverable) {
-                        LOG.warn("handleRecoveryStarted...");
-                    }
+            // 自动恢复
+            ((Recoverable) this.connection).addRecoveryListener(new RecoveryListener() {
+                @Override
+                public void handleRecoveryStarted(Recoverable recoverable) {
+                    LOG.warn("handleRecoveryStarted...");
+                }
 
-                    @Override
-                    public void handleRecovery(Recoverable recoverable) {
-                        MQProducer.this.start();
-                    }
-                });
-            } catch (Exception e) {
-                LOG.error("tryGetConnection Exception...", e);
-                this.connection = null;
-            }
+                @Override
+                public void handleRecovery(Recoverable recoverable) {
+                    MQProducer.this.start();
+                }
+            });
         }
 
         return this.connection;
     }
 
     // 开始发布
-    private void startPublisher(Connection connection) {
+    private void startPublisher(Connection connection) throws Exception {
         if (this.pubChannel != null && this.pubChannel.isOpen()) {
-            try {
-                this.pubChannel.close();
-            } catch (Exception e) {
-                LOG.error("startPublisher close Exception...", e);
-            }
+            this.pubChannel.close();
         }
 
-        if (this.publishToQueue == null || this.publishToQueue.equals("")) {
-            return;
-        }
+        this.pubChannel = connection.createChannel();
 
-        try {
-            this.pubChannel = connection.createChannel();
-            // 声明队列
-            AMQP.Queue.DeclareOk queueDeclare = pubChannel.queueDeclare(this.publishToQueue, true, false, false, null);
+        // 声明队列
+        pubChannel.queueDeclare(this.publishToQueue, true, false, false, null);
 
-        } catch (Exception e) {
-            LOG.error("startPublisher pubChannel Exception...", e);
-        }
+        // 绑定队列到交换机
+        pubChannel.queueBind(this.publishToQueue, this.exchange, this.routingKey);
 
-        while (resendQueue.size() > 0) {
-            ResendElement resendElement = resendQueue.poll();
-            this.publish(resendElement.getExchangeName(), resendElement.getRoutingKey(), resendElement.getMsg());
+        /*
+            队列服务：生产者、队列、消费者
+            RabbitMQ在生产者和队列之间加入了交换器
+            这样生产者和队列就没有直接联系
+            生产者把消息给交换器，交换器根据调度策略再把消息再给队列
+        */
+
+
+        ResendElement resendElement;
+        while ((resendElement = resendQueue.poll()) != null) {
+
+            this.publish(resendElement.getMsg());
         }
     }
 
-    /*
-        队列服务： 发消息者、队列、收消息者
-        RabbitMQ在发消息者和队列之间, 加入了交换器 (Exchange)
-        这样发消息者和队列就没有直接联系, 转而变成发消息者把消息给交换器, 交换器根据调度策略再把消息再给队列
-     */
 
-    // 发布
-    public abstract boolean publish(String exchangeName, String routingKey, Object msg);
+    protected void addToResend(Object contents) {
+        ResendElement resendElement = new ResendElement(contents);
 
+        this.resendQueue.offer(resendElement);
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            LOG.error(e.getLocalizedMessage());
+        }
+    }
 
     public abstract boolean publish(Object msg);
 

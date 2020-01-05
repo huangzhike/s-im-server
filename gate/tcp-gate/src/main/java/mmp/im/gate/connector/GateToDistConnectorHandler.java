@@ -13,15 +13,16 @@ import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.protocol.handler.NettyMessageHandlerHolder;
 import mmp.im.common.server.connection.ConnectorChannelHolder;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
-import mmp.im.gate.acceptor.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static mmp.im.common.protocol.ProtobufMessage.ServerRegister;
 
@@ -36,13 +37,14 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
 
     private ConnectorChannelHolder connectorChannelHolder = ConnectorChannelHolder.getInstance();
 
+    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+
     @Override
     public void channelRead(ChannelHandlerContext channelHandlerContext, Object message) throws Exception {
 
-        Channel channel = channelHandlerContext.channel();
         // 处理消息
         if (message instanceof MessageLite) {
-            channel.eventLoop().execute(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
+            executorService.submit(() -> NettyMessageHandlerHolder.assignHandler(channelHandlerContext, (MessageLite) message));
         }
         channelHandlerContext.fireChannelRead(message);
 
@@ -53,19 +55,16 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
         LOG.warn("channelActive... remoteAddress... {} ", channelHandlerContext.channel().remoteAddress());
 
         Channel channel = channelHandlerContext.channel();
-        // 维护一个已接收的消息列表 避免重传造成的重复接收
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(new ArrayList<>());
 
+        // 维护一个已接收的消息列表 避免重传造成重复处理
+        channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).set(new ConcurrentHashMap<>());
 
-        channelHandlerContext.channel().writeAndFlush(MessageBuilder.buildHeartbeat());
-
-        ServerRegister m = MessageBuilder.buildServerRegister(Config.SERVER_ID, "mmp");
-
-        // 注册
-        MessageSender.reply(channelHandlerContext, m);
+        // 向服务器注册
+        ServerRegister message = MessageBuilder.buildServerRegister(Config.SERVER_ID, Config.TOKEN);
+        MessageSender.reply(channelHandlerContext, message);
 
         // 发的消息待确认
-        ResendMessageManager.getInstance().put(m.getSeq(), m, channelHandlerContext);
+        ResendMessageManager.getInstance().put(message.getSeq(), message, channelHandlerContext);
 
         channelHandlerContext.fireChannelActive();
     }
@@ -76,16 +75,19 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
         Channel channel = channelHandlerContext.channel();
 
         if (channel != null) {
-            channel.attr(AttributeKeyHolder.REV_SEQ_LIST).set(null);
+            // 清除消息列表
+            channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).set(null);
             SocketAddress socketAddress = channel.remoteAddress();
             if (socketAddress != null) {
-                LOG.warn("channelInactive... remove remoteAddress... {}", channel.remoteAddress());
+                LOG.warn("channelInactive remove remoteAddress {}", channel.remoteAddress());
+                // 清除
                 connectorChannelHolder.setChannelHandlerContext(null);
             }
+
             // 关闭连接
             if (channel.isOpen()) {
                 channel.close();
-                LOG.warn("channelInactive... close remoteAddress... {}", channel.remoteAddress());
+                LOG.warn("channelInactive close remoteAddress {}", channel.remoteAddress());
             }
         }
 
@@ -105,7 +107,7 @@ public class GateToDistConnectorHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {
             IdleState state = ((IdleStateEvent) evt).state();
             if (state == IdleState.WRITER_IDLE) {
-                LOG.warn("IdleState.WRITER_IDLE");
+                LOG.warn("userEventTriggered IdleState.WRITER_IDLE...");
                 // 发送心跳
                 MessageSender.reply(channelHandlerContext, MessageBuilder.buildHeartbeat());
             }

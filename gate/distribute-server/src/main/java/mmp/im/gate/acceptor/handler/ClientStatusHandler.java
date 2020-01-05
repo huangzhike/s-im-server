@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import mmp.im.common.protocol.handler.INettyMessageHandler;
 import mmp.im.common.server.connection.AcceptorChannelManager;
 import mmp.im.common.server.message.ResendMessageManager;
-import mmp.im.common.server.util.AttributeKeyHolder;
+import mmp.im.common.server.util.AttributeKeyConstant;
 import mmp.im.common.server.util.MessageBuilder;
 import mmp.im.common.server.util.MessageSender;
 import mmp.im.gate.util.ContextHolder;
@@ -17,7 +17,7 @@ import java.util.*;
 
 import static mmp.im.common.protocol.ProtobufMessage.ClientStatus;
 
-public class ClientStatusHandler extends CheckHandler implements INettyMessageHandler {
+public class ClientStatusHandler implements INettyMessageHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -34,20 +34,20 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
         ClientStatus message = (ClientStatus) object;
 
         Channel channel = channelHandlerContext.channel();
-        if (!this.login(channel)) {
-            LOG.warn("未登录");
-        }
 
         // 回复确认收到消息
         MessageSender.reply(channelHandlerContext, MessageBuilder.buildAcknowledge(message.getSeq()));
 
         // 说明是重复发送，不处理，只回复ACK
-        if (this.duplicate(channel, message.getSeq())) {
-            LOG.warn("重复消息");
-            // release
+        Map<Long, Long> receivedCache = channel.attr(AttributeKeyConstant.REV_SEQ_CACHE).get();
+
+        if (receivedCache.containsKey(message.getSeq())) {
+            LOG.warn("repeat");
             return;
         }
-        channel.attr(AttributeKeyHolder.REV_SEQ_LIST).get().add(message.getSeq());
+
+        // 加入已收到的消息
+        receivedCache.putIfAbsent(message.getSeq(), message.getSeq());
 
         // 推送到logic处理，数据库操作等
         ContextHolder.getMQProducer().publish(message);
@@ -102,7 +102,6 @@ public class ClientStatusHandler extends CheckHandler implements INettyMessageHa
 
             LOG.warn("m... {}", m);
         }
-
 
 
     }
